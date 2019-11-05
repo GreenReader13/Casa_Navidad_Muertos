@@ -198,8 +198,8 @@ GLuint Shader::GetEyePositionLocation()
 
 void Shader::SetDirectionalLight(DirectionalLight * dLight)
 {
-	dLight->UseLight((float)uniformDirectionalLight.uniformAmbientIntensity, (float)uniformDirectionalLight.uniformcolor,
-		(float)uniformDirectionalLight.uniformDiffuseIntensity, (float)uniformDirectionalLight.uniformDirection);
+	dLight->UseLight(uniformDirectionalLight.uniformAmbientIntensity, uniformDirectionalLight.uniformcolor,
+		uniformDirectionalLight.uniformDiffuseIntensity, uniformDirectionalLight.uniformDirection);
 }
 
 void Shader::SetPointLights(PointLight * pLight, unsigned int lightCount)
@@ -210,9 +210,9 @@ void Shader::SetPointLights(PointLight * pLight, unsigned int lightCount)
 
 	for (size_t i = 0; i < lightCount; i++)
 	{
-		pLight[i].UseLight((float)uniformPointLight[i].uniformAmbientIntensity, (float)uniformPointLight[i].uniformcolor,
-			(float)uniformPointLight[i].uniformDiffuseIntensity, (float)uniformPointLight[i].uniformPosition,
-			(float)uniformPointLight[i].uniformConstant, (float)uniformPointLight[i].uniformLinear, (float)uniformPointLight[i].uniformExponent);
+		pLight[i].UseLight(uniformPointLight[i].uniformAmbientIntensity, uniformPointLight[i].uniformcolor,
+			uniformPointLight[i].uniformDiffuseIntensity, uniformPointLight[i].uniformPosition,
+			uniformPointLight[i].uniformConstant, uniformPointLight[i].uniformLinear, uniformPointLight[i].uniformExponent);
 	}
 }
 

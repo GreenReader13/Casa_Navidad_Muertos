@@ -69,7 +69,7 @@ std::vector<Mesh*> meshList;
 std::vector<Shader> shaderList;
 
 //Texturas a crear
-Texture plainTexture;
+Texture pisoTexture;
 
 //materiales
 Material Material_brillante;
@@ -77,6 +77,27 @@ Material Material_opaco;
 
 //Modelos
 Model House_M;
+Model tree;
+Model mesa_M;
+Model album_M;
+
+void piso() {
+	unsigned int floorIndices[] = {
+		0, 2, 1,
+		1, 2, 3
+	};
+
+	GLfloat floorVertices[] = {
+		-10.0f, 0.0f, -10.0f,	0.0f, 0.0f,		0.0f, -1.0f, 0.0f,
+		10.0f, 0.0f, -10.0f,	10.0f, 0.0f,	0.0f, -1.0f, 0.0f,
+		-10.0f, 0.0f, 10.0f,	0.0f, 10.0f,	0.0f, -1.0f, 0.0f,
+		10.0f, 0.0f, 10.0f,		10.0f, 10.0f,	0.0f, -1.0f, 0.0f
+	};
+
+	Mesh* obj3 = new Mesh();
+	obj3->CreateMesh(floorVertices, floorIndices, 32, 6);
+	meshList.push_back(obj3);
+}
 
 void CreateShaders()
 {
@@ -84,25 +105,36 @@ void CreateShaders()
 	shader1->CreateFromFiles(vShader, fShader);
 	shaderList.push_back(*shader1);
 }
+
 int main() {
 
 	//Creación de contexto
 	mainWindow = Window();
 	mainWindow.Initialise();
 
+	//Objetos
+	piso();
+
 	CreateShaders();
 	camera = Camera(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
 
 	//Cargado de texturas
-	plainTexture = Texture("Textures/plain.png");
+	pisoTexture = Texture("Textures/piso.tga");
+	pisoTexture.LoadTextureA();
 
 	//Materiales
 	Material_brillante = Material(4.0f, 256);
 	Material_opaco = Material(0.3f, 4);
 
-	//Modelos
+//------------------Modelos----------------------------
 	House_M = Model();
 	House_M.LoadModel("Models/House.obj");
+	tree = Model();
+	tree.LoadModel("Models/tree/12150_Christmas_Tree_V2_L2.obj");
+	mesa_M = Model();
+	mesa_M.LoadModel("Models/mesa/table.obj");
+	album_M = Model();
+	album_M.LoadModel("Models/album/album.obj");
 
 //Luces
 	unsigned int pointLightCount = 0;
@@ -112,49 +144,56 @@ int main() {
 		0.3f, 0.3f,
 		0.0f, 0.0f, -1.0f);
 	//Luces puntuales
-	pointLights[0] = PointLight(1.0f, 0.0f, 0.0f,
+	//Declaración de primer luz puntual
+	pointLights[0] = PointLight(1.0f, 1.0f, 1.0f,
 		0.0f, 1.0f,
-		2.0f, 1.5f, 1.5f,
-		0.3f, 0.2f, 0.1f);
+		3.0f, 5.53f, -5.0f,
+		0.9f, 0.2f, 0.1f);
 	pointLightCount++;
 
 	//Luces tipo sptolight
-	//linterna
-	spotLights[0] = SpotLight(0.8f, 0.8f, 0.8f,
-		0.0f, 1.0f,
-		0.0f, 0.0f, 0.0f,
+	//Luz interior 1
+	spotLights[0] = SpotLight(0.0f, 1.0f, 0.0f,
+		1.5f, 3.0f,
+		6.0f, 12.0f, -1.75f,
 		0.0f, -1.0f, 0.0f,
-		1.0f, 0.0f, 0.0f,
-		20.0f);
+		0.9f, 0.2f, 0.1f,
+		200.0f);
 	spotLightCount++;
-
-	//luz fija
-	spotLights[1] = SpotLight(0.0f, 0.0f, 1.0f,
-		0.0f, 2.0f,
-		10.0f, 0.0f, 0.0f,
-		0.0f, -5.0f, 0.0f,
-		1.0f, 0.0f, 0.0f,
-		10.0f);
+	//Luz interior 2
+	spotLights[1] = SpotLight(1.0f, 0.0f, 1.0f,
+		1.5f, 3.0f,
+		-10.0f, 12.0f, 8.5f,
+		0.0f, -1.0f, 0.0f,
+		0.9f, 0.2f, 0.1f,
+		200.0f);
 	spotLightCount++;
-	//luz de faro
-	spotLights[2] = SpotLight(0.0f, 1.0f, 0.0f,
-		0.0f, 1.0f,
-		0.0f, -1.5f, 0.0f,
-		-4.0f, -1.0f, 0.0f,
-		1.0f, 0.0f, 0.0f,
-		10.0f);
+	//Luz interior 3
+	spotLights[2] = SpotLight(0.0f, 1.0f, 1.0f,
+		1.5f, 3.0f,
+		-10.0f, 12.0f, -5.0f,
+		0.0f, -1.0f, 0.0f,
+		0.9f, 0.2f, 0.1f,
+		200.0f);
+	spotLightCount++;
+	//Luz interior 4
+	spotLights[3] = SpotLight(1.0f, 1.0f, 0.0f,
+		1.5f, 3.0f,
+		-10.0f, 12.0f, -13.0f,
+		0.0f, -1.0f, 0.0f,
+		0.9f, 0.2f, 0.1f,
+		200.0f);
 	spotLightCount++;
 
 	//Skybox
 	std::vector<std::string> skyboxFaces;
 	//Cargar texturas en orden
-
-	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_rt.tga");
-	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_lf.tga");
-	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_dn.tga");
-	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_up.tga");
-	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_bk.tga");
-	skyboxFaces.push_back("Textures/Skybox/cupertin-lake_ft.tga");
+	skyboxFaces.push_back("Textures/ely_hills/hills_rt.tga");
+	skyboxFaces.push_back("Textures/ely_hills/hills_lf.tga");
+	skyboxFaces.push_back("Textures/ely_hills/hills_dn.tga");
+	skyboxFaces.push_back("Textures/ely_hills/hills_up.tga");
+	skyboxFaces.push_back("Textures/ely_hills/hills_bk.tga");
+	skyboxFaces.push_back("Textures/ely_hills/hills_ft.tga");
 
 	//Inicializar Skybox
 	skybox = Skybox(skyboxFaces);
@@ -191,10 +230,6 @@ int main() {
 		uniformShininess = shaderList[0].GetShininessLocation();
 
 		//Luces
-		//Linterna
-		glm::vec3 lowerLight = camera.getCameraPosition();
-		lowerLight.y -= 0.3f;
-		spotLights[0].SetFlash(lowerLight, camera.getCameraDirection());
 
 		//Luces shader
 		shaderList[0].SetDirectionalLight(&mainLight);
@@ -212,11 +247,47 @@ int main() {
 		//Carga de modelos y transformaciones
 		model = glm::mat4(1.0);
 
+		// ---------------------------- PISO ----------------------------
+		model = glm::mat4(1.0);
+		model = glm::scale(model, glm::vec3(20.0f, 1.0f, 20.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		plainTexture.UseTexture();
-		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		pisoTexture.UseTexture();
+		meshList[0]->RenderMesh();
+
+		// ---------------------------- CASA ----------------------------
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f, 0.01f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f)*2.0f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		House_M.RenderModel();
 
+// ---------------------------------- Navidad ----------------------------
+
+		// ---------------------------- ÁRBOL ----------------------------
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(13.0f, 0.0f, -13.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 0.05f);
+		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		tree.RenderModel();
+
+// ---------------------------------- All Hollows Day ----------------------------
+
+		// ---------------------------- MESA ----------------------------
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-13.5f, 1.5f, 8.0f));
+		model = glm::scale(model, glm::vec3(1.0f) *0.03f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		mesa_M.RenderModel();
+
+		// ---------------------------- CUADRO ----------------------------
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-15.4f, 3.08f, 8.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 0.01f);
+		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		album_M.RenderModel();
 		glUseProgram(0);
 		//SwapBuffer
 		mainWindow.swapBuffers();

@@ -131,7 +131,7 @@
     <ClCompile Include="source\DirectionalLight.cpp" />
     <ClCompile Include="source\Light.cpp" />
     <ClCompile Include="source\Material.cpp" />
-    <ClCompile Include="source\Mesh_texturizado.cpp" />
+    <ClCompile Include="source\Mesh_tn.cpp" />
     <ClCompile Include="source\Model.cpp" />
     <ClCompile Include="source\PointLight.cpp" />
     <ClCompile Include="source\Shader_light.cpp" />
@@ -146,7 +146,7 @@
     <ClInclude Include="headers\DirectionalLight.h" />
     <ClInclude Include="headers\Light.h" />
     <ClInclude Include="headers\Material.h" />
-    <ClInclude Include="headers\Mesh_texturizado.h" />
+    <ClInclude Include="headers\Mesh.h" />
     <ClInclude Include="headers\Model.h" />
     <ClInclude Include="headers\PointLight.h" />
     <ClInclude Include="headers\Shader_light.h" />

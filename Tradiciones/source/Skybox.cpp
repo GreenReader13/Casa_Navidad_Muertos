@@ -1,5 +1,7 @@
 #include "Skybox.h"
 
+
+
 Skybox::Skybox()
 {
 }
@@ -16,6 +18,7 @@ Skybox::Skybox(std::vector<std::string> faceLocations)
 	int width, height, bitDepth;
 	for (size_t i = 0; i < 6; i++)
 	{
+
 		unsigned char *texData = stbi_load(faceLocations[i].c_str(), &width, &height, &bitDepth, 0); //el tipo unsigned char es para un array de bytes de la imagen, obtener datos de la imagen 
 		if (!texData)
 		{

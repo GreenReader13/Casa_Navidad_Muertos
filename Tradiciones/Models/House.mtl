@@ -30,6 +30,8 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
+map_Ka metal.jpg
+map_Kd metal.jpg
 
 newmtl Doors
 Ns 96.078431
@@ -50,6 +52,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
+map_Ka url1.jpg
+map_Kd url1.jpg
+
 
 newmtl Floor
 Ns 96.078431
@@ -60,6 +65,8 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 1
+map_Ka tex/WoodSeemles1.jpg
+map_Kd tex/WoodSeemles1.jpg
 
 newmtl Glass
 Ns 96.078431
@@ -100,6 +107,9 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 2
+map_Ka metal.jpg
+map_Kd metal.jpg
+
 
 newmtl Roof
 Ns 96.078431
@@ -130,6 +140,8 @@ Ke 0.000000 0.000000 0.000000
 Ni 1.000000
 d 1.000000
 illum 1
+map_Ka blue.jpg
+map_Kd blue.jpg
 
 newmtl Window_Frames
 Ns 96.078431
