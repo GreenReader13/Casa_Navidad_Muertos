@@ -12,6 +12,8 @@
 
 #include <iostream>		//Entrada y salida de datos
 #include <vector>
+#include <fstream>
+#include <ctime>
 
 #include <GL/glew.h>	//Librería para resolver dependencias
 #include <GLFW/glfw3.h>	//Librería para creación de ventana y contexto openGL
@@ -37,6 +39,11 @@
 #include "Window.h"
 #include "Camera.h"
 #include "Skybox.h"
+
+void inputKeyframes(bool* keys);
+
+#define MAX_O_FRAMES 250
+#define DIS 1.0f
 
 const float toRadians = 3.14159265f / 180.0f;
 
@@ -71,7 +78,7 @@ std::vector<Shader> shaderList;
 //Texturas a crear
 Texture pisoTexture;
 
-//materiales
+//Materiales
 Material Material_brillante;
 Material Material_opaco;
 
@@ -80,6 +87,10 @@ Model House_M;
 Model tree;
 Model mesa_M;
 Model album_M;
+Model ovni;
+
+const std::string delimiter = ",";
+std::string s = "";
 
 void piso() {
 	unsigned int floorIndices[] = {
@@ -94,9 +105,9 @@ void piso() {
 		10.0f, 0.0f, 10.0f,		10.0f, 10.0f,	0.0f, -1.0f, 0.0f
 	};
 
-	Mesh* obj3 = new Mesh();
-	obj3->CreateMesh(floorVertices, floorIndices, 32, 6);
-	meshList.push_back(obj3);
+	Mesh* obj = new Mesh();
+	obj->CreateMesh(floorVertices, floorIndices, 32, 6);
+	meshList.push_back(obj);
 }
 
 void CreateShaders()
@@ -104,6 +115,162 @@ void CreateShaders()
 	Shader* shader1 = new Shader();
 	shader1->CreateFromFiles(vShader, fShader);
 	shaderList.push_back(*shader1);
+}
+
+float reproduciranimacion, habilitaranimacion, guardoFrame, reinicioFrame, ciclo, ciclo2, contador = 0;
+
+float   rotOvni = 0.0f,
+rotOvniY = 0.0f,
+rotOvniZ = 0.0f,
+ovniX = 0.0f,
+ovniY = 0.0f,
+ovniZ = 0.0f;
+
+// Variables animacíón ovni
+
+int i_max_steps_ovni = 30;
+int i_curr_steps_ovni = 0;
+
+typedef struct ovni_frame {
+	float posX;
+	float posY;
+	float posZ;
+	float incX;
+	float incY;
+	float incZ;
+	float rotY;
+	float rotYinc;
+	float rotZ;
+	float rotZinc;
+
+}O_FRAME;
+
+O_FRAME OvniFrame[MAX_O_FRAMES];
+int FrameIndexO = 0;
+bool playO = false;
+int playIndexO = 0;
+
+void loadAnimationOvni(void) {
+
+	std::ifstream in;
+	std::string str;
+	std::string cad = "";
+	std::string token;
+	size_t pos = 0, i;
+	float val;
+
+	in.open("animation/ovni.txt");
+	getline(in, str);
+	do {
+		cad = str;
+		i = 0;
+
+		while ((pos = cad.find(delimiter)) != std::string::npos) {
+			token = cad.substr(0, pos);
+			val = stof(token);
+			switch (i) {
+			case 0:
+				FrameIndexO = val;
+				break;
+			case 1:
+				OvniFrame[FrameIndexO].posX = val;
+				break;
+			case 2:
+				OvniFrame[FrameIndexO].posY = val;
+				break;
+			case 3:
+				OvniFrame[FrameIndexO].posZ = val;
+				break;
+			case 4:
+				OvniFrame[FrameIndexO].rotY = val;
+				break;
+			case 5:
+				OvniFrame[FrameIndexO].rotZ = val;
+				break;
+			default:
+				break;
+			}
+
+			cad.erase(0, pos + delimiter.length());
+			i++;
+		}
+
+		FrameIndexO++;
+		printf("%s\n", str.c_str());
+	} while (getline(in, str));
+
+	in.close();
+
+}
+
+void resetElementsO(void) {
+
+	ovniX = OvniFrame[0].posX;
+	ovniY = OvniFrame[0].posY;
+	ovniZ = OvniFrame[0].posZ;
+
+	rotOvniY = OvniFrame[0].rotY;
+	rotOvniZ = OvniFrame[0].rotZ;
+
+}
+
+void saveFrameO(void) {
+
+	printf("frameindex %d\n", FrameIndexO);
+
+	std::ofstream out;
+	out.open("animacionOvni.txt", std::ofstream::out | std::ofstream::app);
+	s = std::to_string(FrameIndexO++) + "," + std::to_string(ovniX) + "," + std::to_string(ovniY) + "," + std::to_string(ovniZ) + "," + std::to_string(rotOvniY) + "," + std::to_string(rotOvniZ) + "\n";
+	out << s;
+	out.close();
+
+}
+
+void interpolationO(void) {
+
+	OvniFrame[playIndexO].incX = (OvniFrame[playIndexO + 1].posX - OvniFrame[playIndexO].posX) / i_max_steps_ovni;
+	OvniFrame[playIndexO].incY = (OvniFrame[playIndexO + 1].posY - OvniFrame[playIndexO].posY) / i_max_steps_ovni;
+	OvniFrame[playIndexO].incZ = (OvniFrame[playIndexO + 1].posZ - OvniFrame[playIndexO].posZ) / i_max_steps_ovni;
+
+	OvniFrame[playIndexO].rotYinc = (OvniFrame[playIndexO + 1].rotY - OvniFrame[playIndexO].rotY) / i_max_steps_ovni;
+	OvniFrame[playIndexO].rotZinc = (OvniFrame[playIndexO + 1].rotZ - OvniFrame[playIndexO].rotZ) / i_max_steps_ovni;
+
+}
+
+void animateO(void) {
+	if (playO) {
+		if (i_curr_steps_ovni >= i_max_steps_ovni) { //end of animation between frames?
+			playIndexO++;
+			if (playIndexO > FrameIndexO - 2) {	//end of total animation?
+				printf("termina animacion Ovni\n");
+				playIndexO = 0;
+				playO = false;
+			}
+			else { //Next frame interpolations
+				i_curr_steps_ovni = 0; //Reset counter
+								  //Interpolation
+				interpolationO();
+			}
+		}
+		else {
+			//Draw animation
+			ovniX += OvniFrame[playIndexO].incX;
+			ovniY += OvniFrame[playIndexO].incY;
+			ovniZ += OvniFrame[playIndexO].incZ;
+
+			rotOvniY += OvniFrame[playIndexO].rotYinc;
+			rotOvniZ += OvniFrame[playIndexO].rotZinc;
+
+			i_curr_steps_ovni++;
+		}
+	}
+
+}
+
+void animate(void) {
+
+	rotOvniY = -DIS + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (DIS - (-DIS))));
+	rotOvni += 2.5f;
 }
 
 int main() {
@@ -122,11 +289,11 @@ int main() {
 	pisoTexture = Texture("Textures/piso.tga");
 	pisoTexture.LoadTextureA();
 
-	//Materiales
+	//------------------ Materiales ----------------------------
 	Material_brillante = Material(4.0f, 256);
 	Material_opaco = Material(0.3f, 4);
 
-//------------------Modelos----------------------------
+	//------------------ Modelos ----------------------------
 	House_M = Model();
 	House_M.LoadModel("Models/House.obj");
 	tree = Model();
@@ -135,8 +302,12 @@ int main() {
 	mesa_M.LoadModel("Models/mesa/table.obj");
 	album_M = Model();
 	album_M.LoadModel("Models/album/album.obj");
+	ovni = Model();
+	ovni.LoadModel("Models/ovni/ovni-obj.obj");
 
-//Luces
+	srand(static_cast <unsigned> (time(0)));
+
+	//------------------ Luces ----------------------------
 	unsigned int pointLightCount = 0;
 	unsigned int spotLightCount = 0;
 	//luz direccional, sólo 1 y siempre debe de existir
@@ -215,6 +386,9 @@ int main() {
 		camera.keyControl(mainWindow.getsKeys(), deltaTime);
 		camera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
 
+		inputKeyframes(mainWindow.getsKeys());
+		animateO();
+
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		//Habilitar deteccion de profundidad redibujado
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -261,6 +435,16 @@ int main() {
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		House_M.RenderModel();
 
+		// ---------------------------- OVNI ----------------------------
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f, 0.01f, 0.0f));
+		model = glm::translate(model, glm::vec3(ovniX, ovniY, ovniZ));
+		model = glm::rotate(model, glm::radians(rotOvniY), glm::vec3(1.0f, 0.0f, 1.0f));
+		model = glm::rotate(model, glm::radians(rotOvni), glm::vec3(0.0f, 1.0f, 0.0));
+		model = glm::scale(model, glm::vec3(1.0f)*0.03f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		ovni.RenderModel();
+
 // ---------------------------------- Navidad ----------------------------
 
 		// ---------------------------- ÁRBOL ----------------------------
@@ -288,9 +472,62 @@ int main() {
 		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		album_M.RenderModel();
+
+		animate();
+
 		glUseProgram(0);
 		//SwapBuffer
 		mainWindow.swapBuffers();
 	}
 	// Terminate GLFW
+}
+
+void inputKeyframes(bool* keys)
+{
+	if (keys[GLFW_KEY_SPACE])
+	{
+		if (reproduciranimacion < 1)
+		{
+			if (playO == false && (FrameIndexO > 1))
+			{
+				resetElementsO();
+				//First Interpolation				
+				interpolationO();
+				playO = true;
+				playIndexO = 0;
+				i_curr_steps_ovni = 0;
+				reproduciranimacion++;
+				printf("\nPresiona 0 para habilitar reproducir de nuevo la animación'\n");
+				habilitaranimacion = 0;
+
+			}
+			else
+			{
+				playO = false;
+			}
+		}
+	}
+	if (keys[GLFW_KEY_1]){
+		if (habilitaranimacion < 1)
+			reproduciranimacion = 0;
+	}
+
+	if (keys[GLFW_KEY_L])
+	{
+		if (guardoFrame < 1)
+		{
+			saveFrameO();
+			printf("\nPresiona P para habilitar guardar otro frame'\n");
+			guardoFrame++;
+			reinicioFrame = 0;
+		}
+	}
+	if (keys[GLFW_KEY_P]){
+		if (reinicioFrame < 1)
+			guardoFrame = 0;
+	}
+	if (keys[GLFW_KEY_0]) {
+		loadAnimationOvni();
+	}
+
 }

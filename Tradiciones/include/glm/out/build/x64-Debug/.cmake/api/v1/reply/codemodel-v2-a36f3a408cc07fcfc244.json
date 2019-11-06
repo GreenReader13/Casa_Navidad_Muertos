@@ -27,8 +27,8 @@
 	"kind" : "codemodel",
 	"paths" : 
 	{
-		"build" : "C:/Users/Yo/source/repos/Tradiciones/Tradiciones/include/glm/out/build/x64-Debug",
-		"source" : "C:/Users/Yo/source/repos/Tradiciones/Tradiciones/include/glm"
+		"build" : "C:/Users/jonat/source/repos/GreenReader13/Projecto/Tradiciones/include/glm/out/build/x64-Debug",
+		"source" : "C:/Users/jonat/source/repos/GreenReader13/Projecto/Tradiciones/include/glm"
 	},
 	"version" : 
 	{
