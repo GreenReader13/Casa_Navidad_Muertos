@@ -41,7 +41,7 @@
 const float toRadians = 3.14159265f / 180.0f;
 
 //Crear objeto para contexto de la ventana
-Window mainWindow;	
+Window mainWindow;
 
 //Camara
 Camera camera;
@@ -80,6 +80,7 @@ Model House_M;
 Model tree;
 Model mesa_M;
 Model album_M;
+Model vela_M;
 
 void piso() {
 	unsigned int floorIndices[] = {
@@ -89,9 +90,9 @@ void piso() {
 
 	GLfloat floorVertices[] = {
 		-10.0f, 0.0f, -10.0f,	0.0f, 0.0f,		0.0f, -1.0f, 0.0f,
-		10.0f, 0.0f, -10.0f,	10.0f, 0.0f,	0.0f, -1.0f, 0.0f,
-		-10.0f, 0.0f, 10.0f,	0.0f, 10.0f,	0.0f, -1.0f, 0.0f,
-		10.0f, 0.0f, 10.0f,		10.0f, 10.0f,	0.0f, -1.0f, 0.0f
+		10.0f, 0.0f, -10.0f,	20.0f, 0.0f,	0.0f, -1.0f, 0.0f,
+		-10.0f, 0.0f, 10.0f,	0.0f, 20.0f,	0.0f, -1.0f, 0.0f,
+		10.0f, 0.0f, 10.0f,		20.0f, 20.0f,	0.0f, -1.0f, 0.0f
 	};
 
 	Mesh* obj3 = new Mesh();
@@ -126,17 +127,19 @@ int main() {
 	Material_brillante = Material(4.0f, 256);
 	Material_opaco = Material(0.3f, 4);
 
-//------------------Modelos----------------------------
+	//------------------Modelos----------------------------
 	House_M = Model();
-	House_M.LoadModel("Models/House.obj");
+	House_M.LoadModel("Models/casa/House.obj");
 	tree = Model();
 	tree.LoadModel("Models/tree/12150_Christmas_Tree_V2_L2.obj");
 	mesa_M = Model();
 	mesa_M.LoadModel("Models/mesa/table.obj");
 	album_M = Model();
 	album_M.LoadModel("Models/album/album.obj");
+	vela_M = Model();
+	vela_M.LoadModel("Models/candleWhite_obj/candleWhite_obj.obj");
 
-//Luces
+	//Luces
 	unsigned int pointLightCount = 0;
 	unsigned int spotLightCount = 0;
 	//luz direccional, sólo 1 y siempre debe de existir
@@ -197,7 +200,7 @@ int main() {
 
 	//Inicializar Skybox
 	skybox = Skybox(skyboxFaces);
-	
+
 	//Uniforms
 	GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0, uniformEyePosition = 0, uniformSpecularIntensity = 0, uniformShininess = 0;
 
@@ -208,7 +211,7 @@ int main() {
 		GLfloat now = (float)glfwGetTime();
 		deltaTime = now - lastTime;
 		lastTime = now;
-		
+
 		//Recibir eventos del usuario
 		glfwPollEvents();
 
@@ -249,21 +252,22 @@ int main() {
 
 		// ---------------------------- PISO ----------------------------
 		model = glm::mat4(1.0);
-		model = glm::scale(model, glm::vec3(20.0f, 1.0f, 20.0f));
+		model = glm::scale(model, glm::vec3(15.0f, 1.0f, 15.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		pisoTexture.UseTexture();
 		meshList[0]->RenderMesh();
 
+
 		// ---------------------------- CASA ----------------------------
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(0.0f, 0.01f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.0f)*2.0f);
+		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		House_M.RenderModel();
 
-// ---------------------------------- Navidad ----------------------------
+		// ---------------------------------- Navidad ----------------------------
 
-		// ---------------------------- ÁRBOL ----------------------------
+				// ---------------------------- ÁRBOL ----------------------------
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(13.0f, 0.0f, -13.0f));
 		model = glm::scale(model, glm::vec3(1.0f) * 0.05f);
@@ -271,12 +275,12 @@ int main() {
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		tree.RenderModel();
 
-// ---------------------------------- All Hollows Day ----------------------------
+		// ---------------------------------- All Hollows Day ----------------------------
 
-		// ---------------------------- MESA ----------------------------
+				// ---------------------------- MESA ----------------------------
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(-13.5f, 1.5f, 8.0f));
-		model = glm::scale(model, glm::vec3(1.0f) *0.03f);
+		model = glm::scale(model, glm::vec3(1.0f) * 0.03f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		mesa_M.RenderModel();
 
@@ -288,6 +292,23 @@ int main() {
 		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		album_M.RenderModel();
+
+		// ---------------------------- VELAS ----------------------------
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-15.0f, 3.08f, 10.0f));
+		model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
+		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		vela_M.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-15.0f, 3.08f, 6.0f));
+		model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
+		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		vela_M.RenderModel();
+
 		glUseProgram(0);
 		//SwapBuffer
 		mainWindow.swapBuffers();
