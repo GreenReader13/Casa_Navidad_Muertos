@@ -1,49 +1,7 @@
 # Blender MTL File: 'untitled.blend'
-# Material Count: 15
+# Material Count: 14
 
-newmtl (null)
-Ns 225.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.800000 0.800000 0.800000
-Ks 0.500000 0.500000 0.500000
-Ke 0.0 0.0 0.0
-Ni 1.450000
-d 1.000000
-illum 2
-
-newmtl Light
-Ns 96.078443
-Ka 1.000000 1.000000 1.000000
-Kd 1.000000 1.000000 1.000000
-Ks 0.500000 0.500000 0.500000
-Ke 0.0 0.0 0.0
-Ni 1.000000
-d 1.000000
-illum 2
-
-newmtl Material.001
-Ns 225.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.800000 0.800000 0.800000
-Ks 0.500000 0.500000 0.500000
-Ke 0.0 0.0 0.0
-Ni 1.450000
-d 1.000000
-illum 2
-map_Kd Roof.jpg
-
-newmtl Material.002
-Ns 225.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.800000 0.800000 0.800000
-Ks 0.500000 0.500000 0.500000
-Ke 0.0 0.0 0.0
-Ni 1.450000
-d 1.000000
-illum 2
-map_Kd Wall_ext.jpg
-
-newmtl Material.003
+newmtl (null).001
 Ns 225.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.800000 0.800000 0.800000
@@ -54,16 +12,15 @@ d 1.000000
 illum 2
 map_Kd Edges.jpg
 
-newmtl Material.004
-Ns 225.000000
+newmtl Light.001
+Ns 96.078443
 Ka 1.000000 1.000000 1.000000
-Kd 0.800000 0.800000 0.800000
+Kd 1.000000 1.000000 1.000000
 Ks 0.500000 0.500000 0.500000
 Ke 0.0 0.0 0.0
-Ni 1.450000
+Ni 1.000000
 d 1.000000
 illum 2
-map_Kd Wall.jpg
 
 newmtl Material.005
 Ns 225.000000
@@ -74,17 +31,7 @@ Ke 0.0 0.0 0.0
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd Wall_M.jpg
-
-newmtl Material.006
-Ns 225.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.800000 0.800000 0.800000
-Ks 0.500000 0.500000 0.500000
-Ke 0.0 0.0 0.0
-Ni 1.000000
-d 1.000000
-illum 2
+map_Kd Edges.jpg
 
 newmtl Material.007
 Ns 225.000000
@@ -95,9 +42,9 @@ Ke 0.0 0.0 0.0
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd Wall.jpg
+map_Kd Edges.jpg
 
-newmtl Material.008
+newmtl Material.009
 Ns 225.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.800000 0.800000 0.800000
@@ -106,9 +53,9 @@ Ke 0.0 0.0 0.0
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd glass.png
+map_Kd Edges.jpg
 
-newmtl Material.010
+newmtl Material.015
 Ns 225.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.800000 0.800000 0.800000
@@ -119,7 +66,50 @@ d 1.000000
 illum 2
 map_Kd Edges.jpg
 
-newmtl Material.011
+newmtl Material.016
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.0 0.0 0.0
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Wall_ext.jpg
+
+newmtl Material.017
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.0 0.0 0.0
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd Floor.jpg
+
+newmtl Material.018
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.0 0.0 0.0
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Roof.jpg
+
+newmtl Material.019
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.0 0.0 0.0
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl Material.020
 Ns 225.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.800000 0.800000 0.800000
@@ -130,18 +120,7 @@ d 1.000000
 illum 2
 map_Kd Edges.jpg
 
-newmtl Material.013
-Ns 225.000000
-Ka 1.000000 1.000000 1.000000
-Kd 0.800000 0.800000 0.800000
-Ks 0.500000 0.500000 0.500000
-Ke 0.0 0.0 0.0
-Ni 1.450000
-d 1.000000
-illum 2
-map_Kd glass.png
-
-newmtl Material.014
+newmtl Material.021
 Ns 225.000000
 Ka 1.000000 1.000000 1.000000
 Kd 0.800000 0.800000 0.800000
@@ -151,6 +130,17 @@ Ni 1.450000
 d 1.000000
 illum 2
 map_Kd Edges.jpg
+
+newmtl Material.022
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.0 0.0 0.0
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Wall.jpg
 
 newmtl Metal
 Ns 96.078443
@@ -161,4 +151,4 @@ Ke 0.0 0.0 0.0
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd metal.jpg
+map_Kd Wall_M.jpg

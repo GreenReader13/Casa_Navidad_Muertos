@@ -84,6 +84,7 @@ Material Material_opaco;
 
 //Modelos
 Model House_M;
+Model Puerta_M;
 Model tree;
 Model mesa_M;
 Model album_M;
@@ -297,6 +298,8 @@ int main() {
 	//------------------ Modelos ----------------------------
 	House_M = Model();
 	House_M.LoadModel("Models/casa/House.obj");
+	Puerta_M = Model();
+	Puerta_M.LoadModel("Models/casa/Puerta.obj");
 	tree = Model();
 	tree.LoadModel("Models/tree/12150_Christmas_Tree_V2_L2.obj");
 	mesa_M = Model();
@@ -438,6 +441,12 @@ int main() {
 		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		House_M.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f, 0.01f, 8.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Puerta_M.RenderModel();
 
 		// ---------------------------- OVNI ----------------------------
 		model = glm::mat4(1.0);
