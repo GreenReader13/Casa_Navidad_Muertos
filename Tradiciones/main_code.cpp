@@ -85,6 +85,7 @@ Material Material_opaco;
 //Modelos
 Model House_M;
 Model Puerta_M;
+Model Intrp_M;
 Model tree;
 Model mesa_M;
 Model album_M;
@@ -296,10 +297,9 @@ int main() {
 	Material_opaco = Material(0.3f, 4);
 
 	//------------------ Modelos ----------------------------
+
 	House_M = Model();
 	House_M.LoadModel("Models/casa/House.obj");
-	Puerta_M = Model();
-	Puerta_M.LoadModel("Models/casa/Puerta.obj");
 	tree = Model();
 	tree.LoadModel("Models/tree/12150_Christmas_Tree_V2_L2.obj");
 	mesa_M = Model();
@@ -310,6 +310,10 @@ int main() {
 	vela_M.LoadModel("Models/candleWhite_obj/candleWhite_obj.obj");
 	ovni = Model();
 	ovni.LoadModel("Models/ovni/ovni-obj.obj");
+	Puerta_M = Model();
+	Puerta_M.LoadModel("Models/casa/Puerta.obj");
+	Intrp_M = Model();
+	Intrp_M.LoadModel("Models/casa/int.obj");
 
 	srand(static_cast <unsigned> (time(0)));
 
@@ -442,11 +446,56 @@ int main() {
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		House_M.RenderModel();
 
+		// ---------------------------- Puertas ----------------------------
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, 0.01f, 8.0f));
+		model = glm::translate(model, glm::vec3(0.2f, 0.01f, 12.0f));
 		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Puerta_M.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-4.0f, 0.01f, 7.8f));
+		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Puerta_M.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-4.0f, 0.01f, -11.2f));
+		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Puerta_M.RenderModel();
+
+		// ---------------------------- Interruptores ----------------------------
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(7.31f, 4.738f, -15.75f));
+		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Intrp_M.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-5.69f, 4.738f, -15.75f));
+		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Intrp_M.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-4.242f, 4.738f, 9.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
+		//model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Intrp_M.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(4.81f, 4.738f, 11.76f));
+		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
+		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Intrp_M.RenderModel();
 
 		// ---------------------------- OVNI ----------------------------
 		model = glm::mat4(1.0);
