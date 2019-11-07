@@ -1,24 +1,24 @@
 # Blender MTL File: 'Puerta.blend'
 # Material Count: 2
 
-newmtl Door_Handles
-Ns 96.078443
+newmtl Material.001
+Ns 225.000000
 Ka 1.000000 1.000000 1.000000
-Kd 0.200000 0.200000 0.200000
-Ks 1.000000 1.000000 1.000000
-Ke 0.0 0.0 0.0
-Ni 1.000000
-d 1.000000
-illum 2
-map_Kd C:\\metal.jpg
-
-newmtl Doors
-Ns 96.078443
-Ka 1.000000 1.000000 1.000000
-Kd 0.104841 0.029814 0.640000
+Kd 0.800000 0.800000 0.800000
 Ks 0.500000 0.500000 0.500000
 Ke 0.0 0.0 0.0
-Ni 1.000000
+Ni 1.450000
 d 1.000000
 illum 2
 map_Kd Madera.jpg
+
+newmtl Material.002
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.0 0.0 0.0
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd Metal.jpg
