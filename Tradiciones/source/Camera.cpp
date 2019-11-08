@@ -39,6 +39,9 @@ void Camera::keyControl(bool* keys, GLfloat deltaTime)
 	{
 		position += right * velocity;
 	}
+	if (position.y < 0.5f) {
+		position.y = 0.5f;
+	}
 }
 
 void Camera::mouseControl(GLfloat xChange, GLfloat yChange)

@@ -17,6 +17,8 @@ public:
 	int Initialise();
 	GLfloat getBufferWidth() { return bufferWidth; }
 	GLfloat getBufferHeight() { return bufferHeight; }
+	bool getMouseLeftClick() { return mouseLeftClick; }
+	bool getMouseRightClick() { return mouseRightClick; }
 	GLfloat getXChange();
 	GLfloat getYChange();
 	bool getShouldClose() {
@@ -36,8 +38,11 @@ private:
 	GLfloat xChange;
 	GLfloat yChange;
 	bool mouseFirstMoved;
+	bool mouseLeftClick;
+	bool mouseRightClick;
 	static void ManejaTeclado(GLFWwindow* window, int key, int code, int action, int mode);
 	static void ManejaMouse(GLFWwindow* window, double xPos, double yPos);
+	static void mouseButtonCallback(GLFWwindow* window, int button, int action, int mods);
 
 };
 

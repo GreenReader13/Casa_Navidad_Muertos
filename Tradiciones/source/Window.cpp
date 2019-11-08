@@ -82,6 +82,7 @@ void Window::createCallbacks()
 {
 	glfwSetKeyCallback(mainWindow, ManejaTeclado);
 	glfwSetCursorPosCallback(mainWindow, ManejaMouse);
+	glfwSetMouseButtonCallback(mainWindow, mouseButtonCallback);
 }
 GLfloat Window::getXChange()
 {
@@ -143,6 +144,24 @@ void Window::ManejaMouse(GLFWwindow* window, double xPos, double yPos)
 
 	theWindow->lastX = xPos;
 	theWindow->lastY = yPos;
+}
+
+void Window::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) 
+{
+	Window* theWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
+	if (button == GLFW_MOUSE_BUTTON_LEFT) {
+		if (action == GLFW_PRESS) 
+			theWindow->mouseLeftClick = true;
+		if (action == GLFW_RELEASE)
+			theWindow->mouseLeftClick = false;
+	}
+	if (button == GLFW_MOUSE_BUTTON_RIGHT) {
+		if (action == GLFW_PRESS)
+			theWindow->mouseRightClick = true;
+		if (action == GLFW_RELEASE)
+			theWindow->mouseRightClick = false;
+	}
+
 }
 
 

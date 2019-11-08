@@ -139,6 +139,7 @@
     <ClCompile Include="source\PointLight.cpp" />
     <ClCompile Include="source\Shader_light.cpp" />
     <ClCompile Include="source\Skybox.cpp" />
+    <ClCompile Include="source\Sphere.cpp" />
     <ClCompile Include="source\SpotLight.cpp" />
     <ClCompile Include="source\Texture.cpp" />
     <ClCompile Include="source\Window.cpp" />
@@ -154,6 +155,7 @@
     <ClInclude Include="headers\PointLight.h" />
     <ClInclude Include="headers\Shader_light.h" />
     <ClInclude Include="headers\Skybox.h" />
+    <ClInclude Include="headers\Sphere.h" />
     <ClInclude Include="headers\SpotLight.h" />
     <ClInclude Include="headers\stb_image.h" />
     <ClInclude Include="headers\Texture.h" />
