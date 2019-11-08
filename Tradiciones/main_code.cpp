@@ -7,6 +7,9 @@
 * Segundo cuarto con temética celebración de Navidad en México
 */
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//										LIBRERIAS A UTILIZAR														///
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //para cargar imagen
 #define STB_IMAGE_IMPLEMENTATION
 
@@ -41,7 +44,32 @@
 #include "Skybox.h"
 #include "Sphere.h"
 
-void inputKeyframes(bool* keys);
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//													Estructuras														///
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+typedef struct ufo_frame {
+	float posX;
+	float posY;
+	float posZ;
+	float incX;
+	float incY;
+	float incZ;
+	float rotY;
+	float rotYinc;
+	float rotZ;
+	float rotZinc;
+
+}U_FRAME;
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//												DEFINICIONES														///
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 
 #define MAX_UFO_FRAMES 250
 #define DIS 1.0f
@@ -51,6 +79,11 @@ void inputKeyframes(bool* keys);
 #define MAX_SWITCH_ROT 45.0f
 
 const float toRadians = 3.14159265f / 180.0f;
+
+// Vertex Shader
+static const char* vShader = "shaders/shader_light.vert";
+// Fragment Shader
+static const char* fShader = "shaders/shader_light.frag";
 
 //Crear objeto para contexto de la ventana
 Window mainWindow;
@@ -73,10 +106,6 @@ Skybox skybox;
 GLfloat deltaTime = 0.0f;
 GLfloat lastTime = 0.0f;
 
-// Vertex Shader
-static const char* vShader = "shaders/shader_light.vert";
-// Fragment Shader
-static const char* fShader = "shaders/shader_light.frag";
 
 //Lista de modelos
 std::vector<Mesh*> meshList;
@@ -142,36 +171,6 @@ glm::vec3 spotPos01 = glm::vec3(-10.0f, 12.0f, 8.5f);
 glm::vec3 spotPos02 = glm::vec3(-10.0f, 12.0f, -5.0f);
 glm::vec3 spotPos03 = glm::vec3(-10.0f, 12.0f, -13.0f);
 
-float distance(glm::vec3 a, glm::vec3 b) {
-	return sqrtf(powf(b.x - a.x, 2) + powf(b.y - a.y, 2) + powf(b.z - a.z, 2));
-}
-
-void createObjets() {
-	unsigned int floorIndices[] = {
-		0, 2, 1,
-		1, 2, 3
-	};
-
-	GLfloat floorVertices[] = {
-		-10.0f, 0.0f, -10.0f,	0.0f, 0.0f,		0.0f, -1.0f, 0.0f,
-		10.0f, 0.0f, -10.0f,	20.0f, 0.0f,	0.0f, -1.0f, 0.0f,
-		-10.0f, 0.0f, 10.0f,	0.0f, 20.0f,	0.0f, -1.0f, 0.0f,
-		10.0f, 0.0f, 10.0f,		20.0f, 20.0f,	0.0f, -1.0f, 0.0f
-	};
-
-	Mesh* obj = new Mesh();
-	obj->CreateMesh(floorVertices, floorIndices, 32, 6);
-	meshList.push_back(obj);
-}
-
-void CreateShaders()
-{
-	Shader* shader1 = new Shader();
-	shader1->CreateFromFiles(vShader, fShader);
-	shaderList.push_back(*shader1);
-}
-
-
 const std::string delimiter = ",";
 std::string s = "";
 
@@ -207,24 +206,60 @@ ufoPosZ = -12.0f;
 int i_max_steps_ovni = 30;
 int i_curr_steps_ovni = 0;
 
-typedef struct ufo_frame {
-	float posX;
-	float posY;
-	float posZ;
-	float incX;
-	float incY;
-	float incZ;
-	float rotY;
-	float rotYinc;
-	float rotZ;
-	float rotZinc;
-
-}U_FRAME;
-
 U_FRAME UFOFrame[MAX_UFO_FRAMES];
 int FrameIndexO = 0;
 bool playO = false;
 int playIndexO = 0;
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//												FIRMAS DE FUNCIONES													///
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+void inputKeyframes(bool* keys);
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//													FUNCIONES														///
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+/**
+* @brief Distancia entre dos puntos
+* @param a vector inicio
+* @param b vector fin
+*/
+float distance(glm::vec3 a, glm::vec3 b) {
+	return sqrtf(powf(b.x - a.x, 2) + powf(b.y - a.y, 2) + powf(b.z - a.z, 2));
+}
+
+void createObjets() {
+	unsigned int floorIndices[] = {
+		0, 2, 1,
+		1, 2, 3
+	};
+
+	GLfloat floorVertices[] = {
+		-10.0f, 0.0f, -10.0f,	0.0f, 0.0f,		0.0f, -1.0f, 0.0f,
+		10.0f, 0.0f, -10.0f,	20.0f, 0.0f,	0.0f, -1.0f, 0.0f,
+		-10.0f, 0.0f, 10.0f,	0.0f, 20.0f,	0.0f, -1.0f, 0.0f,
+		10.0f, 0.0f, 10.0f,		20.0f, 20.0f,	0.0f, -1.0f, 0.0f
+	};
+
+	Mesh* obj = new Mesh();
+	obj->CreateMesh(floorVertices, floorIndices, 32, 6);
+	meshList.push_back(obj);
+}
+
+void CreateShaders()
+{
+	Shader* shader1 = new Shader();
+	shader1->CreateFromFiles(vShader, fShader);
+	shaderList.push_back(*shader1);
+}
 
 void loadAnimationOvni(void) {
 
@@ -460,36 +495,41 @@ void animate(void) {
 
 	if (switchState00) {
 		switchRot00 = MAX_SWITCH_ROT;
-		spotPos00.y = 12.0f;
 	}
 	else {
 		switchRot00 = 0.0f;
-		spotPos00.y = -50.0f;
-	}
-	if (switchState01) {
-		switchRot01 = MAX_SWITCH_ROT;
-		spotPos01.y = 12.0f;
-	}
-	else{
-		switchRot01 = 0.0f;
-		spotPos01.y = -50.0f;
-	}
-	if (switchState02) {
-		switchRot02 = MAX_SWITCH_ROT;
-		spotPos02.y = 12.0f;
-	}
-	else {
-		switchRot02 = 0.0f;
-		spotPos02.y = -50.0f;
 	}
 
 	if (switchState03) {
 		switchRot03 = MAX_SWITCH_ROT;
+	}
+	else {
+		switchRot03 = 0.0f;
+	}
+	if (switchState01) {
+		switchRot01 = MAX_SWITCH_ROT;
 		spotPos03.y = 12.0f;
 	}
 	else{
-		switchRot03 = 0.0f;
+		switchRot01 = 0.0f;
 		spotPos03.y = -50.0f;
+	}
+	if (switchState02) {
+		switchRot02 = MAX_SWITCH_ROT;
+		spotPos01.y = 12.0f;
+		spotPos02.y = 12.0f;
+	}
+	else {
+		switchRot02 = 0.0f;
+		spotPos01.y = -50.0f;
+		spotPos02.y = -50.0f;
+	}
+
+	if ((switchState03 && switchState00)|| (!switchState03 && !switchState00)) {
+		spotPos00.y = -50.0f;
+	}
+	else{
+		spotPos00.y = 12.0f;
 	}
 
 	ufoRot += 2.5f;
