@@ -307,7 +307,7 @@ void loadAnimationOvni(void) {
 		}
 
 		FrameIndexO++;
-		printf("%s\n", str.c_str());
+		//printf("%s\n", str.c_str());
 	} while (getline(in, str));
 
 	in.close();
@@ -934,7 +934,7 @@ int main() {
 		validate();
 		animate();
 
-		printf("%f % f %f\n",ufoX, ufoY, ufoZ);
+		//printf("%f % f %f\n",ufoX, ufoY, ufoZ);
 
 		glUseProgram(0);
 		//SwapBuffer

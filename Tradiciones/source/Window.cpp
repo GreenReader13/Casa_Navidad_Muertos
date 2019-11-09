@@ -39,7 +39,7 @@ int Window::Initialise()
 	height = (mode->height);
 	//CREAR VENTANA
 	//mainWindow = glfwCreateWindow(width, height, "PF_CGEIHC_20201", glfwGetPrimaryMonitor(), NULL);
-	mainWindow = glfwCreateWindow(640, 480, "PF_CGEIHC_20201", NULL, NULL);
+	mainWindow = glfwCreateWindow(800, 600, "PF_CGEIHC_20201", NULL, NULL);
 
 	if (!mainWindow)
 	{
