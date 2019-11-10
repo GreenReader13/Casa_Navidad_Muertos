@@ -614,69 +614,79 @@ int main() {
 	//Luces puntuales
 	//Declaración de primer luz puntual
 	pointLights[0] = PointLight(1.0f, 1.0f, 1.0f,
-		0.0f, 1.0f,
-		3.0f, 5.53f, -5.0f,
+		4.0f, 4.0f,
+		15.0f, 3.53f, 24.0f,
 		0.9f, 0.2f, 0.1f);
 	pointLightCount++;
-	pointLights[1] = PointLight(0.8984f, 0.6875f, 0.4023f,
+	pointLights[1] = PointLight(1.0f, 1.0f, 1.0f,
+		4.0f, 4.0f,
+		-15.0f, 3.53f, 24.0f,
+		0.9f, 0.2f, 0.1f);
+	pointLightCount++;
+	pointLights[2] = PointLight(0.8984f, 0.6875f, 0.4023f,
 		aIntensity,dIntensity,
 		-13.0f, 3.75f, -8.7242f,
 		0.5f, 0.8f, 0.1f);
 	pointLightCount++;
-	pointLights[2] = PointLight(0.8984f, 0.6875f, 0.4023f,
+	pointLights[3] = PointLight(0.8984f, 0.6875f, 0.4023f,
 		aIntensity,dIntensity,
 		-13.0f, 3.75f, -7.0242f,
 		0.5f, 0.8f, 0.1f);
 	pointLightCount++;
-	pointLights[3] = PointLight(0.8984f, 0.6875f, 0.4023f,
+	pointLights[4] = PointLight(0.8984f, 0.6875f, 0.4023f,
 		aIntensity,dIntensity,
 		-13.0f, 3.05f, -6.6242f,
 		0.5f, 0.8f, 0.1f);
 	pointLightCount++;
-	pointLights[4] = PointLight(0.8984f, 0.6875f, 0.4023f,
+	pointLights[5] = PointLight(0.8984f, 0.6875f, 0.4023f,
 		aIntensity,dIntensity,
 		-13.0f, 3.05f, -4.9242f,
 		0.5f, 0.8f, 0.1f);
 	pointLightCount++;
-	pointLights[5] = PointLight(0.8984f, 0.6875f, 0.4023f,
+	pointLights[6] = PointLight(0.8984f, 0.6875f, 0.4023f,
 		aIntensity,dIntensity,
 		-13.0f, 2.35f, -4.5242f,
 		0.5f, 0.8f, 0.1f);
 	pointLightCount++;
-	pointLights[6] = PointLight(0.8984f, 0.6875f, 0.4023f,
+	pointLights[7] = PointLight(0.8984f, 0.6875f, 0.4023f,
 		aIntensity,dIntensity,
 		-13.0f, 2.35f, -2.8242f,
 		0.5f, 0.8f, 0.1f);
 	pointLightCount++;
-	pointLights[7] = PointLight(0.8984f, 0.6875f, 0.4023f,
+	pointLights[8] = PointLight(0.8984f, 0.6875f, 0.4023f,
 		aIntensity,dIntensity,
 		-7.0f, 3.75f, -8.7242f,
 		0.5f, 0.8f, 0.1f);
 	pointLightCount++;
-	pointLights[8] = PointLight(0.8984f, 0.6875f, 0.4023f,
+	pointLights[9] = PointLight(0.8984f, 0.6875f, 0.4023f,
 		aIntensity,dIntensity,
 		-7.0f, 3.75f, -7.0242f,
 		0.5f, 0.8f, 0.1f);
 	pointLightCount++;
-	pointLights[9] = PointLight(0.8984f, 0.6875f, 0.4023f,
+	pointLights[10] = PointLight(0.8984f, 0.6875f, 0.4023f,
 		aIntensity,dIntensity,
 		-7.0f, 3.05f, -6.6242f,
 		0.5f, 0.8f, 0.1f);
 	pointLightCount++;
-	pointLights[10] = PointLight(0.8984f, 0.6875f, 0.4023f,
+	pointLights[11] = PointLight(0.8984f, 0.6875f, 0.4023f,
 		aIntensity,dIntensity,
 		-7.0f, 3.05f, -4.9242f,
 		0.5f, 0.8f, 0.1f);
 	pointLightCount++;
-	pointLights[11] = PointLight(0.8984f, 0.6875f, 0.4023f,
+	pointLights[12] = PointLight(0.8984f, 0.6875f, 0.4023f,
 		aIntensity,dIntensity,
 		-7.0f, 2.35f, -4.5242f,
 		0.5f, 0.8f, 0.1f);
 	pointLightCount++;
-	pointLights[12] = PointLight(0.8984f, 0.6875f, 0.4023f,
+	pointLights[13] = PointLight(0.8984f, 0.6875f, 0.4023f,
 		aIntensity,dIntensity,
 		-7.0f, 2.35f, -2.8242f,
 		0.5f, 0.8f, 0.1f);
+	pointLightCount++;
+	pointLights[14] = PointLight(1.0f, 1.0f, 1.0f,
+		4.0f, 4.0f,
+		2.0f, 6.0f, -35.0f,
+		0.9f, 0.2f, 0.1f);
 	pointLightCount++;
 
 	//Luces tipo spotlight
