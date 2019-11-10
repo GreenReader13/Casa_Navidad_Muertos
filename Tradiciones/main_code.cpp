@@ -72,10 +72,10 @@ typedef struct ufo_frame {
 
 
 #define MAX_UFO_FRAMES 250
-#define DIS 1.0f
+#define DIS_UFO 1.0f
 #define MIN_DIS_SWITCH 2.0f
 #define MIN_DIS_DOOR 5.0f
-#define MAX_DOOR_ROT 120.0f
+#define MAX_DOOR_ROT 90.0f
 #define MAX_SWITCH_ROT 45.0f
 
 const float toRadians = 3.14159265f / 180.0f;
@@ -134,9 +134,9 @@ Model Puerta_M;
 Model Intrp_M;
 Model tree;
 Model santa;
-Model christmas00;
-Model christmas01;
-Model christmas02;
+Model gift00;
+Model gift01;
+Model gift02;
 Model christmas03;
 Model christmas04;
 Model christmas05;
@@ -155,6 +155,8 @@ Model dead05;
 Model dead06;
 
 // Variables de objetos
+float aIntensity = 0.2f, dIntensity = 0.5f;
+
 glm::vec3 tablePos = glm::vec3(-10.0f, 1.5f, -8.0f);
 
 glm::vec3 doorPos00 = glm::vec3(0.2f, 0.01f, 12.0f);
@@ -194,9 +196,9 @@ switchRot03 = 0.0f;
 float   ufoRot = 0.0f,
 ufoRotY = 0.0f,
 ufoRotZ = 0.0f,
-ufoX = 0.0f,
-ufoY = 0.0f,
-ufoZ = 0.0f,
+ufoX = 11.0f,
+ufoY = 0.1f,
+ufoZ = -10.5f,
 ufoPosX = 10.0f,
 ufoPosY = 15.0f,
 ufoPosZ = -12.0f;
@@ -533,7 +535,7 @@ void animate(void) {
 	}
 
 	ufoRot += 2.5f;
-	ufoRotY += -DIS + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (DIS - (-DIS))));
+	ufoRotY += -DIS_UFO + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (DIS_UFO - (-DIS_UFO))));
 }
 
 int main() {
@@ -577,6 +579,12 @@ int main() {
 	tree.LoadModel("Models/fir/fir.obj");
 	santa = Model();
 	santa.LoadModel("Models/Santa/Santa.obj");
+	gift00 = Model();
+	gift00.LoadModel("Models/box/box.obj");
+	gift01 = Model();
+	gift01.LoadModel("Models/11563_gift_box_V3/11563_gift_box_V3.obj");
+	gift02 = Model();
+	gift02.LoadModel("Models/13495_Stack_of_Gifts_v2_L2/13495_Stack_of_Gifts_v2_L2.obj");
 	mesa_M = Model();
 	mesa_M.LoadModel("Models/mesa/table.obj");
 	album_M = Model();
@@ -609,6 +617,66 @@ int main() {
 		0.0f, 1.0f,
 		3.0f, 5.53f, -5.0f,
 		0.9f, 0.2f, 0.1f);
+	pointLightCount++;
+	pointLights[1] = PointLight(0.8984f, 0.6875f, 0.4023f,
+		aIntensity,dIntensity,
+		-13.0f, 3.75f, -8.7242f,
+		0.5f, 0.8f, 0.1f);
+	pointLightCount++;
+	pointLights[2] = PointLight(0.8984f, 0.6875f, 0.4023f,
+		aIntensity,dIntensity,
+		-13.0f, 3.75f, -7.0242f,
+		0.5f, 0.8f, 0.1f);
+	pointLightCount++;
+	pointLights[3] = PointLight(0.8984f, 0.6875f, 0.4023f,
+		aIntensity,dIntensity,
+		-13.0f, 3.05f, -6.6242f,
+		0.5f, 0.8f, 0.1f);
+	pointLightCount++;
+	pointLights[4] = PointLight(0.8984f, 0.6875f, 0.4023f,
+		aIntensity,dIntensity,
+		-13.0f, 3.05f, -4.9242f,
+		0.5f, 0.8f, 0.1f);
+	pointLightCount++;
+	pointLights[5] = PointLight(0.8984f, 0.6875f, 0.4023f,
+		aIntensity,dIntensity,
+		-13.0f, 2.35f, -4.5242f,
+		0.5f, 0.8f, 0.1f);
+	pointLightCount++;
+	pointLights[6] = PointLight(0.8984f, 0.6875f, 0.4023f,
+		aIntensity,dIntensity,
+		-13.0f, 2.35f, -2.8242f,
+		0.5f, 0.8f, 0.1f);
+	pointLightCount++;
+	pointLights[7] = PointLight(0.8984f, 0.6875f, 0.4023f,
+		aIntensity,dIntensity,
+		-7.0f, 3.75f, -8.7242f,
+		0.5f, 0.8f, 0.1f);
+	pointLightCount++;
+	pointLights[8] = PointLight(0.8984f, 0.6875f, 0.4023f,
+		aIntensity,dIntensity,
+		-7.0f, 3.75f, -7.0242f,
+		0.5f, 0.8f, 0.1f);
+	pointLightCount++;
+	pointLights[9] = PointLight(0.8984f, 0.6875f, 0.4023f,
+		aIntensity,dIntensity,
+		-7.0f, 3.05f, -6.6242f,
+		0.5f, 0.8f, 0.1f);
+	pointLightCount++;
+	pointLights[10] = PointLight(0.8984f, 0.6875f, 0.4023f,
+		aIntensity,dIntensity,
+		-7.0f, 3.05f, -4.9242f,
+		0.5f, 0.8f, 0.1f);
+	pointLightCount++;
+	pointLights[11] = PointLight(0.8984f, 0.6875f, 0.4023f,
+		aIntensity,dIntensity,
+		-7.0f, 2.35f, -4.5242f,
+		0.5f, 0.8f, 0.1f);
+	pointLightCount++;
+	pointLights[12] = PointLight(0.8984f, 0.6875f, 0.4023f,
+		aIntensity,dIntensity,
+		-7.0f, 2.35f, -2.8242f,
+		0.5f, 0.8f, 0.1f);
 	pointLightCount++;
 
 	//Luces tipo spotlight
@@ -709,7 +777,7 @@ int main() {
 		spotLights[3].SetPos(spotPos03);
 
 		//Luces shader
-		shaderList[0].SetDirectionalLight(&mainLight);
+		//shaderList[0].SetDirectionalLight(&mainLight);
 		shaderList[0].SetPointLights(pointLights, pointLightCount);
 		shaderList[0].SetSpotLights(spotLights, spotLightCount);
 
@@ -806,8 +874,32 @@ int main() {
 		model = glm::translate(model, glm::vec3(12.0f, 0.05f, -12.0f));
 		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		
 		tree.RenderModel();
+
+		// Regalo 1
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(11.0f, 0.05f, -10.5f));
+		model = glm::scale(model, glm::vec3(1.0f) * 0.05f);
+		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		gift00.RenderModel();
+
+		// Regalo 2
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(11.0f, 0.05f, -12.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 0.05f);
+		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		gift01.RenderModel();
+
+		// Regalo 3
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(9.5f, 0.05f, -11.5f));
+		model = glm::scale(model, glm::vec3(1.0f) * 0.01f);
+		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 0.0f, -1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		gift02.RenderModel();
 
 		// Esferas
 		model = glm::mat4(1.0);
@@ -934,7 +1026,7 @@ int main() {
 		validate();
 		animate();
 
-		//printf("%f % f %f\n",ufoX, ufoY, ufoZ);
+		printf("%f % f %f\n",currentCamera.getCameraPosition().x, currentCamera.getCameraPosition().y, currentCamera.getCameraPosition().z);
 
 		glUseProgram(0);
 		//SwapBuffer
