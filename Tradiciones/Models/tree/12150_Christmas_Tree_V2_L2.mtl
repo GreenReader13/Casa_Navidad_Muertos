@@ -12,8 +12,8 @@ newmtl cloth
 	Kd 0.2706 0.0706 0.0706
 	Ks 0.0078 0.0078 0.0078
 	Ke 0.0000 0.0000 0.0000
-	map_Ka url1.jpg
-	map_Kd url1.jpg
+	map_Ka url1.tga
+	map_Kd url1.tga
 
 newmtl red
 	Ns 50.0000
@@ -26,8 +26,8 @@ newmtl red
 	Kd 0.7490 0.0000 0.0000
 	Ks 1.0000 1.0000 0.3490
 	Ke 0.0000 0.0000 0.0000
-	map_Ka red.jpg
-	map_Kd red.jpg
+	map_Ka red.tga
+	map_Kd red.tga
 
 newmtl loop
 	Ns 20.0000
@@ -40,8 +40,8 @@ newmtl loop
 	Kd 0.3412 0.2980 0.2157
 	Ks 0.6300 0.6300 0.6300
 	Ke 0.0000 0.0000 0.0000
-	map_Ka url1.jpg
-	map_Kd url1.jpg
+	map_Ka url1.tga
+	map_Kd url1.tga
 
 newmtl ball_metall
 	Ns 80.0000
@@ -54,8 +54,8 @@ newmtl ball_metall
 	Kd 0.6588 0.6196 0.4824
 	Ks 0.6839 0.6620 0.5741
 	Ke 0.0000 0.0000 0.0000
-	map_Ka metal.jpg
-	map_Kd metal.jpg
+	map_Ka metal.tga
+	map_Kd metal.tga
 
 newmtl pink
 	Ns 50.0000
@@ -68,8 +68,8 @@ newmtl pink
 	Kd 1.0000 0.5020 0.8000
 	Ks 0.0784 0.8549 0.9490
 	Ke 0.0000 0.0000 0.0000
-	map_Ka pink.jpg
-	map_Kd pink.jpg
+	map_Ka pink.tga
+	map_Kd pink.tga
 
 newmtl blue
 	Ns 50.0000
@@ -82,8 +82,8 @@ newmtl blue
 	Kd 0.0706 0.0000 1.0000
 	Ks 0.6863 0.3490 1.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka blue.jpg
-	map_Kd blue.jpg
+	map_Ka blue.tga
+	map_Kd blue.tga
 
 newmtl yellow
 	Ns 50.0000
@@ -96,8 +96,8 @@ newmtl yellow
 	Kd 1.0000 0.7176 0.0000
 	Ks 1.0000 0.5059 0.5765
 	Ke 0.0000 0.0000 0.0000
-	map_Ka yellow.jpg
-	map_Kd yellow.jpg
+	map_Ka yellow.tga
+	map_Kd yellow.tga
 
 newmtl Christmas_Tree
 	Ns 10.0000
@@ -110,5 +110,5 @@ newmtl Christmas_Tree
 	Kd 1.0000 1.0000 1.0000
 	Ks 0.0900 0.0900 0.0900
 	Ke 0.0000 0.0000 0.0000
-	map_Ka tree.jpg
-	map_Kd tree.jpg
+	map_Ka tree.tga
+	map_Kd tree.tga

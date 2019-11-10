@@ -10,7 +10,7 @@ Ke 0.0 0.0 0.0
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd branch.png
+map_Kd branch.tga
 
 newmtl Trunk_bark
 Ns 225.000000
@@ -21,4 +21,4 @@ Ke 0.0 0.0 0.0
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd bark.jpg
+map_Kd bark.tga

@@ -24,8 +24,8 @@ newmtl 12166_Santa_Claus_Bag
 	Kd 1.0000 1.0000 1.0000
 	Ks 0.3600 0.3600 0.3600
 	Ke 0.0000 0.0000 0.0000
-	map_Ka SantaBagDiff.jpg
-	map_Kd SantaBagDiff.jpg
+	map_Ka SantaBagDiff.tga
+	map_Kd SantaBagDiff.tga
 
 newmtl 12166_Santa_Claus_Head
 	Ns 20.0000
@@ -38,8 +38,8 @@ newmtl 12166_Santa_Claus_Head
 	Kd 1.0000 1.0000 1.0000
 	Ks 0.3600 0.3600 0.3600
 	Ke 0.0000 0.0000 0.0000
-	map_Ka SantaBagHead.jpg
-	map_Kd SantaBagHead.jpg
+	map_Ka SantaBagHead.tga
+	map_Kd SantaBagHead.tga
 
 newmtl 12166_Santa_Claus_Gloves
 	Ns 20.0000
@@ -52,8 +52,8 @@ newmtl 12166_Santa_Claus_Gloves
 	Kd 0.9490 0.9490 0.9490
 	Ks 0.4500 0.4500 0.4500
 	Ke 0.0000 0.0000 0.0000
-	map_Ka SantaGlovesHead.jpg
-	map_Kd SantaGlovesHead.jpg
+	map_Ka SantaGlovesHead.tga
+	map_Kd SantaGlovesHead.tga
 
 newmtl 12166_Santa_Claus_Body
 	Ns 20.0000
@@ -66,8 +66,8 @@ newmtl 12166_Santa_Claus_Body
 	Kd 1.0000 1.0000 1.0000
 	Ks 0.3600 0.3600 0.3600
 	Ke 0.0000 0.0000 0.0000
-	map_Ka SantaBodyDiff.jpg
-	map_Kd SantaBodyDiff.jpg
+	map_Ka SantaBodyDiff.tga
+	map_Kd SantaBodyDiff.tga
 
 newmtl 12166_Santa_Claus_BodyMetal
 	Ns 75.0000
@@ -80,5 +80,5 @@ newmtl 12166_Santa_Claus_BodyMetal
 	Kd 1.0000 1.0000 1.0000
 	Ks 0.5850 0.5850 0.5850
 	Ke 0.0000 0.0000 0.0000
-	map_Ka SantaBodyDiff.jpg
-	map_Kd SantaBodyDiff.jpg
+	map_Ka SantaBodyDiff.tga
+	map_Kd SantaBodyDiff.tga

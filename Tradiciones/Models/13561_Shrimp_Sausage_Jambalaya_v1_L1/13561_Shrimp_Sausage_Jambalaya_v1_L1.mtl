@@ -12,8 +12,8 @@ newmtl 13561_Shrimp_Sausage_jambalaya_bowl
 	Kd 1.0000 1.0000 1.0000
 	Ks 0.5400 0.5400 0.5400
 	Ke 0.0000 0.0000 0.0000
-	map_Ka 13561_Shrimp_Sausage_jambalaya_bowl_diff.jpg
-	map_Kd 13561_Shrimp_Sausage_jambalaya_bowl_diff.jpg
+	map_Ka 13561_Shrimp_Sausage_jambalaya_bowl_diff.tga
+	map_Kd 13561_Shrimp_Sausage_jambalaya_bowl_diff.tga
 
 newmtl 13561_Shrimp_Sausage_jambalaya_dish
 	Ns 33.0000
@@ -26,6 +26,6 @@ newmtl 13561_Shrimp_Sausage_jambalaya_dish
 	Kd 1.0000 1.0000 1.0000
 	Ks 0.4860 0.4860 0.4860
 	Ke 0.0000 0.0000 0.0000
-	map_Ka 13561_Shrimp_Sausage_jambalaya_dish_diff.jpg
-	map_Kd 13561_Shrimp_Sausage_jambalaya_dish_diff.jpg
+	map_Ka 13561_Shrimp_Sausage_jambalaya_dish_diff.tga
+	map_Kd 13561_Shrimp_Sausage_jambalaya_dish_diff.tga
 	map_bump Map__3_Normal Bump.tga

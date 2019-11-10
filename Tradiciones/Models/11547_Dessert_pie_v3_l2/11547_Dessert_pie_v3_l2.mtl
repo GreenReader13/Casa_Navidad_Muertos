@@ -24,7 +24,7 @@ newmtl 01___Dessert_pie
 	Kd 0.9882 0.9882 0.9882
 	Ks 0.2790 0.2790 0.2790
 	Ke 0.0000 0.0000 0.0000
-	map_Ka 11547_dessert_pie_diff.jpg
-	map_Kd 11547_dessert_pie_diff.jpg
-	map_bump 11547_dessert_pie_bump.jpg
-	bump 11547_dessert_pie_bump.jpg
+	map_Ka 11547_dessert_pie_diff.tga
+	map_Kd 11547_dessert_pie_diff.tga
+	map_bump 11547_dessert_pie_bump.tga
+	bump 11547_dessert_pie_bump.tga

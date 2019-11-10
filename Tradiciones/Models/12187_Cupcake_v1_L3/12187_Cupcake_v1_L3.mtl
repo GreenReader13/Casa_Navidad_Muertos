@@ -24,8 +24,8 @@ newmtl Cupcake_filling
 	Kd 1.0000 1.0000 1.0000
 	Ks 0.2700 0.2700 0.2700
 	Ke 0.0000 0.0000 0.0000
-	map_Ka Cupcake_filling.jpg
-	map_Kd Cupcake_filling.jpg
+	map_Ka Cupcake_filling.tga
+	map_Kd Cupcake_filling.tga
 
 newmtl Cupcake_white_candy
 	Ns 30.0000
@@ -74,8 +74,8 @@ newmtl Cupcake_basket
 	Kd 1.0000 1.0000 1.0000
 	Ks 0.2700 0.2700 0.2700
 	Ke 0.0000 0.0000 0.0000
-	map_Ka Cupcake_basket.jpg
-	map_Kd Cupcake_basket.jpg
+	map_Ka Cupcake_basket.tga
+	map_Kd Cupcake_basket.tga
 
 newmtl Cupcake_cream
 	Ns 20.0000
@@ -88,8 +88,8 @@ newmtl Cupcake_cream
 	Kd 1.0000 1.0000 1.0000
 	Ks 0.0900 0.0900 0.0900
 	Ke 0.0000 0.0000 0.0000
-	map_Ka Cupcake_cream_diffuse.jpg
-	map_Kd Cupcake_cream_diffuse.jpg
+	map_Ka Cupcake_cream_diffuse.tga
+	map_Kd Cupcake_cream_diffuse.tga
 
 newmtl Cupcake_yellow_candy
 	Ns 30.0000

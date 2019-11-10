@@ -3,7 +3,7 @@
 newmtl Mat.1
 Ka 1 1 1
 Kd 0.80000001192093 0.80000001192093 0.80000001192093
-map_Kd tex/WoodSeemles1.jpg
+map_Kd tex/WoodSeemles1.tga
 Ks 1 1 1
 Ns 50
 illum 7
@@ -11,7 +11,7 @@ illum 7
 newmtl Mat
 Ka 1 1 1
 Kd 0.80000001192093 0.80000001192093 0.80000001192093
-map_Kd tex/WoodSeemles.jpg
+map_Kd tex/WoodSeemles.tga
 Ks 1 1 1
 Ns 50
 illum 7

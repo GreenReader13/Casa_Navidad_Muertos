@@ -12,5 +12,5 @@ newmtl 01___12188_Cupcake
 	Kd 1.0000 1.0000 1.0000
 	Ks 0.2700 0.2700 0.2700
 	Ke 0.0000 0.0000 0.0000
-	map_Ka 12188_Cupcake_diff.jpg
-	map_Kd 12188_Cupcake_diff.jpg
+	map_Ka 12188_Cupcake_diff.tga
+	map_Kd 12188_Cupcake_diff.tga

@@ -12,8 +12,8 @@ newmtl 13917_Pepperoni
 	Kd 1.0000 1.0000 1.0000
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka 13917_Pepperoni_diffuse.jpg
-	map_Kd 13917_Pepperoni_diffuse.jpg
+	map_Ka 13917_Pepperoni_diffuse.tga
+	map_Kd 13917_Pepperoni_diffuse.tga
 
 newmtl plate
 	Ns 15.0000
@@ -26,5 +26,5 @@ newmtl plate
 	Kd 0.9529 0.9529 0.9529
 	Ks 0.2250 0.2250 0.2250
 	Ke 0.0000 0.0000 0.0000
-	map_Ka plate_diffuse.jpg
-	map_Kd plate_diffuse.jpg
+	map_Ka plate_diffuse.tga
+	map_Kd plate_diffuse.tga

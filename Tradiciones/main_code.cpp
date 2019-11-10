@@ -122,6 +122,8 @@ Texture pinkTexture;
 Texture blueTexture;
 Texture redTexture;
 Texture greenTexture;
+Texture flame1Texture;
+Texture flame2Texture;
 
 //Materiales
 Material Material_metalico;
@@ -249,6 +251,24 @@ void createObjets() {
 		10.0f, 0.0f, -10.0f,	20.0f, 0.0f,	0.0f, -1.0f, 0.0f,
 		-10.0f, 0.0f, 10.0f,	0.0f, 20.0f,	0.0f, -1.0f, 0.0f,
 		10.0f, 0.0f, 10.0f,		20.0f, 20.0f,	0.0f, -1.0f, 0.0f
+	};
+
+	Mesh* obj = new Mesh();
+	obj->CreateMesh(floorVertices, floorIndices, 32, 6);
+	meshList.push_back(obj);
+}
+
+void createFlame() {
+	unsigned int floorIndices[] = {
+		0, 2, 1,
+		1, 2, 3
+	};
+
+	GLfloat floorVertices[] = {
+		0.0f, -0.5f, -1.0f,		 0.0f,  0.0f,	0.0f, -1.0f, 0.0f,
+		0.0f,  0.5f, -1.0f,		 1.0f,  0.0f,	0.0f, -1.0f, 0.0f,
+		0.0f, -0.5f,  1.0f,		 0.0f,  1.0f,	0.0f, -1.0f, 0.0f,
+		0.0f,  0.5f,  1.0f,		 1.0f,  1.0f,	0.0f, -1.0f, 0.0f
 	};
 
 	Mesh* obj = new Mesh();
@@ -546,25 +566,31 @@ int main() {
 
 	//Objetos
 	createObjets();
+	createFlame();
 	CreateShaders();
 	sp.init();
 	sp.load();
+
 
 	currentCamera = Camera(glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
 
 	//Cargado de texturas
 	pisoTexture = Texture("Textures/piso.tga");
 	pisoTexture.LoadTextureA();
-	yellowTexture = Texture("Textures/plain.png");
+	yellowTexture = Texture("Textures/plain.tga");
 	yellowTexture.LoadTextureA();
-	pinkTexture = Texture("Textures/plain.png");
+	pinkTexture = Texture("Textures/plain.tga");
 	pinkTexture.LoadTextureA();
-	blueTexture = Texture("Textures/plain.png");
+	blueTexture = Texture("Textures/plain.tga");
 	blueTexture.LoadTextureA();
-	redTexture = Texture("Textures/plain.png");
+	redTexture = Texture("Textures/plain.tga");
 	redTexture.LoadTextureA();
-	greenTexture = Texture("Textures/plain.png");
+	greenTexture = Texture("Textures/plain.tga");
 	greenTexture.LoadTextureA();
+	flame1Texture = Texture("Textures/flama1.tga");
+	flame1Texture.LoadTextureA();
+	flame2Texture = Texture("Textures/flama2.tga");
+	flame2Texture.LoadTextureA();
 
 	//------------------ Materiales ----------------------------
 	Material_metalico = Material(8.0f, 512);
@@ -742,14 +768,17 @@ int main() {
 	glm::mat4 projection = glm::perspective(45.0f, (GLfloat)mainWindow.getBufferWidth() / mainWindow.getBufferHeight(), 0.1f, 300.0f);
 
 	// Matriz de transformaciones
-	glm::mat4 model(1.0);
+	glm::mat4 model(1.0f);
+	glm::mat4 modelTemp(1.0f);
 	// Vectores auxiliares
-	glm::mat4 mat00(1.0);
-	glm::mat4 mat01(1.0);
+	glm::mat4 mat00(1.0f);
+	glm::mat4 mat01(1.0f);
 	//
 	glm::vec3 vec00 = glm::vec3(0.0f);
 	glm::vec3 vec01 = glm::vec3(0.0f);
 
+	int flama = 0;
+	bool cambF = false;
 	// Manejo del contenido
 	while (!mainWindow.getShouldClose()) {
 		GLfloat now = (float)glfwGetTime();
@@ -797,7 +826,8 @@ int main() {
 		glUniform3f(uniformEyePosition, currentCamera.getCameraPosition().x, currentCamera.getCameraPosition().y, currentCamera.getCameraPosition().z);
 
 		//Carga de modelos y transformaciones
-		model = glm::mat4(1.0);
+		model = glm::mat4(1.0f);
+		modelTemp = glm::mat4(1.0f);
 
 		// ---------------------------- PISO ----------------------------
 		model = glm::mat4(1.0);
@@ -880,6 +910,10 @@ int main() {
 // -------------------------------------------------------------- NAVIDAD --------------------------------------------------------
 
 		// ---------------------------- ÁRBOL ----------------------------
+		// Enable blending
+		glDisable(GL_CULL_FACE);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 		model = glm::mat4(1.0);
 		model = glm::translate(model, glm::vec3(12.0f, 0.05f, -12.0f));
 		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
@@ -970,62 +1004,291 @@ int main() {
 		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		vela_M.RenderModel();
-		mat00 = model = glm::translate(mat00, glm::vec3(-1.7f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
-		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		vela_M.RenderModel();
-		mat00 = model = glm::translate(mat00, glm::vec3(-0.4f, 0.7f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
-		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		vela_M.RenderModel();
-		mat00 = model = glm::translate(mat00, glm::vec3(-1.7f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
-		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		vela_M.RenderModel();
-		mat00 = model = glm::translate(mat00, glm::vec3(-0.4f, 0.7f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
-		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		vela_M.RenderModel();
+
+		modelTemp = glm::translate(mat00, glm::vec3(0.0f, 0.65f, 0.0f));
+		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
+
+		flama += 1;
+		if (cambF) {
+			flame1Texture.UseTexture();
+			flama >= 5 ? cambF = false: cambF = true;
+		}
+		else
+		{
+			flame2Texture.UseTexture();
+			flama >= 5 ? cambF = true : cambF = false;
+		}
+		flama >= 5 ? flama = 0 : flama = flama;
+		meshList[1]->RenderMesh();
+		//
+
 		mat00 = model = glm::translate(mat00, glm::vec3(-1.7f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
 		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		vela_M.RenderModel();
 
+		modelTemp = glm::translate(mat00, glm::vec3(0.0f, 0.65f, 0.0f));
+		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
+
+		flama += 1;
+		if (cambF) {
+			flame1Texture.UseTexture();
+			flama >= 5 ? cambF = false : cambF = true;
+		}
+		else
+		{
+			flame2Texture.UseTexture();
+			flama >= 5 ? cambF = true : cambF = false;
+		}
+		flama >= 5 ? flama = 0 : flama = flama;
+		meshList[1]->RenderMesh();
+		//
+		mat00 = model = glm::translate(mat00, glm::vec3(-0.4f, 0.7f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
+		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		vela_M.RenderModel();
+
+		modelTemp = glm::translate(mat00, glm::vec3(0.0f, 0.65f, 0.0f));
+		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
+
+		flama += 1;
+		if (cambF) {
+			flame1Texture.UseTexture();
+			flama >= 5 ? cambF = false : cambF = true;
+		}
+		else
+		{
+			flame2Texture.UseTexture();
+			flama >= 5 ? cambF = true : cambF = false;
+		}
+		flama >= 5 ? flama = 0 : flama = flama;
+		meshList[1]->RenderMesh();
+		//
+		mat00 = model = glm::translate(mat00, glm::vec3(-1.7f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
+		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		vela_M.RenderModel();
+
+		modelTemp = glm::translate(mat00, glm::vec3(0.0f, 0.65f, 0.0f));
+		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
+
+		flama += 1;
+		if (cambF) {
+			flame1Texture.UseTexture();
+			flama >= 5 ? cambF = false : cambF = true;
+		}
+		else
+		{
+			flame2Texture.UseTexture();
+			flama >= 5 ? cambF = true : cambF = false;
+		}
+		flama >= 5 ? flama = 0 : flama = flama;
+		meshList[1]->RenderMesh();
+		//
+		mat00 = model = glm::translate(mat00, glm::vec3(-0.4f, 0.7f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
+		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		vela_M.RenderModel();
+
+		modelTemp = glm::translate(mat00, glm::vec3(0.0f, 0.65f, 0.0f));
+		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
+
+		flama += 1;
+		if (cambF) {
+			flame1Texture.UseTexture();
+			flama >= 5 ? cambF = false : cambF = true;
+		}
+		else
+		{
+			flame2Texture.UseTexture();
+			flama >= 5 ? cambF = true : cambF = false;
+		}
+		flama >= 5 ? flama = 0 : flama = flama;
+		meshList[1]->RenderMesh();
+		//
+		mat00 = model = glm::translate(mat00, glm::vec3(-1.7f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
+		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		vela_M.RenderModel();
+
+		modelTemp = glm::translate(mat00, glm::vec3(0.0f, 0.65f, 0.0f));
+		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
+
+		flama += 1;
+		if (cambF) {
+			flame1Texture.UseTexture();
+			flama >= 5 ? cambF = false : cambF = true;
+		}
+		else
+		{
+			flame2Texture.UseTexture();
+			flama >= 5 ? cambF = true : cambF = false;
+		}
+		flama >= 5 ? flama = 0 : flama = flama;
+		meshList[1]->RenderMesh();
+		//
+
 		mat00 = model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, -6.0f));
 		model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
 		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		vela_M.RenderModel();
+
+		modelTemp = glm::translate(mat00, glm::vec3(0.0f, 0.65f, 0.0f));
+		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
+
+		flama += 1;
+		if (cambF) {
+			flame1Texture.UseTexture();
+			flama >= 5 ? cambF = false : cambF = true;
+		}
+		else
+		{
+			flame2Texture.UseTexture();
+			flama >= 5 ? cambF = true : cambF = false;
+		}
+		flama >= 5 ? flama = 0 : flama = flama;
+		meshList[1]->RenderMesh();
+		//
 		mat00 = model = glm::translate(mat00, glm::vec3(1.7f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
 		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		vela_M.RenderModel();
+
+		modelTemp = glm::translate(mat00, glm::vec3(0.0f, 0.65f, 0.0f));
+		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
+
+		flama += 1;
+		if (cambF) {
+			flame1Texture.UseTexture();
+			flama >= 5 ? cambF = false : cambF = true;
+		}
+		else
+		{
+			flame2Texture.UseTexture();
+			flama >= 5 ? cambF = true : cambF = false;
+		}
+		flama >= 5 ? flama = 0 : flama = flama;
+		meshList[1]->RenderMesh();
+		//
 		mat00 = model = glm::translate(mat00, glm::vec3(0.4f, -0.7f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
 		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		vela_M.RenderModel();
+
+		modelTemp = glm::translate(mat00, glm::vec3(0.0f, 0.65f, 0.0f));
+		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
+
+		flama += 1;
+		if (cambF) {
+			flame1Texture.UseTexture();
+			flama >= 5 ? cambF = false : cambF = true;
+		}
+		else
+		{
+			flame2Texture.UseTexture();
+			flama >= 5 ? cambF = true : cambF = false;
+		}
+		flama >= 5 ? flama = 0 : flama = flama;
+		meshList[1]->RenderMesh();
+		//
 		mat00 = model = glm::translate(mat00, glm::vec3(1.7f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
 		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		vela_M.RenderModel();
+
+		modelTemp = glm::translate(mat00, glm::vec3(0.0f, 0.65f, 0.0f));
+		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
+
+		flama += 1;
+		if (cambF) {
+			flame1Texture.UseTexture();
+			flama >= 5 ? cambF = false : cambF = true;
+		}
+		else
+		{
+			flame2Texture.UseTexture();
+			flama >= 5 ? cambF = true : cambF = false;
+		}
+		flama >= 5 ? flama = 0 : flama = flama;
+		meshList[1]->RenderMesh();
+		//
 		mat00 = model = glm::translate(mat00, glm::vec3(0.4f, -0.7f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
 		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		vela_M.RenderModel();
+
+		modelTemp = glm::translate(mat00, glm::vec3(0.0f, 0.65f, 0.0f));
+		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
+
+		flama += 1;
+		if (cambF) {
+			flame1Texture.UseTexture();
+			flama >= 5 ? cambF = false : cambF = true;
+		}
+		else
+		{
+			flame2Texture.UseTexture();
+			flama >= 5 ? cambF = true : cambF = false;
+		}
+		flama >= 5 ? flama = 0 : flama = flama;
+		meshList[1]->RenderMesh();
+		//
 		mat00 = model = glm::translate(mat00, glm::vec3(1.6f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
 		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		vela_M.RenderModel();
+
+		modelTemp = glm::translate(mat00, glm::vec3(0.0f, 0.65f, 0.0f));
+		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
+
+		flama += 1;
+		if (cambF) {
+			flame1Texture.UseTexture();
+			flama >= 5 ? cambF = false : cambF = true;
+		}
+		else
+		{
+			flame2Texture.UseTexture();
+			flama >= 5 ? cambF = true : cambF = false;
+		}
+		flama >= 5 ? flama = 0 : flama = flama;
+		meshList[1]->RenderMesh();
+		//
 
 		// ---------------------------- CACAS ----------------------------
 		model = glm::translate(mat01, glm::vec3(0.0f, 2.0f, -2.0f));

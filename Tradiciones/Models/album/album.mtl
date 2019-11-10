@@ -12,10 +12,10 @@ newmtl 13___Default
 	Kd 0.5882 0.5882 0.5882
 	Ks 0.1260 0.1260 0.1260
 	Ke 0.0000 0.0000 0.0000
-	map_Ka album\url1.jpg
-	map_Kd album\url1.jpg
-	map_bump album\url1.jpg
-	bump album\url1.jpg
+	map_Ka album\url1.tga
+	map_Kd album\url1.tga
+	map_bump album\url1.tga
+	bump album\url1.tga
 
 newmtl 14___Default
 	Ns 10.0000
@@ -28,8 +28,8 @@ newmtl 14___Default
 	Kd 0.5882 0.5882 0.5882
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka album\designtnt-textures-packing-material-set-1-11.jpg
-	map_Kd album\designtnt-textures-packing-material-set-1-11.jpg
+	map_Ka album\designtnt-textures-packing-material-set-1-11.tga
+	map_Kd album\designtnt-textures-packing-material-set-1-11.tga
 
 newmtl 15___Default
 	Ns 10.0000
@@ -42,8 +42,8 @@ newmtl 15___Default
 	Kd 0.5882 0.5882 0.5882
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka album\designtnt-textures-packing-material-set-1-11.jpg
-	map_Kd album\designtnt-textures-packing-material-set-1-11.jpg
+	map_Ka album\designtnt-textures-packing-material-set-1-11.tga
+	map_Kd album\designtnt-textures-packing-material-set-1-11.tga
 
 newmtl 08___Default
 	Ns 100.0000
@@ -56,8 +56,8 @@ newmtl 08___Default
 	Kd 0.5882 0.5882 0.5882
 	Ks 0.9990 0.9990 0.9990
 	Ke 0.0000 0.0000 0.0000
-	map_Ka album\IMG_2739.jpg
-	map_Kd album\IMG_2739.jpg
+	map_Ka album\IMG_2739.tga
+	map_Kd album\IMG_2739.tga
 
 newmtl 09___Default
 	Ns 10.0000

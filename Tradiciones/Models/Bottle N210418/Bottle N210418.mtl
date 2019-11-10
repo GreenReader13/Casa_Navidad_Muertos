@@ -12,8 +12,8 @@ newmtl red
 	Kd 0.7843 0.3176 0.1765
 	Ks 0.6300 0.6300 0.6300
 	Ke 0.0000 0.0000 0.0000
-	map_Ka D:\New folder 2\23 red.jpg
-	map_Kd D:\New folder 2\23 red.jpg
+	map_Ka D:\New folder 2\23 red.tga
+	map_Kd D:\New folder 2\23 red.tga
 
 newmtl st_tile
 	Ns 70.0000
@@ -26,11 +26,11 @@ newmtl st_tile
 	Kd 0.9922 0.9804 0.8941
 	Ks 0.6300 0.6300 0.6300
 	Ke 0.0000 0.0000 0.0000
-	map_Ka D:\New folder 2\Vine02.jpg
-	map_Kd D:\New folder 2\Vine02.jpg
-	map_d D:\New folder 2\Vine01_m.jpg
-	map_bump -bm 0.3000 D:\New folder 2\Vine02.jpg
-	bump -bm 0.3000 D:\New folder 2\Vine02.jpg
+	map_Ka D:\New folder 2\Vine02.tga
+	map_Kd D:\New folder 2\Vine02.tga
+	map_d D:\New folder 2\Vine01_m.tga
+	map_bump -bm 0.3000 D:\New folder 2\Vine02.tga
+	bump -bm 0.3000 D:\New folder 2\Vine02.tga
 
 newmtl st_gold
 	Ns 10.0000
@@ -43,10 +43,10 @@ newmtl st_gold
 	Kd 0.9451 0.7725 0.4078
 	Ks 0.0000 0.0000 0.0000
 	Ke 0.0000 0.0000 0.0000
-	map_Ka D:\New folder 2\Metal G6.jpg
-	map_Kd D:\New folder 2\Metal G6.jpg
-	map_bump -bm 0.3000 D:\New folder 2\Metal G6.jpg
-	bump -bm 0.3000 D:\New folder 2\Metal G6.jpg
+	map_Ka D:\New folder 2\Metal G6.tga
+	map_Kd D:\New folder 2\Metal G6.tga
+	map_bump -bm 0.3000 D:\New folder 2\Metal G6.tga
+	bump -bm 0.3000 D:\New folder 2\Metal G6.tga
 
 newmtl Mat_win
 	Ns 75.0000

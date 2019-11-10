@@ -10,7 +10,7 @@ Ke 0.0 0.0 0.0
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd Edges.jpg
+map_Kd Edges.tga
 
 newmtl Light.001
 Ns 96.078443
@@ -31,7 +31,7 @@ Ke 0.0 0.0 0.0
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd Edges.jpg
+map_Kd Edges.tga
 
 newmtl Material.007
 Ns 225.000000
@@ -42,7 +42,7 @@ Ke 0.0 0.0 0.0
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd Edges.jpg
+map_Kd Edges.tga
 
 newmtl Material.009
 Ns 225.000000
@@ -53,7 +53,7 @@ Ke 0.0 0.0 0.0
 Ni 1.450000
 d 1.000000
 illum 1
-map_Kd Edges.jpg
+map_Kd Edges.tga
 
 newmtl Material.015
 Ns 225.000000
@@ -64,7 +64,7 @@ Ke 0.0 0.0 0.0
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd Edges.jpg
+map_Kd Edges.tga
 
 newmtl Material.016
 Ns 225.000000
@@ -75,7 +75,7 @@ Ke 0.0 0.0 0.0
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd Wall_ext.jpg
+map_Kd Wall_ext.tga
 
 newmtl Material.017
 Ns 225.000000
@@ -86,7 +86,7 @@ Ke 0.0 0.0 0.0
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd Floor.jpg
+map_Kd Floor.tga
 
 newmtl Material.018
 Ns 225.000000
@@ -97,7 +97,7 @@ Ke 0.0 0.0 0.0
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd Roof.jpg
+map_Kd Roof.tga
 
 newmtl Material.019
 Ns 225.000000
@@ -118,7 +118,7 @@ Ke 0.0 0.0 0.0
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd Edges.jpg
+map_Kd Edges.tga
 
 newmtl Material.021
 Ns 225.000000
@@ -129,7 +129,7 @@ Ke 0.0 0.0 0.0
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd Edges.jpg
+map_Kd Edges.tga
 
 newmtl Material.022
 Ns 225.000000
@@ -140,7 +140,7 @@ Ke 0.0 0.0 0.0
 Ni 1.450000
 d 1.000000
 illum 2
-map_Kd Wall.jpg
+map_Kd Wall.tga
 
 newmtl Metal
 Ns 96.078443
@@ -151,4 +151,4 @@ Ke 0.0 0.0 0.0
 Ni 1.000000
 d 1.000000
 illum 2
-map_Kd Wall_M.jpg
+map_Kd Wall_M.tga

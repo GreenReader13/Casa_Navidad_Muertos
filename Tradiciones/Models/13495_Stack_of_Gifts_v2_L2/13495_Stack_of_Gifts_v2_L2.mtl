@@ -12,8 +12,8 @@ newmtl Stack_of_Gifts_3
 	Kd 1.0000 1.0000 1.0000
 	Ks 0.4500 0.4500 0.4500
 	Ke 0.0000 0.0000 0.0000
-	map_Ka Stack_of_Gifts_diffuse_2.JPG
-	map_Kd Stack_of_Gifts_diffuse_2.JPG
+	map_Ka Stack_of_Gifts_diffuse_2.tga
+	map_Kd Stack_of_Gifts_diffuse_2.tga
 
 newmtl Stack_of_Gifts_2
 	Ns 20.0000
@@ -26,8 +26,8 @@ newmtl Stack_of_Gifts_2
 	Kd 1.0000 1.0000 1.0000
 	Ks 0.4500 0.4500 0.4500
 	Ke 0.0000 0.0000 0.0000
-	map_Ka Stack_of_Gifts_diffuse_1.JPG
-	map_Kd Stack_of_Gifts_diffuse_1.JPG
+	map_Ka Stack_of_Gifts_diffuse_1.tga
+	map_Kd Stack_of_Gifts_diffuse_1.tga
 
 newmtl Stack_of_Gifts_1
 	Ns 20.0000
@@ -40,8 +40,8 @@ newmtl Stack_of_Gifts_1
 	Kd 1.0000 1.0000 1.0000
 	Ks 0.4500 0.4500 0.4500
 	Ke 0.0000 0.0000 0.0000
-	map_Ka Stack_of_Gifts_diffuse.JPG
-	map_Kd Stack_of_Gifts_diffuse.JPG
+	map_Ka Stack_of_Gifts_diffuse.tga
+	map_Kd Stack_of_Gifts_diffuse.tga
 
 newmtl Stack_of_Gifts_4
 	Ns 1.0000
@@ -54,8 +54,8 @@ newmtl Stack_of_Gifts_4
 	Kd 1.0000 0.0000 0.0000
 	Ks 0.3240 0.3240 0.3240
 	Ke 0.0000 0.0000 0.0000
-	map_bump Stack_of_Gifts_bump.jpg
-	bump Stack_of_Gifts_bump.jpg
+	map_bump Stack_of_Gifts_bump.tga
+	bump Stack_of_Gifts_bump.tga
 
 newmtl Stack_of_Gifts_5
 	Ns 1.0000
@@ -68,5 +68,5 @@ newmtl Stack_of_Gifts_5
 	Kd 1.0000 0.0000 0.0000
 	Ks 0.3240 0.3240 0.3240
 	Ke 0.0000 0.0000 0.0000
-	map_bump Stack_of_Gifts_bump.jpg
-	bump Stack_of_Gifts_bump.jpg
+	map_bump Stack_of_Gifts_bump.tga
+	bump Stack_of_Gifts_bump.tga
