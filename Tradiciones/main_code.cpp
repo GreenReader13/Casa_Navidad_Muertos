@@ -149,27 +149,28 @@ Model christmas06;
 Model mesa_M;
 Model album_M;
 Model cup;
+Model cup2;
+Model coca_M;
+Model cazuela_M;
+Model pizza_M;
+Model pan_M;
+Model pan_muerto_M;
+Model choc_M;
+Model cuernito_M;
+Model chupe_M;
+Model semp_M;
+Model sugar_sk_M;
+Model sugar_sk1_M;
 Model ufo;
 Model vela_M;
-Model pizza;
-Model cupcake00;
-Model cupcake01;
-Model cupcake02;
-Model sausage;
-Model bottle;
-Model bread;
-Model pumkin;
 
 // Variables de objetos
 int flama = 0;
 bool cambF = false;
 float aIntensity = 0.2f, dIntensity = 0.5f;
 
-glm::vec3 tablePos = glm::vec3(-10.0f, 1.5f, -8.0f);
+glm::vec3 tablePos = glm::vec3(-10.0f, 0.01f, -8.0f);
 glm::vec3 basketPos = glm::vec3(0.0f, 0.0f, 0.0f);
-glm::vec3 pizzaPos = glm::vec3(0.0f, 0.0f, 0.0f);
-glm::vec3 bottlePos = glm::vec3(0.0f, 0.0f, 0.0f);
-glm::vec3 breadPos = glm::vec3(0.0f, 0.0f, 0.0f);
 
 glm::vec3 doorPos00 = glm::vec3(0.2f, 0.01f, 12.0f);
 glm::vec3 doorPos01 = glm::vec3(-4.0f, 0.01f, 7.8f);
@@ -591,11 +592,9 @@ int main() {
 	sp.load();
 
 	currentCamera = Camera(glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
-	camera01 = Camera(glm::vec3(-10.107542f, 3.350622f, 3.560843f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
-	camera02 = Camera(glm::vec3(-5.342234f, 11.342978f, 14.225320f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
-	camera03 = Camera(glm::vec3(13.7639f, 10.45f, 10.07f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
-
-	currentCamera = camera01;
+	camera01 = Camera(glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
+	camera02 = Camera(glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
+	camera03 = Camera(glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
 
 	//Cargado de texturas
 	pisoTexture = Texture("Textures/piso.tga");
@@ -645,31 +644,41 @@ int main() {
 	star.LoadModel("Models/Gold_Star/Gold_Star.obj");
 	ufo = Model();
 	ufo.LoadModel("Models/ovni/ovni-obj.obj");
-
+	
 	mesa_M = Model();
-	mesa_M.LoadModel("Models/mesa/table.obj");
+	mesa_M.LoadModel("Models/mesa/mesa.obj");
 	album_M = Model();
 	album_M.LoadModel("Models/album/album.obj");
 	vela_M = Model();
 	vela_M.LoadModel("Models/candleWhite_obj/candleWhite_obj.obj");
 	cup = Model();
-	cup.LoadModel("Models/Cup/cup\ OBJ.obj");
-	pizza = Model();
-	pizza.LoadModel("Models/13917_Pepperoni_v2_l2/13917_Pepperoni_v2_l2.obj");
-	cupcake00 = Model();
-	cupcake00.LoadModel("Models/12187_Cupcake_v1_L3/12187_Cupcake_v1_L3.obj");
-	cupcake01 = Model();
-	cupcake01.LoadModel("Models/12188_Cupcake_v1_L3/12188_Cupcake_v1_L3.obj");
-	cupcake02 = Model();
-	cupcake02.LoadModel("Models/11547_Dessert_pie_v3_l2/11547_Dessert_pie_v3_l2.obj");
-	sausage = Model();
-	sausage.LoadModel("Models/13561_Shrimp_Sausage_Jambalaya_v1_L1/13561_Shrimp_Sausage_Jambalaya_v1_L1.obj");
-	bottle = Model();
-	bottle.LoadModel("Models/Bottle\ N210418/Bottle\ N210418.obj");
-	bread = Model();
-	bread.LoadModel("Models/Bread/Bread.obj");
-	pumkin = Model();
-	pumkin.LoadModel("Models/10202_Pumkin_v02-L3/10202_Pumkin_v02-L3.obj");
+	cup.LoadModel("Models/12187_Cupcake_v1_L3/12187_Cupcake_v1_L3.obj");
+	cup2 = Model();
+	cup2.LoadModel("Models/12188_Cupcake_v1_L3/12188_Cupcake_v1_L3.obj");
+	coca_M = Model();
+	coca_M.LoadModel("Models/Cup/cupOBJ.obj");
+	cazuela_M = Model();
+	cazuela_M.LoadModel("Models/13561_Shrimp_Sausage_Jambalaya_v1_L1/13561_Shrimp_Sausage_Jambalaya_v1_L1.obj");
+	pizza_M = Model();
+	pizza_M.LoadModel("Models/13917_Pepperoni_v2_l2/13917_Pepperoni_v2_l2.obj");
+	pan_M = Model();
+	pan_M.LoadModel("Models/Bread/Bread.obj");
+	choc_M = Model();
+	choc_M.LoadModel("Models/chocolate/choco.obj");
+	cuernito_M = Model();
+	cuernito_M.LoadModel("Models/Croissant/Croissant.obj");
+
+	chupe_M = Model();
+	chupe_M.LoadModel("Models/BottleN210418/BottleN210418.obj");
+	semp_M = Model();
+	semp_M.LoadModel("Models/semp/semp.obj");
+	pan_muerto_M = Model();
+	pan_muerto_M.LoadModel("Models/pan/pan_muerto.obj");
+
+	sugar_sk_M = Model();
+	sugar_sk_M.LoadModel("Models/skull/sugar_skulls_v1.obj");
+	sugar_sk1_M = Model();
+	sugar_sk1_M.LoadModel("Models/skull/sugar_skulls_v2.obj");
 
 	loadAnimationOvni();
 
@@ -881,36 +890,43 @@ int main() {
 		glUniform3f(uniformEyePosition, currentCamera.getCameraPosition().x, currentCamera.getCameraPosition().y, currentCamera.getCameraPosition().z);
 
 		//Carga de modelos y transformaciones
+		model = glm::mat4(1.0f);
 		modelTemp = glm::mat4(1.0f);
 
 		// ---------------------------- PISO ----------------------------
+		model = glm::mat4(1.0);
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
-		model = glm::scale(glm::mat4(1.0), glm::vec3(15.0f, 1.0f, 15.0f));
+		model = glm::scale(model, glm::vec3(15.0f, 1.0f, 15.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		pisoTexture.UseTexture();
 		meshList[0]->RenderMesh();
 
+
 		// ---------------------------- CASA ----------------------------
-		model = glm::translate(glm::mat4(1.0), glm::vec3(0.0f, 0.01f, 0.0f));
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f, 0.01f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		House_M.RenderModel();
 
 		// ---------------------------- Puertas ----------------------------
-		model = glm::translate(glm::mat4(1.0), glm::vec3(0.2f, 0.01f, 12.0f));
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.2f, 0.01f, 12.0f));
 		model = glm::rotate(model, glm::radians(doorRot00), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Puerta_M.RenderModel();
 
-		model = glm::translate(glm::mat4(1.0), glm::vec3(-4.0f, 0.01f, 7.8f));
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-4.0f, 0.01f, 7.8f));
 		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
 		model = glm::rotate(model, glm::radians(doorRot01), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Puerta_M.RenderModel();
 
-		model = glm::translate(glm::mat4(1.0), glm::vec3(-4.0f, 0.01f, -11.2f));
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-4.0f, 0.01f, -11.2f));
 		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
 		model = glm::rotate(model, glm::radians(doorRot02), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0));
@@ -918,8 +934,10 @@ int main() {
 		Puerta_M.RenderModel();
 
 		// ---------------------------- Interruptores ----------------------------
+
 		// Principal 1
-		model = glm::translate(glm::mat4(1.0), switchPos00);
+		model = glm::mat4(1.0);
+		model = glm::translate(model, switchPos00);
 		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
 		model = glm::rotate(model, glm::radians(switchRot00), glm::vec3(1.0f, 0.0f, 0.0));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0));
@@ -927,7 +945,8 @@ int main() {
 		Intrp_M.RenderModel();
 
 		// Baño
-		model = glm::translate(glm::mat4(1.0), switchPos01);
+		model = glm::mat4(1.0);
+		model = glm::translate(model, switchPos01);
 		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
 		model = glm::rotate(model, glm::radians(switchRot01), glm::vec3(1.0f, 0.0f, 0.0));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0));
@@ -935,7 +954,8 @@ int main() {
 		Intrp_M.RenderModel();
 
 		// Secundario
-		model = glm::translate(glm::mat4(1.0), switchPos02);
+		model = glm::mat4(1.0);
+		model = glm::translate(model, switchPos02);
 		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
 		model = glm::rotate(model, glm::radians(switchRot02), glm::vec3(0.0f, 0.0f, 1.0));
 		//model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0));
@@ -943,7 +963,8 @@ int main() {
 		Intrp_M.RenderModel();
 
 		// Principal 2
-		model = glm::translate(glm::mat4(1.0), switchPos03);
+		model = glm::mat4(1.0);
+		model = glm::translate(model, switchPos03);
 		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
 		model = glm::rotate(model, glm::radians(switchRot03), glm::vec3(-1.0f, 0.0f, 0.0));
 		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0));
@@ -952,30 +973,37 @@ int main() {
 
 		// Canasta
 		basketPos = currentCamera.getCameraPosition();
-		basketPos.y -= 3;
-		model = glm::translate(glm::mat4(1.0), basketPos);
+		basketPos.x--;
+		basketPos.y--;
+		basketPos.z--;
+		model = glm::mat4(1.0);
+		model = glm::translate(model, basketPos);
 		model = glm::scale(model, glm::vec3(1.0f) * 0.1f);
+		//model = glm::rotate(model, glm::radians(switchRot03), glm::vec3(-1.0f, 0.0f, 0.0));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		basket.RenderModel();
 
 // -------------------------------------------------------------- NAVIDAD --------------------------------------------------------
 
 		// Regalo 1
-		model = glm::translate(glm::mat4(1.0), glm::vec3(11.0f, 0.05f, -10.5f));
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(11.0f, 0.05f, -10.5f));
 		model = glm::scale(model, glm::vec3(1.0f) * 0.05f);
 		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		gift00.RenderModel();
 
 		// Regalo 2
-		model = glm::translate(glm::mat4(1.0), glm::vec3(11.0f, 0.05f, -12.0f));
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(11.0f, 0.05f, -12.0f));
 		model = glm::scale(model, glm::vec3(1.0f) * 0.05f);
 		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		gift01.RenderModel();
 
 		// Regalo 3
-		model = glm::translate(glm::mat4(1.0), glm::vec3(9.5f, 0.05f, -11.5f));
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(9.5f, 0.05f, -11.5f));
 		model = glm::scale(model, glm::vec3(1.0f) * 0.01f);
 		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 0.0f, -1.0f));
@@ -983,7 +1011,8 @@ int main() {
 		gift02.RenderModel();
 
 		// Esferas
-		model = glm::translate(glm::mat4(1.0), glm::vec3(0.0f, 3.0f, -3.0f));
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(0.0f, 3.0f, -3.0f));
 		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Material_metalico.UseMaterial(uniformSpecularIntensity, uniformShininess);
@@ -991,7 +1020,8 @@ int main() {
 		sp.render();
 
 		// Estrella
-		model = glm::translate(glm::mat4(1.0), glm::vec3(12.0f, 9.5f, -12.0f));
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(12.0f, 9.5f, -12.0f));
 		model = glm::scale(model, glm::vec3(1.0f) * 0.02f);
 		model = glm::rotate(model, 45.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		//model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 0.0f, -1.0f));
@@ -1003,21 +1033,24 @@ int main() {
 		glDisable(GL_CULL_FACE);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		model = glm::translate(glm::mat4(1.0), glm::vec3(12.0f, 0.05f, -12.0f));
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(12.0f, 0.05f, -12.0f));
 		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		tree.RenderModel();
 
 		// ---------------------------- SANTA ----------------------------
+		model = glm::mat4(1.0);
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
-		model = glm::translate(glm::mat4(1.0), glm::vec3(2.0f, 0.0f, -35.0f));
+		model = glm::translate(model, glm::vec3(2.0f, 0.0f, -35.0f));
 		model = glm::scale(model, glm::vec3(1.0f) * 0.045f);
 		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		santa.RenderModel();
 
 		// ---------------------------- OVNI ----------------------------
-		model = glm::translate(glm::mat4(1.0), glm::vec3(ufoX, ufoY, ufoZ));
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(ufoX, ufoY, ufoZ));
 		model = glm::rotate(model, glm::radians(ufoRotY), glm::vec3(1.0f, 0.0f, 1.0f));
 		model = glm::rotate(model, glm::radians(ufoRot), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::scale(model, glm::vec3(1.0f) * 0.01f);
@@ -1027,183 +1060,195 @@ int main() {
 // -------------------------------------------------------------- MUERTOS COMO DAVID --------------------------------------------------------
 
 		// ---------------------------- MESA ARRIBA ----------------------------
-		model = glm::translate(glm::mat4(1.0), tablePos);
-		mat00 = model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.5f,1.0f,1.0f) * 0.03f);
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		mesa_M.RenderModel();
-		// ---------------------------- MESA ENMEDIO ----------------------------
-		mat00 = model = glm::translate(mat00, glm::vec3(2.2f, -0.7f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.5f, 1.0f, 1.0f) * 0.03f);
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		mesa_M.RenderModel();
-		// ---------------------------- MESA ABAJO ----------------------------
-		model = glm::translate(mat00, glm::vec3(2.2f, -0.7f, 0.0f));
-		model = glm::scale(model, glm::vec3(0.5f, 1.0f, 1.0f) * 0.03f);
+		model = glm::mat4(1.0);
+		mat01 = mat00 = model = glm::translate(model, tablePos);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		mesa_M.RenderModel();
 
 		// ---------------------------- CUADRO ----------------------------
-		mat00 = model = glm::translate(mat00, glm::vec3(0.0f, 1.57f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.0f) * 0.01f);
-		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		mat00 = model;
+		mat00 = glm::translate(mat00, glm::vec3(0.5f, 2.375f, 0.0f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f) * 0.01f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
 		album_M.RenderModel();
 
 		// ---------------------------- VELAS ----------------------------
-		mat00 = model = glm::translate(mat00, glm::vec3(3.0f, -0.7f, 3.0f));
-		model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
-		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		mat00 = model;
+		modelTemp = mat00 = glm::translate(mat00, glm::vec3(3.0f, 2.375f, 0.5f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
+		mat00 = glm::rotate(mat00, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
 		vela_M.RenderModel();
 
-		modelTemp = glm::translate(mat00, glm::vec3(0.0f, 0.65f, 0.0f));
+		modelTemp = glm::translate(modelTemp, glm::vec3(0.0f, 0.65f, 0.0f));
 		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		modelTemp = glm::rotate(modelTemp, 90.0f * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
+		flame();
+		meshList[1]->RenderMesh();
+		//
+		mat00 = model;
+		modelTemp = mat00 = glm::translate(mat00, glm::vec3(-3.0f, 2.375f, 0.5f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
+		mat00 = glm::rotate(mat00, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
+		vela_M.RenderModel();
+
+		modelTemp = glm::translate(modelTemp, glm::vec3(0.0f, 0.65f, 0.0f));
+		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		modelTemp = glm::rotate(modelTemp, 90.0f * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
+		flame();
+		meshList[1]->RenderMesh();
+		//
+		mat00 = model;
+		modelTemp = mat00 = glm::translate(mat00, glm::vec3(3.0f, 2.375f, -0.5f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
+		mat00 = glm::rotate(mat00, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
+		vela_M.RenderModel();
+
+		modelTemp = glm::translate(modelTemp, glm::vec3(0.0f, 0.65f, 0.0f));
+		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		modelTemp = glm::rotate(modelTemp, 90.0f * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
+		flame();
+		meshList[1]->RenderMesh();
+		//
+		mat00 = model;
+		modelTemp = mat00 = glm::translate(mat00, glm::vec3(-3.0f, 2.375f, -0.5f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
+		mat00 = glm::rotate(mat00, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
+		vela_M.RenderModel();
+
+		modelTemp = glm::translate(modelTemp, glm::vec3(0.0f, 0.65f, 0.0f));
+		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		modelTemp = glm::rotate(modelTemp, 90.0f * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
+		flame();
+		meshList[1]->RenderMesh();
+		//
+		mat00 = model;
+		modelTemp = mat00 = glm::translate(mat00, glm::vec3(3.0f, 1.67f, 1.5f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
+		mat00 = glm::rotate(mat00, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
+		vela_M.RenderModel();
+
+		modelTemp = glm::translate(modelTemp, glm::vec3(0.0f, 0.65f, 0.0f));
+		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		modelTemp = glm::rotate(modelTemp, 90.0f * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
+		flame();
+		meshList[1]->RenderMesh();
+		//
+		mat00 = model;
+		modelTemp = mat00 = glm::translate(mat00, glm::vec3(-3.0f, 1.67f, 1.5f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
+		mat00 = glm::rotate(mat00, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
+		vela_M.RenderModel();
+
+		modelTemp = glm::translate(modelTemp, glm::vec3(0.0f, 0.65f, 0.0f));
+		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		modelTemp = glm::rotate(modelTemp, 90.0f * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
 		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
 		flame();
 		meshList[1]->RenderMesh();
 		//
 
-		mat00 = model = glm::translate(mat00, glm::vec3(-1.7f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
-		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		mat00 = model;
+		modelTemp = mat00 =  glm::translate(mat00, glm::vec3(3.0f, 1.67f, 2.5f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
+		mat00 = glm::rotate(mat00, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
 		vela_M.RenderModel();
 
-		modelTemp = glm::translate(mat00, glm::vec3(0.0f, 0.65f, 0.0f));
+		modelTemp = glm::translate(modelTemp, glm::vec3(0.0f, 0.65f, 0.0f));
 		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		modelTemp = glm::rotate(modelTemp, 90.0f * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
 		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
 		flame();
 		meshList[1]->RenderMesh();
 		//
-		mat00 = model = glm::translate(mat00, glm::vec3(-0.4f, 0.7f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
-		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		mat00 = model;
+		modelTemp = mat00 = glm::translate(mat00, glm::vec3(-3.0f, 1.67f, 2.5f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
+		mat00 = glm::rotate(mat00, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
 		vela_M.RenderModel();
 
-		modelTemp = glm::translate(mat00, glm::vec3(0.0f, 0.65f, 0.0f));
+		modelTemp = glm::translate(modelTemp, glm::vec3(0.0f, 0.65f, 0.0f));
 		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		modelTemp = glm::rotate(modelTemp, 90.0f * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
 		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
 		flame();
 		meshList[1]->RenderMesh();
 		//
-		mat00 = model = glm::translate(mat00, glm::vec3(-1.7f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
-		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		mat00 = model;
+		modelTemp = mat00 = glm::translate(mat00, glm::vec3(3.0f, 0.97f, 3.5f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
+		mat00 = glm::rotate(mat00, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
 		vela_M.RenderModel();
 
-		modelTemp = glm::translate(mat00, glm::vec3(0.0f, 0.65f, 0.0f));
+		modelTemp = glm::translate(modelTemp, glm::vec3(0.0f, 0.65f, 0.0f));
 		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		modelTemp = glm::rotate(modelTemp, 90.0f * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
 		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
 		flame();
 		meshList[1]->RenderMesh();
 		//
-		mat00 = model = glm::translate(mat00, glm::vec3(-0.4f, 0.7f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
-		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		mat00 = model;
+		modelTemp = mat00 = glm::translate(mat00, glm::vec3(-3.0f, 0.97f, 3.5f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
+		mat00 = glm::rotate(mat00, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
 		vela_M.RenderModel();
 
-		modelTemp = glm::translate(mat00, glm::vec3(0.0f, 0.65f, 0.0f));
+		modelTemp = glm::translate(modelTemp, glm::vec3(0.0f, 0.65f, 0.0f));
 		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		modelTemp = glm::rotate(modelTemp, 90.0f * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
 		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
 		flame();
 		meshList[1]->RenderMesh();
 		//
-		mat00 = model = glm::translate(mat00, glm::vec3(-1.7f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
-		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		mat00 = model;
+		modelTemp = mat00 = glm::translate(mat00, glm::vec3(3.0f, 0.97f, 4.5f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
+		mat00 = glm::rotate(mat00, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
 		vela_M.RenderModel();
 
-		modelTemp = glm::translate(mat00, glm::vec3(0.0f, 0.65f, 0.0f));
+		modelTemp = glm::translate(modelTemp, glm::vec3(0.0f, 0.65f, 0.0f));
 		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		modelTemp = glm::rotate(modelTemp, 90.0f * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
 		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
 		flame();
 		meshList[1]->RenderMesh();
 		//
-
-		mat00 = model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, -6.0f));
-		model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
-		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		mat00 = model;
+		modelTemp = mat00 = glm::translate(mat00, glm::vec3(-3.0f, 0.97f, 4.5f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
+		mat00 = glm::rotate(mat00, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
 		vela_M.RenderModel();
 
-		modelTemp = glm::translate(mat00, glm::vec3(0.0f, 0.65f, 0.0f));
+		modelTemp = glm::translate(modelTemp, glm::vec3(0.0f, 0.65f, 0.0f));
 		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
-		flame();
-		meshList[1]->RenderMesh();
-		//
-		mat00 = model = glm::translate(mat00, glm::vec3(1.7f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
-		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		vela_M.RenderModel();
-
-		modelTemp = glm::translate(mat00, glm::vec3(0.0f, 0.65f, 0.0f));
-		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
-		flame();
-		meshList[1]->RenderMesh();
-		//
-		mat00 = model = glm::translate(mat00, glm::vec3(0.4f, -0.7f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
-		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		vela_M.RenderModel();
-
-		modelTemp = glm::translate(mat00, glm::vec3(0.0f, 0.65f, 0.0f));
-		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
-		flame();
-		meshList[1]->RenderMesh();
-		//
-		mat00 = model = glm::translate(mat00, glm::vec3(1.7f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
-		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		vela_M.RenderModel();
-
-		modelTemp = glm::translate(mat00, glm::vec3(0.0f, 0.65f, 0.0f));
-		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
-		flame();
-		meshList[1]->RenderMesh();
-		//
-		mat00 = model = glm::translate(mat00, glm::vec3(0.4f, -0.7f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
-		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		vela_M.RenderModel();
-
-		modelTemp = glm::translate(mat00, glm::vec3(0.0f, 0.65f, 0.0f));
-		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
-		flame();
-		meshList[1]->RenderMesh();
-		//
-		mat00 = model = glm::translate(mat00, glm::vec3(1.6f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.0f, 4.0f, 1.0f) * 0.015f);
-		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		vela_M.RenderModel();
-
-		modelTemp = glm::translate(mat00, glm::vec3(0.0f, 0.65f, 0.0f));
-		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		modelTemp = glm::rotate(modelTemp, 90.0f * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
 		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
 		flame();
@@ -1211,93 +1256,151 @@ int main() {
 		//
 
 		// ---------------------------- CACAS ----------------------------
-		mat00 = model = glm::translate(mat00, glm::vec3(-5.4f, 1.85f, 1.0f));
-		model = glm::scale(model, glm::vec3(1.0f) * 0.05f);
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
+		mat00 = model;
+		mat00 = glm::translate(mat00, glm::vec3(0.95f, 2.5f, 0.3f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f) * 0.05f);
+		mat00 = glm::rotate(mat00, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
 		cup.RenderModel();
-		mat00 = model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 4.0f));
-		model = glm::scale(model, glm::vec3(1.0f) * 0.05f);
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+
+		mat00 = model;
+		mat00 = glm::translate(mat00, glm::vec3(-0.8f, 2.5f, 0.3f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f) * 0.05f);
+		mat00 = glm::rotate(mat00, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
 		cup.RenderModel();
 
-		mat00 = model = glm::translate(mat00, glm::vec3(1.0f, -0.45f, -1.0f));
-		model = glm::scale(model, glm::vec3(1.0f) * 0.06f);
-		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		pizza.RenderModel();
 
-		mat00 = model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, -2.0f));
-		model = glm::scale(model, glm::vec3(1.0f) * 0.06f);
-		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		pizza.RenderModel();
 
-		mat00 = model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 1.0f));
-		model = glm::scale(model, glm::vec3(0.13f, 0.15f, 0.13f) );
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		bottle.RenderModel();
-		mat00 = model = glm::translate(mat00, glm::vec3(2.0f, -0.7f, -2.0f));
-		model = glm::scale(model, glm::vec3(0.13f, 0.15f, 0.13f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		bottle.RenderModel();
-		mat00 = model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 4.0f));
-		model = glm::scale(model, glm::vec3(0.13f, 0.15f, 0.13f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		bottle.RenderModel();
+		mat00 = model;
+		mat00 = glm::translate(mat00, glm::vec3(1.45f, 2.377f, 0.7f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f) * 0.05f);
+		mat00 = glm::rotate(mat00, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
+		cup2.RenderModel();
 
-		mat00 = model = glm::translate(mat00, glm::vec3(-1.0f, 0.0f, -0.5f));
-		model = glm::scale(model, glm::vec3(1.0f) * 0.10f);
-		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		cupcake00.RenderModel();
-		mat00 = model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, -3.0f));
-		model = glm::scale(model, glm::vec3(1.0f) * 0.10f);
-		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		cupcake00.RenderModel();
+		mat00 = model;
+		mat00 = glm::translate(mat00, glm::vec3(2.3f, 2.377f, 0.5f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f) * 0.05f);
+		mat00 = glm::rotate(mat00, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
+		cup2.RenderModel();
 
-		mat00 = model = glm::translate(mat00, glm::vec3(2.0f, -0.7f, -1.0f));
-		model = glm::scale(model, glm::vec3(1.0f) * 0.10f);
-		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		cupcake01.RenderModel();
-		mat00 = model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 5.0f));
-		model = glm::scale(model, glm::vec3(1.0f) * 0.10f);
-		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		cupcake01.RenderModel();
+		// ---------------------------- COCA ----------------------------
 
-		mat00 = model = glm::translate(mat00, glm::vec3(1.0f, 0.0f, -1.0f));
-		model = glm::scale(model, glm::vec3(1.0f) * 0.6f);
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		bread.RenderModel();
-		mat00 = model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, -4.0f));
-		model = glm::scale(model, glm::vec3(1.0f) * 0.6f);
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		bread.RenderModel();
+		mat00 = model;
+		mat00 = glm::translate(mat00, glm::vec3(1.6f, 2.81f, 0.0f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f) * 0.05f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
+		coca_M.RenderModel();
 
-		mat00 = model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 2.0f));
-		model = glm::scale(model, glm::vec3(1.0f) * 0.1f);
-		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		sausage.RenderModel();
+		// ---------------------------- CAZUELA ----------------------------
+		mat00 = model;
+		mat00 = glm::translate(mat00, glm::vec3(-2.0f, 2.375f, 0.2f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f) * 0.15f);
+		mat00 = glm::rotate(mat00, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
+		cazuela_M.RenderModel();
 
-		/*mat00 = model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.0f) * 0.05f);
-		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		cupcake02.RenderModel();
 
-		mat00 = model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.0f) * 0.05f);
-		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		pumkin.RenderModel();*/
+		// ---------------------------- PIZZA ----------------------------
+		mat00 = model;
+		mat00 = glm::translate(mat00, glm::vec3(1.85f, 1.67, 2.25f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f) * 0.1f);
+		mat00 = glm::rotate(mat00, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		mat00 = glm::rotate(mat00, 135.0f * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
+		pizza_M.RenderModel();
+
+		// ---------------------------- PAN ----------------------------
+		mat00 = model;
+		mat00 = glm::translate(mat00, glm::vec3(-2.16f, 1.66, 2.15f));
+		mat00 = glm::rotate(mat00, 335.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
+		pan_M.RenderModel();
+
+		// ---------------------------- Chocolate ----------------------------
+		mat00 = model;
+		mat00 = glm::translate(mat00, glm::vec3(-1.2f, 1.675, 2.4f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f) * 0.15f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
+		choc_M.RenderModel();
+
+		// ---------------------------- Cuernito ----------------------------
+		mat00 = model;
+		mat00 = glm::translate(mat00, glm::vec3(-0.28f, 1.675, 1.7f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f) * 0.05f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
+		cuernito_M.RenderModel();
+
+		mat00 = model;
+		mat00 = glm::translate(mat00, glm::vec3(0.37f, 1.675, 2.4f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f) * 0.05f);
+		mat00 = glm::rotate(mat00, -30.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
+		cuernito_M.RenderModel();
+
+		// ---------------------------- Licor ----------------------------
+		mat00 = model;
+		mat00 = glm::translate(mat00, glm::vec3(2.25f, 2.375, -0.4f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f)*0.2f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
+		chupe_M.RenderModel();
+
+		// ---------------------------- FLOR ----------------------------
+		mat00 = model;
+		mat00 = glm::translate(mat00, glm::vec3(2.3f, 0.94f, 3.75f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f) * 0.125f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
+		semp_M.RenderModel();
+
+		mat00 = model;
+		mat00 = glm::translate(mat00, glm::vec3(2.3f, 0.94f, 4.6f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f) * 0.125f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
+		semp_M.RenderModel();
+
+		mat00 = model;
+		mat00 = glm::translate(mat00, glm::vec3(-2.3f, 0.94f, 3.75f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f) * 0.125f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
+		semp_M.RenderModel();
+
+		mat00 = model;
+		mat00 = glm::translate(mat00, glm::vec3(-2.3f, 0.94f, 4.6f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f) * 0.125f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
+		semp_M.RenderModel();
+
+		// ---------------------------- CALAVERAS ----------------------------
+
+		mat00 = model;
+		mat00 = glm::translate(mat00, glm::vec3(1.3f, 0.94f, 4.0f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f) * 0.05f);
+		mat00 = glm::rotate(mat00, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
+		sugar_sk_M.RenderModel();
+
+		mat00 = model;
+		mat00 = glm::translate(mat00, glm::vec3(-1.3f, 0.94f, 4.0f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f) * 0.05f);
+		mat00 = glm::rotate(mat00, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
+		sugar_sk1_M.RenderModel();
+
+		// ---------------------------- PAN MUERTO ----------------------------
+
+		mat00 = model;
+		mat00 = glm::translate(mat00, glm::vec3(0.0f, 0.98f, 4.0f));
+		mat00 = glm::scale(mat00, glm::vec3(1.0f) * 0.7f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
+		pan_muerto_M.RenderModel();
 
 		validate();
 		animate();
 
-		printf("%f % f %f \n",currentCamera.getCameraPosition().x, currentCamera.getCameraPosition().y, currentCamera.getCameraPosition().z);
+		//printf("%f % f %f\n",currentCamera.getCameraPosition().x, currentCamera.getCameraPosition().y, currentCamera.getCameraPosition().z);
 
 		glUseProgram(0);
 		//SwapBuffer
@@ -1341,6 +1444,7 @@ void inputKeyframes(bool* keys)
 		if (guardoFrame < 1)
 		{
 			saveFrameO();
+			//printf("\nPresiona P para habilitar guardar otro frame'\n");
 			guardoFrame++;
 			reinicioFrame = 0;
 		}
