@@ -1,0 +1,15 @@
+newmtl lz:Model_138_Wicker_Shopping_Cart_1
+illum 4
+Kd 0.00 0.00 0.00
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+map_Kd 138wsc2.tga
+Ni 1.50
+Ks 0.27 0.27 0.27
+newmtl lz:Model_138_Wicker_Shopping_Cart_2
+illum 4
+Kd 0.27 0.20 0.14
+Ka 0.00 0.00 0.00
+Tf 1.00 1.00 1.00
+Ni 1.50
+Ks 0.27 0.27 0.27

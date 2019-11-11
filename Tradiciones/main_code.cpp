@@ -124,6 +124,12 @@ Texture redTexture;
 Texture greenTexture;
 Texture flame1Texture;
 Texture flame2Texture;
+Texture pp1Texture;
+Texture pp2Texture;
+Texture pp3Texture;
+Texture pp4Texture;
+Texture pp5Texture;
+Texture pp6Texture;
 
 //Materiales
 Material Material_metalico;
@@ -602,21 +608,32 @@ int main() {
 	//Cargado de texturas
 	pisoTexture = Texture("Textures/piso.tga");
 	pisoTexture.LoadTextureA();
-	yellowTexture = Texture("Textures/plain.tga");
+	yellowTexture = Texture("Textures/yellow.tga");
 	yellowTexture.LoadTextureA();
-	pinkTexture = Texture("Textures/plain.tga");
+	pinkTexture = Texture("Textures/pink.tga");
 	pinkTexture.LoadTextureA();
-	blueTexture = Texture("Textures/plain.tga");
+	blueTexture = Texture("Textures/blue.tga");
 	blueTexture.LoadTextureA();
-	redTexture = Texture("Textures/plain.tga");
+	redTexture = Texture("Textures/red.tga");
 	redTexture.LoadTextureA();
-	greenTexture = Texture("Textures/plain.tga");
+	greenTexture = Texture("Textures/green.tga");
 	greenTexture.LoadTextureA();
 	flame1Texture = Texture("Textures/flama1.tga");
 	flame1Texture.LoadTextureA();
 	flame2Texture = Texture("Textures/flama2.tga");
 	flame2Texture.LoadTextureA();
-
+	pp1Texture = Texture("Textures/1.tga");
+	pp1Texture.LoadTextureA();
+	pp2Texture = Texture("Textures/2.tga");
+	pp2Texture.LoadTextureA();
+	pp3Texture = Texture("Textures/3.tga");
+	pp3Texture.LoadTextureA();
+	pp4Texture = Texture("Textures/4.tga");
+	pp4Texture.LoadTextureA();
+	pp5Texture = Texture("Textures/5.tga");
+	pp5Texture.LoadTextureA();
+	pp6Texture = Texture("Textures/6.tga");
+	pp6Texture.LoadTextureA();
 	//------------------ Materiales ----------------------------
 	Material_metalico = Material(8.0f, 512);
 	Material_brillante = Material(4.0f, 256);
@@ -780,6 +797,27 @@ int main() {
 		12.0f, 9.5f, -12.0f,
 		0.9f, 0.2f, 0.1f);
 	pointLightCount++;
+	// glm::vec3(12.0f, 0.05f, -12.0f)
+	pointLights[16] = PointLight(1.0f, 0.0f, 0.0f,
+		aIntensity, dIntensity,
+		12.0f, 9.0f, 1.0f,
+		0.9f, 0.2f, 0.1f);
+	pointLightCount++;
+	pointLights[17] = PointLight(0.0f, 1.0f, 0.0f,
+		aIntensity, dIntensity,
+		12.0f, 7.0f, 1.5f,
+		0.9f, 0.2f, 0.1f);
+	pointLightCount++;
+	pointLights[18] = PointLight(0.0f, 0.0f, 1.0f,
+		aIntensity,dIntensity,
+		12.0f, 5.0f, 2.0f,
+		0.9f, 0.2f, 0.1f);
+	pointLightCount++;
+	pointLights[19] = PointLight(1.0f, 1.0f, 0.0f,
+		aIntensity, dIntensity,
+		12.0f, 3.0f, 3.0f,
+		0.9f, 0.2f, 0.1f);
+	pointLightCount++;
 
 	//Luces tipo spotlight
 	//Luz interior 1
@@ -819,6 +857,13 @@ int main() {
 		1.0f, 1.0f,
 		-10.0f, -50.0f, -13.0f, // Pos
 		0.0f, -1.0f, 0.0f,
+		0.9f, 0.2f, 0.1f,
+		200.0f);
+	spotLightCount++;
+	spotLights[5] = SpotLight(1.0f, 0.0f, 1.0f,
+		1.0f, 1.0f,
+		0.0f, 4.375f, -6.0f, // Pos
+		0.0f, -1.0f, -1.0f,
 		0.9f, 0.2f, 0.1f,
 		200.0f);
 	spotLightCount++;
@@ -887,6 +932,7 @@ int main() {
 		spotLights[2].SetPos(spotPos02);
 		spotLights[3].SetPos(spotPos03);
 		spotLights[4].SetPos(glm::vec3(ufoX, ufoY, ufoZ));
+		spotLights[5].SetPos(glm::vec3(0.0f, 4.375f, -6.0f));
 
 		//Luces shader
 		//shaderList[0].SetDirectionalLight(&mainLight);
@@ -1019,34 +1065,108 @@ int main() {
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		gift02.RenderModel();
 
-		// Esferas
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, 3.0f, -3.0f));
-		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		Material_metalico.UseMaterial(uniformSpecularIntensity, uniformShininess);
-		yellowTexture.UseTexture();
-		sp.render();
 
 		// Estrella
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(12.0f, 9.5f, -12.0f));
-		model = glm::scale(model, glm::vec3(1.0f) * 0.02f);
+		model = glm::translate(model, glm::vec3(12.0f, 9.6f, -12.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 0.05f);
 		model = glm::rotate(model, 45.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
-		//model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 0.0f, -1.0f));
+		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		star.RenderModel();
 
 		// ---------------------------- ÁRBOL ----------------------------
+
+		model = glm::mat4(1.0);
+		modelTemp = model = glm::translate(model, glm::vec3(12.0f, 0.05f, -12.0f));
+
+		// Esferas
+		modelTemp = glm::translate(modelTemp, glm::vec3(0.0f, 8.6f, 0.5f));
+		modelTemp = glm::scale(modelTemp, glm::vec3(0.2f, 0.2f, 0.2f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
+		Material_metalico.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		yellowTexture.UseTexture();
+		sp.render();
+		// Esferas
+		modelTemp = model;
+		modelTemp = glm::translate(modelTemp, glm::vec3(0.0f, 7.0f, 1.0f));
+		modelTemp = glm::scale(modelTemp, glm::vec3(0.2f, 0.2f, 0.2f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
+		Material_metalico.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		pinkTexture.UseTexture();
+		sp.render();
+		// Esferas
+		modelTemp = model;
+		modelTemp = glm::translate(modelTemp, glm::vec3(-1.0f, 7.0f, 0.5f));
+		modelTemp = glm::scale(modelTemp, glm::vec3(0.2f, 0.2f, 0.2f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
+		Material_metalico.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		redTexture.UseTexture();
+		sp.render();
+		// Esferas
+		modelTemp = model;
+		modelTemp = glm::translate(modelTemp, glm::vec3(0.0f, 5.0f, 1.5f));
+		modelTemp = glm::scale(modelTemp, glm::vec3(0.2f, 0.2f, 0.2f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
+		Material_metalico.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		greenTexture.UseTexture();
+		sp.render();
+		// Esferas
+		modelTemp = model;
+		modelTemp = glm::translate(modelTemp, glm::vec3(-1.5f, 5.0f, 1.0f));
+		modelTemp = glm::scale(modelTemp, glm::vec3(0.2f, 0.2f, 0.2f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
+		Material_metalico.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		blueTexture.UseTexture();
+		sp.render();
+		// Esferas
+		modelTemp = model;
+		modelTemp = glm::translate(modelTemp, glm::vec3(1.0f, 5.0f, 1.3f));
+		modelTemp = glm::scale(modelTemp, glm::vec3(0.2f, 0.2f, 0.2f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
+		Material_metalico.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		yellowTexture.UseTexture();
+		sp.render();
+		// Esferas
+		modelTemp = model;
+		modelTemp = glm::translate(modelTemp, glm::vec3(1.5f, 3.0f, 1.5f));
+		modelTemp = glm::scale(modelTemp, glm::vec3(0.2f, 0.2f, 0.2f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
+		Material_metalico.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		pinkTexture.UseTexture();
+		sp.render();
+		// Esferas
+		modelTemp = model;
+		modelTemp = glm::translate(modelTemp, glm::vec3(-1.5f, 3.0f, 1.5f));
+		modelTemp = glm::scale(modelTemp, glm::vec3(0.2f, 0.2f, 0.2f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
+		Material_metalico.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		redTexture.UseTexture();
+		sp.render();
+		// Esferas
+		modelTemp = model;
+		modelTemp = glm::translate(modelTemp, glm::vec3(1.5f, 3.0f, -1.5f));
+		modelTemp = glm::scale(modelTemp, glm::vec3(0.2f, 0.2f, 0.2f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
+		Material_metalico.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		greenTexture.UseTexture();
+		sp.render();
+		// Esferas
+		modelTemp = model;
+		modelTemp = glm::translate(modelTemp, glm::vec3(-1.5f, 3.0f, -1.5f));
+		modelTemp = glm::scale(modelTemp, glm::vec3(0.2f, 0.2f, 0.2f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
+		Material_metalico.UseMaterial(uniformSpecularIntensity, uniformShininess);
+		blueTexture.UseTexture();
+		sp.render();
 		// Enable blending
 		glDisable(GL_CULL_FACE);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(12.0f, 0.05f, -12.0f));
 		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		tree.RenderModel();
+
 
 		// ---------------------------- SANTA ----------------------------
 		model = glm::mat4(1.0);
@@ -1089,8 +1209,28 @@ int main() {
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		ufo.RenderModel();
 
-// -------------------------------------------------------------- MUERTOS COMO DAVID --------------------------------------------------------
+// ----------------------------- MUERTOS COMO DAVID --------------------------------------
 
+		//glm::vec3 tablePos = glm::vec3(-10.0f, 0.01f, -8.0f);
+		model = glm::mat4(1.0);
+
+		model = glm::translate(model, glm::vec3(-12.0f, 8.5f, -9.0f));
+		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::scale(model, glm::vec3(3.5f, 1.5f, 1.0f)*1.5f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		pp1Texture.UseTexture();
+		meshList[1]->RenderMesh();
+
+		model = glm::mat4(1.0);
+
+		model = glm::translate(model, glm::vec3(-8.0f, 8.5f, -9.0f));
+		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::scale(model, glm::vec3(3.5f, 1.5f, 1.0f) * 1.5f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		pp2Texture.UseTexture();
+		meshList[1]->RenderMesh();
 		// ---------------------------- MESA ARRIBA ----------------------------
 		model = glm::mat4(1.0);
 		mat01 = mat00 = model = glm::translate(model, tablePos);
