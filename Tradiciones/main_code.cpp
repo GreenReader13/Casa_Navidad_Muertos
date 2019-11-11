@@ -167,6 +167,9 @@ float aIntensity = 0.2f, dIntensity = 0.5f;
 
 glm::vec3 tablePos = glm::vec3(-10.0f, 1.5f, -8.0f);
 glm::vec3 basketPos = glm::vec3(0.0f, 0.0f, 0.0f);
+glm::vec3 pizzaPos = glm::vec3(0.0f, 0.0f, 0.0f);
+glm::vec3 bottlePos = glm::vec3(0.0f, 0.0f, 0.0f);
+glm::vec3 breadPos = glm::vec3(0.0f, 0.0f, 0.0f);
 
 glm::vec3 doorPos00 = glm::vec3(0.2f, 0.01f, 12.0f);
 glm::vec3 doorPos01 = glm::vec3(-4.0f, 0.01f, 7.8f);
@@ -588,9 +591,11 @@ int main() {
 	sp.load();
 
 	currentCamera = Camera(glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
-	camera01 = Camera(glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
-	camera02 = Camera(glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
-	camera03 = Camera(glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
+	camera01 = Camera(glm::vec3(-10.107542f, 3.350622f, 3.560843f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
+	camera02 = Camera(glm::vec3(-5.342234f, 11.342978f, 14.225320f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
+	camera03 = Camera(glm::vec3(13.7639f, 10.45f, 10.07f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
+
+	currentCamera = camera01;
 
 	//Cargado de texturas
 	pisoTexture = Texture("Textures/piso.tga");
@@ -647,6 +652,8 @@ int main() {
 	album_M.LoadModel("Models/album/album.obj");
 	vela_M = Model();
 	vela_M.LoadModel("Models/candleWhite_obj/candleWhite_obj.obj");
+	cup = Model();
+	cup.LoadModel("Models/Cup/cup\ OBJ.obj");
 	pizza = Model();
 	pizza.LoadModel("Models/13917_Pepperoni_v2_l2/13917_Pepperoni_v2_l2.obj");
 	cupcake00 = Model();
@@ -874,43 +881,36 @@ int main() {
 		glUniform3f(uniformEyePosition, currentCamera.getCameraPosition().x, currentCamera.getCameraPosition().y, currentCamera.getCameraPosition().z);
 
 		//Carga de modelos y transformaciones
-		model = glm::mat4(1.0f);
 		modelTemp = glm::mat4(1.0f);
 
 		// ---------------------------- PISO ----------------------------
-		model = glm::mat4(1.0);
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
-		model = glm::scale(model, glm::vec3(15.0f, 1.0f, 15.0f));
+		model = glm::scale(glm::mat4(1.0), glm::vec3(15.0f, 1.0f, 15.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		pisoTexture.UseTexture();
 		meshList[0]->RenderMesh();
 
-
 		// ---------------------------- CASA ----------------------------
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, 0.01f, 0.0f));
+		model = glm::translate(glm::mat4(1.0), glm::vec3(0.0f, 0.01f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		House_M.RenderModel();
 
 		// ---------------------------- Puertas ----------------------------
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.2f, 0.01f, 12.0f));
+		model = glm::translate(glm::mat4(1.0), glm::vec3(0.2f, 0.01f, 12.0f));
 		model = glm::rotate(model, glm::radians(doorRot00), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Puerta_M.RenderModel();
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-4.0f, 0.01f, 7.8f));
+		model = glm::translate(glm::mat4(1.0), glm::vec3(-4.0f, 0.01f, 7.8f));
 		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
 		model = glm::rotate(model, glm::radians(doorRot01), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Puerta_M.RenderModel();
 
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-4.0f, 0.01f, -11.2f));
+		model = glm::translate(glm::mat4(1.0), glm::vec3(-4.0f, 0.01f, -11.2f));
 		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
 		model = glm::rotate(model, glm::radians(doorRot02), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0));
@@ -918,10 +918,8 @@ int main() {
 		Puerta_M.RenderModel();
 
 		// ---------------------------- Interruptores ----------------------------
-
 		// Principal 1
-		model = glm::mat4(1.0);
-		model = glm::translate(model, switchPos00);
+		model = glm::translate(glm::mat4(1.0), switchPos00);
 		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
 		model = glm::rotate(model, glm::radians(switchRot00), glm::vec3(1.0f, 0.0f, 0.0));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0));
@@ -929,8 +927,7 @@ int main() {
 		Intrp_M.RenderModel();
 
 		// Baño
-		model = glm::mat4(1.0);
-		model = glm::translate(model, switchPos01);
+		model = glm::translate(glm::mat4(1.0), switchPos01);
 		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
 		model = glm::rotate(model, glm::radians(switchRot01), glm::vec3(1.0f, 0.0f, 0.0));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0));
@@ -938,8 +935,7 @@ int main() {
 		Intrp_M.RenderModel();
 
 		// Secundario
-		model = glm::mat4(1.0);
-		model = glm::translate(model, switchPos02);
+		model = glm::translate(glm::mat4(1.0), switchPos02);
 		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
 		model = glm::rotate(model, glm::radians(switchRot02), glm::vec3(0.0f, 0.0f, 1.0));
 		//model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, 1.0f, 0.0));
@@ -947,8 +943,7 @@ int main() {
 		Intrp_M.RenderModel();
 
 		// Principal 2
-		model = glm::mat4(1.0);
-		model = glm::translate(model, switchPos03);
+		model = glm::translate(glm::mat4(1.0), switchPos03);
 		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
 		model = glm::rotate(model, glm::radians(switchRot03), glm::vec3(-1.0f, 0.0f, 0.0));
 		model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0));
@@ -957,37 +952,30 @@ int main() {
 
 		// Canasta
 		basketPos = currentCamera.getCameraPosition();
-		basketPos.x--;
-		basketPos.y--;
-		basketPos.z--;
-		model = glm::mat4(1.0);
-		model = glm::translate(model, basketPos);
+		basketPos.y -= 3;
+		model = glm::translate(glm::mat4(1.0), basketPos);
 		model = glm::scale(model, glm::vec3(1.0f) * 0.1f);
-		//model = glm::rotate(model, glm::radians(switchRot03), glm::vec3(-1.0f, 0.0f, 0.0));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		basket.RenderModel();
 
 // -------------------------------------------------------------- NAVIDAD --------------------------------------------------------
 
 		// Regalo 1
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(11.0f, 0.05f, -10.5f));
+		model = glm::translate(glm::mat4(1.0), glm::vec3(11.0f, 0.05f, -10.5f));
 		model = glm::scale(model, glm::vec3(1.0f) * 0.05f);
 		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		gift00.RenderModel();
 
 		// Regalo 2
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(11.0f, 0.05f, -12.0f));
+		model = glm::translate(glm::mat4(1.0), glm::vec3(11.0f, 0.05f, -12.0f));
 		model = glm::scale(model, glm::vec3(1.0f) * 0.05f);
 		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		gift01.RenderModel();
 
 		// Regalo 3
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(9.5f, 0.05f, -11.5f));
+		model = glm::translate(glm::mat4(1.0), glm::vec3(9.5f, 0.05f, -11.5f));
 		model = glm::scale(model, glm::vec3(1.0f) * 0.01f);
 		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 0.0f, -1.0f));
@@ -995,8 +983,7 @@ int main() {
 		gift02.RenderModel();
 
 		// Esferas
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(0.0f, 3.0f, -3.0f));
+		model = glm::translate(glm::mat4(1.0), glm::vec3(0.0f, 3.0f, -3.0f));
 		model = glm::scale(model, glm::vec3(0.2f, 0.2f, 0.2f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Material_metalico.UseMaterial(uniformSpecularIntensity, uniformShininess);
@@ -1004,8 +991,7 @@ int main() {
 		sp.render();
 
 		// Estrella
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(12.0f, 9.5f, -12.0f));
+		model = glm::translate(glm::mat4(1.0), glm::vec3(12.0f, 9.5f, -12.0f));
 		model = glm::scale(model, glm::vec3(1.0f) * 0.02f);
 		model = glm::rotate(model, 45.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		//model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 0.0f, -1.0f));
@@ -1017,24 +1003,21 @@ int main() {
 		glDisable(GL_CULL_FACE);
 		glEnable(GL_BLEND);
 		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(12.0f, 0.05f, -12.0f));
+		model = glm::translate(glm::mat4(1.0), glm::vec3(12.0f, 0.05f, -12.0f));
 		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		tree.RenderModel();
 
 		// ---------------------------- SANTA ----------------------------
-		model = glm::mat4(1.0);
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
-		model = glm::translate(model, glm::vec3(2.0f, 0.0f, -35.0f));
+		model = glm::translate(glm::mat4(1.0), glm::vec3(2.0f, 0.0f, -35.0f));
 		model = glm::scale(model, glm::vec3(1.0f) * 0.045f);
 		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		santa.RenderModel();
 
 		// ---------------------------- OVNI ----------------------------
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(ufoX, ufoY, ufoZ));
+		model = glm::translate(glm::mat4(1.0), glm::vec3(ufoX, ufoY, ufoZ));
 		model = glm::rotate(model, glm::radians(ufoRotY), glm::vec3(1.0f, 0.0f, 1.0f));
 		model = glm::rotate(model, glm::radians(ufoRot), glm::vec3(0.0f, 1.0f, 0.0));
 		model = glm::scale(model, glm::vec3(1.0f) * 0.01f);
@@ -1044,8 +1027,7 @@ int main() {
 // -------------------------------------------------------------- MUERTOS COMO DAVID --------------------------------------------------------
 
 		// ---------------------------- MESA ARRIBA ----------------------------
-		model = glm::mat4(1.0);
-		model = glm::translate(model, tablePos);
+		model = glm::translate(glm::mat4(1.0), tablePos);
 		mat00 = model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.5f,1.0f,1.0f) * 0.03f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -1229,62 +1211,93 @@ int main() {
 		//
 
 		// ---------------------------- CACAS ----------------------------
-		model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 0.0f));
+		mat00 = model = glm::translate(mat00, glm::vec3(-5.4f, 1.85f, 1.0f));
 		model = glm::scale(model, glm::vec3(1.0f) * 0.05f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		//cup.RenderModel();
-
-		model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 0.0f));
+		cup.RenderModel();
+		mat00 = model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 4.0f));
 		model = glm::scale(model, glm::vec3(1.0f) * 0.05f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cup.RenderModel();
+
+		mat00 = model = glm::translate(mat00, glm::vec3(1.0f, -0.45f, -1.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 0.06f);
 		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		//pizza.RenderModel();
+		pizza.RenderModel();
 
-		model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 0.0f));
+		mat00 = model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, -2.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 0.06f);
+		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		pizza.RenderModel();
+
+		mat00 = model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 1.0f));
+		model = glm::scale(model, glm::vec3(0.13f, 0.15f, 0.13f) );
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		bottle.RenderModel();
+		mat00 = model = glm::translate(mat00, glm::vec3(2.0f, -0.7f, -2.0f));
+		model = glm::scale(model, glm::vec3(0.13f, 0.15f, 0.13f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		bottle.RenderModel();
+		mat00 = model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 4.0f));
+		model = glm::scale(model, glm::vec3(0.13f, 0.15f, 0.13f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		bottle.RenderModel();
+
+		mat00 = model = glm::translate(mat00, glm::vec3(-1.0f, 0.0f, -0.5f));
 		model = glm::scale(model, glm::vec3(1.0f) * 0.10f);
+		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		//bottle.RenderModel();
-
-		model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 0.0f));
+		cupcake00.RenderModel();
+		mat00 = model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, -3.0f));
 		model = glm::scale(model, glm::vec3(1.0f) * 0.10f);
 		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		//cupcake00.RenderModel();
+		cupcake00.RenderModel();
 
-		model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 0.0f));
+		mat00 = model = glm::translate(mat00, glm::vec3(2.0f, -0.7f, -1.0f));
 		model = glm::scale(model, glm::vec3(1.0f) * 0.10f);
 		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		//cupcake01.RenderModel();
-
-		model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 0.0f));
-		model = glm::scale(model, glm::vec3(1.0f) * 0.05f);
+		cupcake01.RenderModel();
+		mat00 = model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 5.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 0.10f);
 		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		//cupcake02.RenderModel();
+		cupcake01.RenderModel();
 
-		model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 0.0f));
+		mat00 = model = glm::translate(mat00, glm::vec3(1.0f, 0.0f, -1.0f));
 		model = glm::scale(model, glm::vec3(1.0f) * 0.6f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		//bread.RenderModel();
+		bread.RenderModel();
+		mat00 = model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, -4.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 0.6f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		bread.RenderModel();
 
-		model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 0.0f));
+		mat00 = model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 2.0f));
 		model = glm::scale(model, glm::vec3(1.0f) * 0.1f);
 		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		//sausage.RenderModel();
+		sausage.RenderModel();
 
-		model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 0.0f));
+		/*mat00 = model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0f) * 0.05f);
 		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		//pumkin.RenderModel();
+		cupcake02.RenderModel();
 
+		mat00 = model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 0.05f);
+		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		pumkin.RenderModel();*/
 
 		validate();
 		animate();
 
-		//printf("%f % f %f\n",currentCamera.getCameraPosition().x, currentCamera.getCameraPosition().y, currentCamera.getCameraPosition().z);
+		printf("%f % f %f \n",currentCamera.getCameraPosition().x, currentCamera.getCameraPosition().y, currentCamera.getCameraPosition().z);
 
 		glUseProgram(0);
 		//SwapBuffer
