@@ -163,6 +163,9 @@ Model sugar_sk_M;
 Model sugar_sk1_M;
 Model ufo;
 Model vela_M;
+Model pin_M;
+Model nac_M;
+Model agua_M;
 
 // Variables de objetos
 int flama = 0;
@@ -644,6 +647,12 @@ int main() {
 	star.LoadModel("Models/Gold_Star/Gold_Star.obj");
 	ufo = Model();
 	ufo.LoadModel("Models/ovni/ovni-obj.obj");
+	pin_M = Model();
+	pin_M.LoadModel("Models/pin/pin.obj");
+	nac_M = Model();
+	nac_M.LoadModel("Models/nac/nac.obj");
+	agua_M = Model();
+	agua_M.LoadModel("Models/nac/water.obj");
 	
 	mesa_M = Model();
 	mesa_M.LoadModel("Models/mesa/mesa.obj");
@@ -1047,6 +1056,29 @@ int main() {
 		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		santa.RenderModel();
+
+		// ---------------------------- PINATA ----------------------------
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(12.0f, 10.0f, 3.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 0.8f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		pin_M.RenderModel();
+
+		// ---------------------------- NACIMIENTO ----------------------------
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(12.0f, 0.2f, 3.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 0.3f);
+		model = glm::rotate(model, 180.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		nac_M.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(12.0f, 0.2f, 3.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 0.3f);
+		model = glm::rotate(model, 180.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		agua_M.RenderModel();
 
 		// ---------------------------- OVNI ----------------------------
 		model = glm::mat4(1.0);

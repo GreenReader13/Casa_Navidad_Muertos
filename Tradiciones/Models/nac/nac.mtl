@@ -1,0 +1,125 @@
+# Blender MTL File: 'None'
+# Material Count: 11
+
+newmtl 13084_Brown_Swiss_v2
+Ns 9.000004
+Ka 1.000000 1.000000 1.000000
+Kd 0.550000 0.550000 0.550000
+Ks 0.063000 0.063000 0.063000
+Ke 0.0 0.0 0.0
+Ni 1.500000
+d 1.000000
+illum 2
+map_Bump Animales\\Vaca\\Brown_Swiss_v2_L2.123c78f500f6-784e-4b06-a48f-b57c37a5d8df\\13084_Brown_Swiss_v2_Normal Bump.tga
+map_Kd Animales\\Vaca\\Brown_Swiss_v2_L2.123c78f500f6-784e-4b06-a48f-b57c37a5d8df\\13084_Brown_Swiss_v2_diff.tga
+map_Ks 13084_Brown_Swiss_v2_spec.tga
+
+newmtl 13086_Black_Angus_v2
+Ns 10.000002
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.000000 0.000000 0.000000
+Ke 0.0 0.0 0.0
+Ni 1.500000
+d 1.000000
+illum 1
+map_Bump Animales\\toro\\Black_Angus_v3_L2.123c716be0d1-b4be-44b2-a46c-9872fc39018b\\13086_Black_Angus_v2_Normal Bump.tga
+map_Kd Animales\\toro\\Black_Angus_v3_L2.123c716be0d1-b4be-44b2-a46c-9872fc39018b\\13086_Black_Angus_v2_diff.tga
+map_Ks Animales\\toro\\Black_Angus_v3_L2.123c716be0d1-b4be-44b2-a46c-9872fc39018b\\13086_Black_Angus_v2_spec.tga
+
+newmtl Marco_Polo_Sheep
+Ns 10.000002
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.090000 0.090000 0.090000
+Ke 0.0 0.0 0.0
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd Animales\\Chivo3\\Marco_Polo_Sheep_v1_L3.123c7dfc1877-9731-4d8e-9251-82643aa7ac91\\13574_Marco_Polo_Diffuse.tga
+
+newmtl Material.013
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.0 0.0 0.0
+Ni 1.000000
+d 1.000000
+illum 2
+map_Kd xxkjvvsjv11c-CaixoteNormal\\GabrielI1B.tga
+
+newmtl Material.014
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.0 0.0 0.0
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd grass.tga
+
+newmtl Material.023
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.0 0.0 0.0
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd straw.tga
+
+newmtl Material.024
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.0 0.0 0.0
+Ni 1.450000
+d 1.000000
+illum 2
+map_Kd agua1.tga
+
+newmtl _18914_Muslim_woman_v1default
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.0 0.0 0.0
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl _18916_Turkish_man_v1default
+Ns 225.000000
+Ka 1.000000 1.000000 1.000000
+Kd 0.800000 0.800000 0.800000
+Ks 0.500000 0.500000 0.500000
+Ke 0.0 0.0 0.0
+Ni 1.450000
+d 1.000000
+illum 2
+
+newmtl _Chick01___Default
+Ns 25.000006
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.250000 0.250000 0.250000
+Ke 0.0 0.0 0.0
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd Animales\\pollito\\Bird_v1_L3.123ce19be880-c2ba-4b49-b441-b5778790ee8e\\birdDiffuseMap.tga
+
+newmtl playing
+Ns 14.999996
+Ka 1.000000 1.000000 1.000000
+Kd 1.000000 1.000000 1.000000
+Ks 0.135000 0.135000 0.135000
+Ke 0.0 0.0 0.0
+Ni 1.500000
+d 1.000000
+illum 2
+map_Kd PlayingBaby_v1_L1.123cb9c3fd88-9ae2-476a-93fd-6b349ac90f7a\\PlayingBabyDiffuseMap.tga
