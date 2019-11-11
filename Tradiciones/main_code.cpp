@@ -134,32 +134,39 @@ Material Material_opaco;
 Model House_M;
 Model Puerta_M;
 Model Intrp_M;
+Model basket;
+
 Model tree;
 Model santa;
 Model gift00;
 Model gift01;
 Model gift02;
-Model christmas03;
+Model star;
 Model christmas04;
 Model christmas05;
 Model christmas06;
+
 Model mesa_M;
 Model album_M;
 Model cup;
 Model ufo;
 Model vela_M;
-Model dead00;
-Model dead01;
-Model dead02;
-Model dead03;
-Model dead04;
-Model dead05;
-Model dead06;
+Model pizza;
+Model cupcake00;
+Model cupcake01;
+Model cupcake02;
+Model sausage;
+Model bottle;
+Model bread;
+Model pumkin;
 
 // Variables de objetos
+int flama = 0;
+bool cambF = false;
 float aIntensity = 0.2f, dIntensity = 0.5f;
 
 glm::vec3 tablePos = glm::vec3(-10.0f, 1.5f, -8.0f);
+glm::vec3 basketPos = glm::vec3(0.0f, 0.0f, 0.0f);
 
 glm::vec3 doorPos00 = glm::vec3(0.2f, 0.01f, 12.0f);
 glm::vec3 doorPos01 = glm::vec3(-4.0f, 0.01f, 7.8f);
@@ -241,7 +248,7 @@ float distance(glm::vec3 a, glm::vec3 b) {
 }
 
 void createObjets() {
-	unsigned int floorIndices[] = {
+	unsigned int indices[] = {
 		0, 2, 1,
 		1, 2, 3
 	};
@@ -253,18 +260,7 @@ void createObjets() {
 		10.0f, 0.0f, 10.0f,		20.0f, 20.0f,	0.0f, -1.0f, 0.0f
 	};
 
-	Mesh* obj = new Mesh();
-	obj->CreateMesh(floorVertices, floorIndices, 32, 6);
-	meshList.push_back(obj);
-}
-
-void createFlame() {
-	unsigned int floorIndices[] = {
-		0, 2, 1,
-		1, 2, 3
-	};
-
-	GLfloat floorVertices[] = {
+	GLfloat flameVertices[] = {
 		0.0f, -0.5f, -1.0f,		 0.0f,  0.0f,	0.0f, -1.0f, 0.0f,
 		0.0f,  0.5f, -1.0f,		 1.0f,  0.0f,	0.0f, -1.0f, 0.0f,
 		0.0f, -0.5f,  1.0f,		 0.0f,  1.0f,	0.0f, -1.0f, 0.0f,
@@ -272,8 +268,12 @@ void createFlame() {
 	};
 
 	Mesh* obj = new Mesh();
-	obj->CreateMesh(floorVertices, floorIndices, 32, 6);
+	obj->CreateMesh(floorVertices, indices, 32, 6);
 	meshList.push_back(obj);
+
+	Mesh* obj1 = new Mesh();
+	obj1->CreateMesh(flameVertices, indices, 32, 6);
+	meshList.push_back(obj1);
 }
 
 void CreateShaders()
@@ -558,7 +558,24 @@ void animate(void) {
 	ufoRotY += -DIS_UFO + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (DIS_UFO - (-DIS_UFO))));
 }
 
+void flame(void) {
+
+	flama += 1;
+	if (cambF) {
+		flame1Texture.UseTexture();
+		flama >= 5 ? cambF = false : cambF = true;
+	}
+	else
+	{
+		flame2Texture.UseTexture();
+		flama >= 5 ? cambF = true : cambF = false;
+	}
+	flama >= 5 ? flama = 0 : flama = flama;
+}
+
 int main() {
+	// Casteo de rand
+	srand(static_cast <unsigned> (time(0)));
 
 	//Creación de contexto
 	mainWindow = Window();
@@ -566,13 +583,14 @@ int main() {
 
 	//Objetos
 	createObjets();
-	createFlame();
 	CreateShaders();
 	sp.init();
 	sp.load();
 
-
 	currentCamera = Camera(glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
+	camera01 = Camera(glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
+	camera02 = Camera(glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
+	camera03 = Camera(glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
 
 	//Cargado de texturas
 	pisoTexture = Texture("Textures/piso.tga");
@@ -601,6 +619,13 @@ int main() {
 
 	House_M = Model();
 	House_M.LoadModel("Models/casa/House.obj");
+	Puerta_M = Model();
+	Puerta_M.LoadModel("Models/casa/Puerta.obj");
+	Intrp_M = Model();
+	Intrp_M.LoadModel("Models/casa/int.obj");
+	basket = Model();
+	basket.LoadModel("Models/basket/basket.obj");
+
 	tree = Model();
 	tree.LoadModel("Models/fir/fir.obj");
 	santa = Model();
@@ -611,24 +636,35 @@ int main() {
 	gift01.LoadModel("Models/11563_gift_box_V3/11563_gift_box_V3.obj");
 	gift02 = Model();
 	gift02.LoadModel("Models/13495_Stack_of_Gifts_v2_L2/13495_Stack_of_Gifts_v2_L2.obj");
+	star = Model();
+	star.LoadModel("Models/Gold_Star/Gold_Star.obj");
+	ufo = Model();
+	ufo.LoadModel("Models/ovni/ovni-obj.obj");
+
 	mesa_M = Model();
 	mesa_M.LoadModel("Models/mesa/table.obj");
 	album_M = Model();
 	album_M.LoadModel("Models/album/album.obj");
 	vela_M = Model();
 	vela_M.LoadModel("Models/candleWhite_obj/candleWhite_obj.obj");
-	cup = Model();
-	cup.LoadModel("Models/Cup/cup\ OBJ.obj");
-	ufo = Model();
-	ufo.LoadModel("Models/ovni/ovni-obj.obj");
-	Puerta_M = Model();
-	Puerta_M.LoadModel("Models/casa/Puerta.obj");
-	Intrp_M = Model();
-	Intrp_M.LoadModel("Models/casa/int.obj");
+	pizza = Model();
+	pizza.LoadModel("Models/13917_Pepperoni_v2_l2/13917_Pepperoni_v2_l2.obj");
+	cupcake00 = Model();
+	cupcake00.LoadModel("Models/12187_Cupcake_v1_L3/12187_Cupcake_v1_L3.obj");
+	cupcake01 = Model();
+	cupcake01.LoadModel("Models/12188_Cupcake_v1_L3/12188_Cupcake_v1_L3.obj");
+	cupcake02 = Model();
+	cupcake02.LoadModel("Models/11547_Dessert_pie_v3_l2/11547_Dessert_pie_v3_l2.obj");
+	sausage = Model();
+	sausage.LoadModel("Models/13561_Shrimp_Sausage_Jambalaya_v1_L1/13561_Shrimp_Sausage_Jambalaya_v1_L1.obj");
+	bottle = Model();
+	bottle.LoadModel("Models/Bottle\ N210418/Bottle\ N210418.obj");
+	bread = Model();
+	bread.LoadModel("Models/Bread/Bread.obj");
+	pumkin = Model();
+	pumkin.LoadModel("Models/10202_Pumkin_v02-L3/10202_Pumkin_v02-L3.obj");
 
 	loadAnimationOvni();
-
-	srand(static_cast <unsigned> (time(0)));
 
 	//------------------ Luces ----------------------------
 	unsigned int pointLightCount = 0;
@@ -714,35 +750,48 @@ int main() {
 		2.0f, 6.0f, -35.0f,
 		0.9f, 0.2f, 0.1f);
 	pointLightCount++;
+	pointLights[15] = PointLight(1.0f, 1.0f, 0.0f,
+		0.6f, 0.6f,
+		12.0f, 9.5f, -12.0f,
+		0.9f, 0.2f, 0.1f);
+	pointLightCount++;
 
 	//Luces tipo spotlight
 	//Luz interior 1
-	spotLights[0] = SpotLight(0.0f, 1.0f, 0.0f,
-		1.5f, 3.0f,
+	spotLights[0] = SpotLight(1.0f, 1.0f, 1.0f,
+		1.5f, 5.0f,
 		6.0f, -50.0f, -1.75f, // Pos
 		0.0f, -1.0f, 0.0f,
 		0.9f, 0.2f, 0.1f,
 		200.0f);
 	spotLightCount++;
 	//Luz interior 2
-	spotLights[1] = SpotLight(1.0f, 0.0f, 1.0f,
-		1.5f, 3.0f,
+	spotLights[1] = SpotLight(1.0f, 1.0f, 1.0f,
+		1.5f, 5.0f,
 		-10.0f, -50.0f, 8.5f, // Pos
 		0.0f, -1.0f, 0.0f,
 		0.9f, 0.2f, 0.1f,
 		200.0f);
 	spotLightCount++;
 	//Luz interior 3
-	spotLights[2] = SpotLight(0.0f, 1.0f, 1.0f,
-		1.5f, 3.0f,
+	spotLights[2] = SpotLight(1.0f, 1.0f, 1.0f,
+		1.5f, 5.0f,
 		-10.0f, -50.0f, -5.0f, // Pos
 		0.0f, -1.0f, 0.0f,
 		0.9f, 0.2f, 0.1f,
 		200.0f);
 	spotLightCount++;
 	//Luz interior 4
-	spotLights[3] = SpotLight(1.0f, 1.0f, 0.0f,
-		1.5f, 3.0f,
+	spotLights[3] = SpotLight(1.0f, 1.0f, 1.0f,
+		1.5f, 5.0f,
+		-10.0f, -50.0f, -13.0f, // Pos
+		0.0f, -1.0f, 0.0f,
+		0.9f, 0.2f, 0.1f,
+		200.0f);
+	spotLightCount++;
+	//Luz OVNI
+	spotLights[4] = SpotLight(0.0f, 1.0f, 0.0f,
+		1.0f, 1.0f,
 		-10.0f, -50.0f, -13.0f, // Pos
 		0.0f, -1.0f, 0.0f,
 		0.9f, 0.2f, 0.1f,
@@ -769,16 +818,14 @@ int main() {
 
 	// Matriz de transformaciones
 	glm::mat4 model(1.0f);
-	glm::mat4 modelTemp(1.0f);
-	// Vectores auxiliares
+	// Matrices auxiliares
 	glm::mat4 mat00(1.0f);
 	glm::mat4 mat01(1.0f);
-	//
+	glm::mat4 modelTemp(1.0f);
+	// Vectores auxiliares
 	glm::vec3 vec00 = glm::vec3(0.0f);
 	glm::vec3 vec01 = glm::vec3(0.0f);
 
-	int flama = 0;
-	bool cambF = false;
 	// Manejo del contenido
 	while (!mainWindow.getShouldClose()) {
 		GLfloat now = (float)glfwGetTime();
@@ -814,6 +861,7 @@ int main() {
 		spotLights[1].SetPos(spotPos01);
 		spotLights[2].SetPos(spotPos02);
 		spotLights[3].SetPos(spotPos03);
+		spotLights[4].SetPos(glm::vec3(ufoX, ufoY, ufoZ));
 
 		//Luces shader
 		//shaderList[0].SetDirectionalLight(&mainLight);
@@ -907,18 +955,19 @@ int main() {
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		Intrp_M.RenderModel();
 
-// -------------------------------------------------------------- NAVIDAD --------------------------------------------------------
-
-		// ---------------------------- ÁRBOL ----------------------------
-		// Enable blending
-		glDisable(GL_CULL_FACE);
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		// Canasta
+		basketPos = currentCamera.getCameraPosition();
+		basketPos.x--;
+		basketPos.y--;
+		basketPos.z--;
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(12.0f, 0.05f, -12.0f));
-		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
+		model = glm::translate(model, basketPos);
+		model = glm::scale(model, glm::vec3(1.0f) * 0.1f);
+		//model = glm::rotate(model, glm::radians(switchRot03), glm::vec3(-1.0f, 0.0f, 0.0));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		tree.RenderModel();
+		basket.RenderModel();
+
+// -------------------------------------------------------------- NAVIDAD --------------------------------------------------------
 
 		// Regalo 1
 		model = glm::mat4(1.0);
@@ -953,6 +1002,27 @@ int main() {
 		Material_metalico.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		yellowTexture.UseTexture();
 		sp.render();
+
+		// Estrella
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(12.0f, 9.5f, -12.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 0.02f);
+		model = glm::rotate(model, 45.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		//model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 0.0f, -1.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		star.RenderModel();
+
+		// ---------------------------- ÁRBOL ----------------------------
+		// Enable blending
+		glDisable(GL_CULL_FACE);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(12.0f, 0.05f, -12.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		tree.RenderModel();
+
 		// ---------------------------- SANTA ----------------------------
 		model = glm::mat4(1.0);
 		Material_opaco.UseMaterial(uniformSpecularIntensity, uniformShininess);
@@ -976,7 +1046,7 @@ int main() {
 		// ---------------------------- MESA ARRIBA ----------------------------
 		model = glm::mat4(1.0);
 		model = glm::translate(model, tablePos);
-		mat01 = mat00 = model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
+		mat00 = model = glm::rotate(model, 90 * toRadians, glm::vec3(0.0f, -1.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(0.5f,1.0f,1.0f) * 0.03f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		mesa_M.RenderModel();
@@ -1009,18 +1079,7 @@ int main() {
 		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
-
-		flama += 1;
-		if (cambF) {
-			flame1Texture.UseTexture();
-			flama >= 5 ? cambF = false: cambF = true;
-		}
-		else
-		{
-			flame2Texture.UseTexture();
-			flama >= 5 ? cambF = true : cambF = false;
-		}
-		flama >= 5 ? flama = 0 : flama = flama;
+		flame();
 		meshList[1]->RenderMesh();
 		//
 
@@ -1034,18 +1093,7 @@ int main() {
 		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
-
-		flama += 1;
-		if (cambF) {
-			flame1Texture.UseTexture();
-			flama >= 5 ? cambF = false : cambF = true;
-		}
-		else
-		{
-			flame2Texture.UseTexture();
-			flama >= 5 ? cambF = true : cambF = false;
-		}
-		flama >= 5 ? flama = 0 : flama = flama;
+		flame();
 		meshList[1]->RenderMesh();
 		//
 		mat00 = model = glm::translate(mat00, glm::vec3(-0.4f, 0.7f, 0.0f));
@@ -1058,18 +1106,7 @@ int main() {
 		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
-
-		flama += 1;
-		if (cambF) {
-			flame1Texture.UseTexture();
-			flama >= 5 ? cambF = false : cambF = true;
-		}
-		else
-		{
-			flame2Texture.UseTexture();
-			flama >= 5 ? cambF = true : cambF = false;
-		}
-		flama >= 5 ? flama = 0 : flama = flama;
+		flame();
 		meshList[1]->RenderMesh();
 		//
 		mat00 = model = glm::translate(mat00, glm::vec3(-1.7f, 0.0f, 0.0f));
@@ -1082,18 +1119,7 @@ int main() {
 		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
-
-		flama += 1;
-		if (cambF) {
-			flame1Texture.UseTexture();
-			flama >= 5 ? cambF = false : cambF = true;
-		}
-		else
-		{
-			flame2Texture.UseTexture();
-			flama >= 5 ? cambF = true : cambF = false;
-		}
-		flama >= 5 ? flama = 0 : flama = flama;
+		flame();
 		meshList[1]->RenderMesh();
 		//
 		mat00 = model = glm::translate(mat00, glm::vec3(-0.4f, 0.7f, 0.0f));
@@ -1106,18 +1132,7 @@ int main() {
 		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
-
-		flama += 1;
-		if (cambF) {
-			flame1Texture.UseTexture();
-			flama >= 5 ? cambF = false : cambF = true;
-		}
-		else
-		{
-			flame2Texture.UseTexture();
-			flama >= 5 ? cambF = true : cambF = false;
-		}
-		flama >= 5 ? flama = 0 : flama = flama;
+		flame();
 		meshList[1]->RenderMesh();
 		//
 		mat00 = model = glm::translate(mat00, glm::vec3(-1.7f, 0.0f, 0.0f));
@@ -1130,18 +1145,7 @@ int main() {
 		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
-
-		flama += 1;
-		if (cambF) {
-			flame1Texture.UseTexture();
-			flama >= 5 ? cambF = false : cambF = true;
-		}
-		else
-		{
-			flame2Texture.UseTexture();
-			flama >= 5 ? cambF = true : cambF = false;
-		}
-		flama >= 5 ? flama = 0 : flama = flama;
+		flame();
 		meshList[1]->RenderMesh();
 		//
 
@@ -1155,18 +1159,7 @@ int main() {
 		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
-
-		flama += 1;
-		if (cambF) {
-			flame1Texture.UseTexture();
-			flama >= 5 ? cambF = false : cambF = true;
-		}
-		else
-		{
-			flame2Texture.UseTexture();
-			flama >= 5 ? cambF = true : cambF = false;
-		}
-		flama >= 5 ? flama = 0 : flama = flama;
+		flame();
 		meshList[1]->RenderMesh();
 		//
 		mat00 = model = glm::translate(mat00, glm::vec3(1.7f, 0.0f, 0.0f));
@@ -1179,18 +1172,7 @@ int main() {
 		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
-
-		flama += 1;
-		if (cambF) {
-			flame1Texture.UseTexture();
-			flama >= 5 ? cambF = false : cambF = true;
-		}
-		else
-		{
-			flame2Texture.UseTexture();
-			flama >= 5 ? cambF = true : cambF = false;
-		}
-		flama >= 5 ? flama = 0 : flama = flama;
+		flame();
 		meshList[1]->RenderMesh();
 		//
 		mat00 = model = glm::translate(mat00, glm::vec3(0.4f, -0.7f, 0.0f));
@@ -1203,18 +1185,7 @@ int main() {
 		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
-
-		flama += 1;
-		if (cambF) {
-			flame1Texture.UseTexture();
-			flama >= 5 ? cambF = false : cambF = true;
-		}
-		else
-		{
-			flame2Texture.UseTexture();
-			flama >= 5 ? cambF = true : cambF = false;
-		}
-		flama >= 5 ? flama = 0 : flama = flama;
+		flame();
 		meshList[1]->RenderMesh();
 		//
 		mat00 = model = glm::translate(mat00, glm::vec3(1.7f, 0.0f, 0.0f));
@@ -1227,18 +1198,7 @@ int main() {
 		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
-
-		flama += 1;
-		if (cambF) {
-			flame1Texture.UseTexture();
-			flama >= 5 ? cambF = false : cambF = true;
-		}
-		else
-		{
-			flame2Texture.UseTexture();
-			flama >= 5 ? cambF = true : cambF = false;
-		}
-		flama >= 5 ? flama = 0 : flama = flama;
+		flame();
 		meshList[1]->RenderMesh();
 		//
 		mat00 = model = glm::translate(mat00, glm::vec3(0.4f, -0.7f, 0.0f));
@@ -1251,18 +1211,7 @@ int main() {
 		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
-
-		flama += 1;
-		if (cambF) {
-			flame1Texture.UseTexture();
-			flama >= 5 ? cambF = false : cambF = true;
-		}
-		else
-		{
-			flame2Texture.UseTexture();
-			flama >= 5 ? cambF = true : cambF = false;
-		}
-		flama >= 5 ? flama = 0 : flama = flama;
+		flame();
 		meshList[1]->RenderMesh();
 		//
 		mat00 = model = glm::translate(mat00, glm::vec3(1.6f, 0.0f, 0.0f));
@@ -1275,31 +1224,67 @@ int main() {
 		modelTemp = glm::rotate(modelTemp, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		modelTemp = glm::scale(modelTemp, glm::vec3(1.0f) * 0.15f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
-
-		flama += 1;
-		if (cambF) {
-			flame1Texture.UseTexture();
-			flama >= 5 ? cambF = false : cambF = true;
-		}
-		else
-		{
-			flame2Texture.UseTexture();
-			flama >= 5 ? cambF = true : cambF = false;
-		}
-		flama >= 5 ? flama = 0 : flama = flama;
+		flame();
 		meshList[1]->RenderMesh();
 		//
 
 		// ---------------------------- CACAS ----------------------------
-		model = glm::translate(mat01, glm::vec3(0.0f, 2.0f, -2.0f));
+		model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0f) * 0.05f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		cup.RenderModel();
+		//cup.RenderModel();
+
+		model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 0.05f);
+		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		//pizza.RenderModel();
+
+		model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 0.10f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		//bottle.RenderModel();
+
+		model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 0.10f);
+		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		//cupcake00.RenderModel();
+
+		model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 0.10f);
+		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		//cupcake01.RenderModel();
+
+		model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 0.05f);
+		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		//cupcake02.RenderModel();
+
+		model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 0.6f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		//bread.RenderModel();
+
+		model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 0.1f);
+		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		//sausage.RenderModel();
+
+		model = glm::translate(mat00, glm::vec3(0.0f, 0.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 0.05f);
+		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		//pumkin.RenderModel();
+
 
 		validate();
 		animate();
 
-		printf("%f % f %f\n",currentCamera.getCameraPosition().x, currentCamera.getCameraPosition().y, currentCamera.getCameraPosition().z);
+		//printf("%f % f %f\n",currentCamera.getCameraPosition().x, currentCamera.getCameraPosition().y, currentCamera.getCameraPosition().z);
 
 		glUseProgram(0);
 		//SwapBuffer
@@ -1343,7 +1328,6 @@ void inputKeyframes(bool* keys)
 		if (guardoFrame < 1)
 		{
 			saveFrameO();
-			//printf("\nPresiona P para habilitar guardar otro frame'\n");
 			guardoFrame++;
 			reinicioFrame = 0;
 		}
