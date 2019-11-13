@@ -89,10 +89,12 @@ static const char* fShader = "shaders/shader_light.frag";
 Window mainWindow;
 
 //Cámaras
-Camera currentCamera;
+Camera *currentCamera;
+Camera camera00;
 Camera camera01;
 Camera camera02;
 Camera camera03;
+Camera camera04;
 
 //luz direccional
 DirectionalLight mainLight;
@@ -148,6 +150,7 @@ Model gift00;
 Model gift01;
 Model gift02;
 Model star;
+Model ufo;
 Model christmas04;
 Model christmas05;
 Model christmas06;
@@ -168,7 +171,6 @@ Model chupe_M;
 Model semp_M;
 Model sugar_sk_M;
 Model sugar_sk1_M;
-Model ufo;
 Model vela_M;
 Model pin_M;
 Model nac_M;
@@ -181,6 +183,8 @@ float aIntensity = 0.2f, dIntensity = 0.5f;
 
 glm::vec3 tablePos = glm::vec3(-10.0f, 0.01f, -8.0f);
 glm::vec3 basketPos = glm::vec3(0.0f, 0.0f, 0.0f);
+glm::vec3 chupePos = glm::vec3(2.25f, 2.375, -0.4f);
+glm::vec3 gift00Pos = glm::vec3(11.0f, 0.05f, -10.5f);
 
 glm::vec3 doorPos00 = glm::vec3(0.2f, 0.01f, 12.0f);
 glm::vec3 doorPos01 = glm::vec3(-4.0f, 0.01f, 7.8f);
@@ -201,6 +205,7 @@ std::string s = "";
 
 float reproduciranimacion, habilitaranimacion, guardoFrame, reinicioFrame, ciclo, ciclo2, contador = 0;
 
+bool playChupe = false, chupeState = false;
 bool playDoor00 = false, playDoor01 = false, playDoor02 = false, playDoor03 = false;
 bool switchState00 = false, switchState01 = false, switchState02 = false, switchState03 = false;
 bool doorState00 = false, doorState01 = false, doorState02 = false;
@@ -419,58 +424,75 @@ void validate(void) {
 	float ds,dd;
 
 	if (mainWindow.getMouseLeftClick()) {
-		ds = distance(currentCamera.getCameraPosition(), switchPos00);
+		ds = distance(currentCamera->getCameraPosition(), switchPos00);
 		if(ds < MIN_DIS_SWITCH)
 			switchState00 = !switchState00;
 		else 
 		{
-			ds = distance(currentCamera.getCameraPosition(), switchPos01);
+			ds = distance(currentCamera->getCameraPosition(), switchPos01);
 			if (ds < MIN_DIS_SWITCH)
 				switchState01 = !switchState01;
 			else
 			{
-				ds = distance(currentCamera.getCameraPosition(), switchPos02);
+				ds = distance(currentCamera->getCameraPosition(), switchPos02);
 				if (ds < MIN_DIS_SWITCH)
 					switchState02 = !switchState02;
 				else
 				{
 
-					ds = distance(currentCamera.getCameraPosition(), switchPos03);
+					ds = distance(currentCamera->getCameraPosition(), switchPos03);
 					if (ds < MIN_DIS_SWITCH)
 						switchState03 = !switchState03;
 				}
 
 			}
 		}
+
+		ds = distance(currentCamera->getCameraPosition(), chupePos);
+		if (ds < MIN_DIS_SWITCH) {
+			chupeState = !chupeState;
+			playChupe = true;
+		}
 	}
 
 	if (mainWindow.getMouseRightClick()) {
-		dd = distance(currentCamera.getCameraPosition(), doorPos00);
+		dd = distance(currentCamera->getCameraPosition(), doorPos00);
 		if (dd < MIN_DIS_DOOR) {
 			doorState00 = !doorState00;
 			playDoor00 = true;
 		}
 		else
 		{
-			dd = distance(currentCamera.getCameraPosition(), doorPos01);
+			dd = distance(currentCamera->getCameraPosition(), doorPos01);
 			if (dd < MIN_DIS_DOOR) {
 				doorState01 = !doorState01;
 				playDoor01 = true;
 			}
 			else
 			{
-				dd = distance(currentCamera.getCameraPosition(), doorPos02);
+				dd = distance(currentCamera->getCameraPosition(), doorPos02);
 				if (dd < MIN_DIS_DOOR) {
 					doorState02 = !doorState02;
-					playDoor02 = true;
 				}
 
 			}
 		}
 	}
+
 }
 
 void animate(void) {
+
+	if (chupeState) {
+		chupePos = currentCamera->getCameraPosition();
+		chupePos.x--;
+		chupePos.y--;
+		chupePos.z--;
+	}
+	else {
+		chupePos = glm::vec3(2.25f, 2.375, -0.4f) + tablePos;
+	}
+
 
 	if (playDoor00) {
 		if (doorState00) {
@@ -601,10 +623,13 @@ int main() {
 	sp.init();
 	sp.load();
 
-	currentCamera = Camera(glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
-	camera01 = Camera(glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
-	camera02 = Camera(glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
-	camera03 = Camera(glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
+	camera00 = Camera(glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
+	camera01 = Camera(glm::vec3(2.0f, 2.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
+	camera02 = Camera(glm::vec3(6.0f, 2.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
+	camera03 = Camera(glm::vec3(-6.0f, 2.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
+	camera04 = Camera(glm::vec3(-8.0f, 2.0f, -5.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
+
+	currentCamera = &camera00;
 
 	//Cargado de texturas
 	pisoTexture = Texture("Textures/piso.tga");
@@ -890,8 +915,8 @@ int main() {
 		//Recibir eventos del usuario
 		glfwPollEvents();
 
-		currentCamera.keyControl(mainWindow.getsKeys(), deltaTime);
-		currentCamera.mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
+		currentCamera->keyControl(mainWindow.getsKeys(), deltaTime);
+		currentCamera->mouseControl(mainWindow.getXChange(), mainWindow.getYChange());
 
 		inputKeyframes(mainWindow.getsKeys());
 		animateO();
@@ -899,7 +924,7 @@ int main() {
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		//Habilitar deteccion de profundidad redibujado
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		skybox.DrawSkybox(currentCamera.calculateViewMatrix(), projection);
+		skybox.DrawSkybox(currentCamera->calculateViewMatrix(), projection);
 
 		//Iniciar parámetros de Shader
 		shaderList[0].UseShader();
@@ -925,8 +950,8 @@ int main() {
 
 		//Transformaciones
 		glUniformMatrix4fv(uniformProjection, 1, GL_FALSE, glm::value_ptr(projection));
-		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(currentCamera.calculateViewMatrix()));
-		glUniform3f(uniformEyePosition, currentCamera.getCameraPosition().x, currentCamera.getCameraPosition().y, currentCamera.getCameraPosition().z);
+		glUniformMatrix4fv(uniformView, 1, GL_FALSE, glm::value_ptr(currentCamera->calculateViewMatrix()));
+		glUniform3f(uniformEyePosition, currentCamera->getCameraPosition().x, currentCamera->getCameraPosition().y, currentCamera->getCameraPosition().z);
 
 		//Carga de modelos y transformaciones
 		model = glm::mat4(1.0f);
@@ -1011,7 +1036,7 @@ int main() {
 		Intrp_M.RenderModel();
 
 		// Canasta
-		basketPos = currentCamera.getCameraPosition();
+		basketPos = currentCamera->getCameraPosition();
 		basketPos.x--;
 		basketPos.y--;
 		basketPos.z--;
@@ -1026,7 +1051,7 @@ int main() {
 
 		// Regalo 1
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(11.0f, 0.05f, -10.5f));
+		model = glm::translate(model, gift00Pos);
 		model = glm::scale(model, glm::vec3(1.0f) * 0.05f);
 		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
@@ -1195,10 +1220,7 @@ int main() {
 
 // ----------------------------- MUERTOS COMO DAVID --------------------------------------
 
-		//glm::vec3 tablePos = glm::vec3(-10.0f, 0.01f, -8.0f);
-
-		
-		
+				
 		// ---------------------------- PAPEL PICADO ----------------------------
 
 		model = glm::mat4(1.0);
@@ -1512,7 +1534,7 @@ int main() {
 
 		// ---------------------------- Licor ----------------------------
 		mat00 = model;
-		mat00 = glm::translate(mat00, glm::vec3(2.25f, 2.375, -0.4f));
+		mat00 = glm::translate(glm::mat4(1.0f), chupePos);
 		mat00 = glm::scale(mat00, glm::vec3(1.0f)*0.2f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
 		chupe_M.RenderModel();
@@ -1603,7 +1625,7 @@ void inputKeyframes(bool* keys)
 			}
 		}
 	}
-	if (keys[GLFW_KEY_1]){
+	if (keys[GLFW_KEY_Z]){
 		if (habilitaranimacion < 1)
 			reproduciranimacion = 0;
 	}
@@ -1638,5 +1660,16 @@ void inputKeyframes(bool* keys)
 		ufoX = ufoX - 1;
 	if (keys[GLFW_KEY_J])
 		ufoX = ufoX + 1;
+
+	if (keys[GLFW_KEY_F1])
+		currentCamera = &camera00;
+	if (keys[GLFW_KEY_F2])
+		currentCamera = &camera01;
+	if (keys[GLFW_KEY_F3])
+		currentCamera = &camera02;
+	if (keys[GLFW_KEY_F4])
+		currentCamera = &camera03;
+	if (keys[GLFW_KEY_F5])
+		currentCamera = &camera04;
 
 }
