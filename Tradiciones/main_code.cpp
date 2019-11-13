@@ -152,6 +152,7 @@ Model christmas04;
 Model christmas05;
 Model christmas06;
 
+Model luz_arm;
 Model mesa_M;
 Model album_M;
 Model cup;
@@ -706,6 +707,9 @@ int main() {
 	sugar_sk1_M = Model();
 	sugar_sk1_M.LoadModel("Models/skull/sugar_skulls_v2.obj");
 
+	luz_arm = Model();
+	luz_arm.LoadModel("Models/luz_arm/luz_arm.obj");
+
 	loadAnimationOvni();
 
 	//------------------ Luces ----------------------------
@@ -797,27 +801,8 @@ int main() {
 		12.0f, 9.5f, -12.0f,
 		0.9f, 0.2f, 0.1f);
 	pointLightCount++;
+
 	// glm::vec3(12.0f, 0.05f, -12.0f)
-	pointLights[16] = PointLight(1.0f, 0.0f, 0.0f,
-		aIntensity, dIntensity,
-		12.0f, 9.0f, 1.0f,
-		0.9f, 0.2f, 0.1f);
-	pointLightCount++;
-	pointLights[17] = PointLight(0.0f, 1.0f, 0.0f,
-		aIntensity, dIntensity,
-		12.0f, 7.0f, 1.5f,
-		0.9f, 0.2f, 0.1f);
-	pointLightCount++;
-	pointLights[18] = PointLight(0.0f, 0.0f, 1.0f,
-		aIntensity,dIntensity,
-		12.0f, 5.0f, 2.0f,
-		0.9f, 0.2f, 0.1f);
-	pointLightCount++;
-	pointLights[19] = PointLight(1.0f, 1.0f, 0.0f,
-		aIntensity, dIntensity,
-		12.0f, 3.0f, 3.0f,
-		0.9f, 0.2f, 0.1f);
-	pointLightCount++;
 
 	//Luces tipo spotlight
 	//Luz interior 1
@@ -862,10 +847,10 @@ int main() {
 	spotLightCount++;
 	spotLights[5] = SpotLight(1.0f, 0.0f, 1.0f,
 		1.0f, 1.0f,
-		0.0f, 4.375f, -6.0f, // Pos
+		-10.0f, 4.375f, -6.0f, // Pos
 		0.0f, -1.0f, -1.0f,
-		0.9f, 0.2f, 0.1f,
-		200.0f);
+		1.0f, 0.7f, 0.3f,
+		30.0f);
 	spotLightCount++;
 
 	// Skybox
@@ -932,7 +917,6 @@ int main() {
 		spotLights[2].SetPos(spotPos02);
 		spotLights[3].SetPos(spotPos03);
 		spotLights[4].SetPos(glm::vec3(ufoX, ufoY, ufoZ));
-		spotLights[5].SetPos(glm::vec3(0.0f, 4.375f, -6.0f));
 
 		//Luces shader
 		//shaderList[0].SetDirectionalLight(&mainLight);
@@ -1212,6 +1196,11 @@ int main() {
 // ----------------------------- MUERTOS COMO DAVID --------------------------------------
 
 		//glm::vec3 tablePos = glm::vec3(-10.0f, 0.01f, -8.0f);
+
+		
+		
+		// ---------------------------- PAPEL PICADO ----------------------------
+
 		model = glm::mat4(1.0);
 
 		model = glm::translate(model, glm::vec3(-12.0f, 8.5f, -9.0f));
@@ -1231,11 +1220,19 @@ int main() {
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		pp2Texture.UseTexture();
 		meshList[1]->RenderMesh();
+
+
 		// ---------------------------- MESA ARRIBA ----------------------------
 		model = glm::mat4(1.0);
 		mat01 = mat00 = model = glm::translate(model, tablePos);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		mesa_M.RenderModel();
+
+		// ---------------------------- Luminaria ----------------------------
+		mat00 = model;
+		mat00 = glm::translate(mat00, glm::vec3(0.0f, 4.7f, 0.14));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
+		luz_arm.RenderModel();
 
 		// ---------------------------- CUADRO ----------------------------
 		mat00 = model;
