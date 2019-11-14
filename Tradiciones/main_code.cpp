@@ -77,6 +77,7 @@ typedef struct ufo_frame {
 #define MIN_DIS_DOOR 5.0f
 #define MAX_DOOR_ROT 90.0f
 #define MAX_SWITCH_ROT 45.0f
+#define MAX_PINATA_ROT 45.0f
 
 const float toRadians = 3.14159265f / 180.0f;
 
@@ -194,22 +195,24 @@ glm::vec3 switchPos00 = glm::vec3(7.31f, 4.738f, -15.75f);
 glm::vec3 switchPos01 = glm::vec3(-5.69f, 4.738f, -15.75f);
 glm::vec3 switchPos02 = glm::vec3(-4.242f, 4.738f, 9.0f);
 glm::vec3 switchPos03 = glm::vec3(4.81f, 4.738f, 11.76f);
+glm::vec3 switchPos04 = glm::vec3(-9.6f, 4.375f, -6.0f);
+glm::vec3 switchPos05 = glm::vec3(10.367175f, 2.500000f, 3.511425f);
 
 glm::vec3 spotPos00 = glm::vec3(6.0f, 12.0f, -1.75f);
 glm::vec3 spotPos01 = glm::vec3(-10.0f, 12.0f, 8.5f);
 glm::vec3 spotPos02 = glm::vec3(-10.0f, 12.0f, -5.0f);
 glm::vec3 spotPos03 = glm::vec3(-10.0f, 12.0f, -13.0f);
+glm::vec3 spotPos04 = glm::vec3(-10.0f, 4.375f, -6.0f);
+glm::vec3 spotPos05 = glm::vec3(10.367175f, 2.500000f, 3.211425f);
 
 const std::string delimiter = ",";
 std::string s = "";
 
-float reproduciranimacion, habilitaranimacion, guardoFrame, reinicioFrame, ciclo, ciclo2, contador = 0;
-
-bool playChupe = false, chupeState = false;
+bool chupeState = false;
 bool playDoor00 = false, playDoor01 = false, playDoor02 = false, playDoor03 = false;
-bool switchState00 = false, switchState01 = false, switchState02 = false, switchState03 = false;
+bool switchState00 = false, switchState01 = false, switchState02 = false, switchState03 = false, switchState04 = false, switchState05 = false;
 bool doorState00 = false, doorState01 = false, doorState02 = false;
-bool spotOn00, spotOn01 = false, spotOn02 = false, spotOn03 = false;
+bool pinataState = false;
 
 float doorRot00 = 0.0f,
 doorRot01 = 0.0f,
@@ -221,6 +224,8 @@ switchRot01 = 0.0f,
 switchRot02 = 0.0f,
 switchRot03 = 0.0f;
 
+float pinataRot;
+
 float   ufoRot = 0.0f,
 ufoRotY = 0.0f,
 ufoRotZ = 0.0f,
@@ -230,6 +235,8 @@ ufoZ = -10.5f,
 ufoPosX = 10.0f,
 ufoPosY = 15.0f,
 ufoPosZ = -12.0f;
+
+float reproduciranimacion, habilitaranimacion, guardoFrame, reinicioFrame, ciclo, ciclo2, contador = 0;
 
 // Variables animacíón ovni
 
@@ -249,6 +256,18 @@ int playIndexO = 0;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void inputKeyframes(bool* keys);
+float distance(glm::vec3 a, glm::vec3 b);
+void createObjets(void);
+void CreateShaders(void);
+void loadAnimationOvni(void);
+void resetElementsO(void);
+void saveFrameO(void);
+void interpolationO(void);
+void animateO(void);
+void validate(void);
+void animate(void);
+void flame(void);
+void inputKeyframes(bool* keys);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -266,7 +285,7 @@ float distance(glm::vec3 a, glm::vec3 b) {
 	return sqrtf(powf(b.x - a.x, 2) + powf(b.y - a.y, 2) + powf(b.z - a.z, 2));
 }
 
-void createObjets() {
+void createObjets(void) {
 	unsigned int indices[] = {
 		0, 2, 1,
 		1, 2, 3
@@ -295,7 +314,7 @@ void createObjets() {
 	meshList.push_back(obj1);
 }
 
-void CreateShaders()
+void CreateShaders(void)
 {
 	Shader* shader1 = new Shader();
 	shader1->CreateFromFiles(vShader, fShader);
@@ -427,22 +446,28 @@ void validate(void) {
 		ds = distance(currentCamera->getCameraPosition(), switchPos00);
 		if(ds < MIN_DIS_SWITCH)
 			switchState00 = !switchState00;
-		else 
-		{
+		else {
 			ds = distance(currentCamera->getCameraPosition(), switchPos01);
 			if (ds < MIN_DIS_SWITCH)
 				switchState01 = !switchState01;
-			else
-			{
+			else{
 				ds = distance(currentCamera->getCameraPosition(), switchPos02);
 				if (ds < MIN_DIS_SWITCH)
 					switchState02 = !switchState02;
-				else
-				{
-
+				else {
 					ds = distance(currentCamera->getCameraPosition(), switchPos03);
 					if (ds < MIN_DIS_SWITCH)
 						switchState03 = !switchState03;
+					else {
+						ds = distance(currentCamera->getCameraPosition(), switchPos04);
+						if (ds < MIN_DIS_SWITCH)
+							switchState04 = !switchState04;
+						else {
+							ds = distance(currentCamera->getCameraPosition(), switchPos05);
+							if (ds < MIN_DIS_SWITCH)
+								switchState05 = !switchState05;
+						}
+					}
 				}
 
 			}
@@ -451,7 +476,6 @@ void validate(void) {
 		ds = distance(currentCamera->getCameraPosition(), chupePos);
 		if (ds < MIN_DIS_SWITCH) {
 			chupeState = !chupeState;
-			playChupe = true;
 		}
 	}
 
@@ -473,6 +497,7 @@ void validate(void) {
 				dd = distance(currentCamera->getCameraPosition(), doorPos02);
 				if (dd < MIN_DIS_DOOR) {
 					doorState02 = !doorState02;
+					playDoor02 = true;
 				}
 
 			}
@@ -482,17 +507,6 @@ void validate(void) {
 }
 
 void animate(void) {
-
-	if (chupeState) {
-		chupePos = currentCamera->getCameraPosition();
-		chupePos.x--;
-		chupePos.y--;
-		chupePos.z--;
-	}
-	else {
-		chupePos = glm::vec3(2.25f, 2.375, -0.4f) + tablePos;
-	}
-
 
 	if (playDoor00) {
 		if (doorState00) {
@@ -551,6 +565,14 @@ void animate(void) {
 		}
 	}
 
+	if (chupeState) {
+		chupePos = basketPos;
+		chupePos.y += 0.1;
+	}
+	else {
+		chupePos = glm::vec3(2.25f, 2.375, -0.4f) + tablePos;
+	}
+
 	if (switchState00) {
 		switchRot00 = MAX_SWITCH_ROT;
 	}
@@ -589,9 +611,40 @@ void animate(void) {
 	else{
 		spotPos00.y = 12.0f;
 	}
+	if (switchState04) {
+		spotPos04.y = 4.375f;
+	}
+	else {
+		spotPos04.y = -50.0f;
+	}
+
+	if (switchState05) {
+		spotPos05.y = 2.5f;
+	}
+	else {
+		spotPos05.y = -50.0f;
+	}
+
+	if (pinataState) {
+		if (pinataRot <= MAX_PINATA_ROT)
+			pinataRot += 0.5f;
+		else {
+			pinataRot = MAX_PINATA_ROT;
+			pinataState = false;
+		}
+	}
+	else {
+		if (pinataRot >= -MAX_PINATA_ROT)
+			pinataRot -= 0.5f;
+		else {
+			pinataRot = -MAX_PINATA_ROT;
+			pinataState = true;
+		}
+	}
 
 	ufoRot += 2.5f;
 	ufoRotY += -DIS_UFO + static_cast <float> (rand()) / (static_cast <float> (RAND_MAX / (DIS_UFO - (-DIS_UFO))));
+
 }
 
 void flame(void) {
@@ -609,6 +662,12 @@ void flame(void) {
 	flama >= 5 ? flama = 0 : flama = flama;
 }
 
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+//   													MAIN													    ///
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
 int main() {
 	// Casteo de rand
 	srand(static_cast <unsigned> (time(0)));
@@ -623,11 +682,11 @@ int main() {
 	sp.init();
 	sp.load();
 
-	camera00 = Camera(glm::vec3(0.0f, 2.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
-	camera01 = Camera(glm::vec3(2.0f, 2.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
-	camera02 = Camera(glm::vec3(6.0f, 2.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
-	camera03 = Camera(glm::vec3(-6.0f, 2.0f, 0.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
-	camera04 = Camera(glm::vec3(-8.0f, 2.0f, -5.0f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
+	camera00 = Camera(glm::vec3(2.642012f, 8.250121f, 35.622520f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
+	camera01 = Camera(glm::vec3(7.339100f, 3.500000f, 5.515017f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
+	camera02 = Camera(glm::vec3(-2.124664f, 11.593169f, 8.981001f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
+	camera03 = Camera(glm::vec3(-13.385676f, 11.375727f, 13.942100f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
+	camera04 = Camera(glm::vec3(-9.740357f, 3.500000f, -0.022698f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
 
 	currentCamera = &camera00;
 
@@ -742,7 +801,7 @@ int main() {
 	unsigned int spotLightCount = 0;
 	//luz direccional, sólo 1 y siempre debe de existir
 	mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,
-		0.3f, 0.3f,
+		0.1f, 0.1f,
 		0.0f, 0.0f, -1.0f);
 	//Luces puntuales
 	//Declaración de primer luz puntual
@@ -871,11 +930,18 @@ int main() {
 		200.0f);
 	spotLightCount++;
 	spotLights[5] = SpotLight(1.0f, 0.0f, 1.0f,
-		1.0f, 1.0f,
+		4.0f, 4.0f,
 		-10.0f, 4.375f, -6.0f, // Pos
 		0.0f, -1.0f, -1.0f,
 		1.0f, 0.7f, 0.3f,
-		30.0f);
+		200.0f);
+	spotLightCount++;
+	spotLights[6] = SpotLight(1.0f, 1.0f, 1.0f,
+		4.0f, 4.0f,
+		10.367175f, 2.500000f, 3.011425f, // Pos
+		0.0f, -1.0f, -1.0f,
+		1.0f, 0.7f, 0.3f,
+		200.0f);
 	spotLightCount++;
 
 	// Skybox
@@ -942,6 +1008,8 @@ int main() {
 		spotLights[2].SetPos(spotPos02);
 		spotLights[3].SetPos(spotPos03);
 		spotLights[4].SetPos(glm::vec3(ufoX, ufoY, ufoZ));
+		spotLights[5].SetPos(spotPos04);
+		spotLights[6].SetPos(spotPos05);
 
 		//Luces shader
 		//shaderList[0].SetDirectionalLight(&mainLight);
@@ -1188,7 +1256,9 @@ int main() {
 
 		// ---------------------------- PINATA ----------------------------
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(12.0f, 10.0f, 3.0f));
+		model = glm::translate(model, glm::vec3(12.0f, 12.0f, 3.0f));
+		model = glm::rotate(model, glm::radians(pinataRot),glm::vec3(12.0f, 10.0f, 1.0f));
+		model = glm::translate(model, glm::vec3(0.0f, -2.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0f) * 0.8f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		pin_M.RenderModel();
@@ -1208,6 +1278,12 @@ int main() {
 		model = glm::rotate(model, 180.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		agua_M.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(12.0f, 3.2f, 3.0f));
+		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, -1.0f, 0.0));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		luz_arm.RenderModel();
 
 		// ---------------------------- OVNI ----------------------------
 		model = glm::mat4(1.0);
@@ -1446,7 +1522,7 @@ int main() {
 		meshList[1]->RenderMesh();
 		//
 
-		// ---------------------------- CACAS ----------------------------
+		// ---------------------------- COCAS ----------------------------
 
 		mat00 = model;
 		mat00 = glm::translate(mat00, glm::vec3(0.95f, 2.5f, 0.3f));
@@ -1591,7 +1667,7 @@ int main() {
 		validate();
 		animate();
 
-		//printf("%f % f %f\n",currentCamera.getCameraPosition().x, currentCamera.getCameraPosition().y, currentCamera.getCameraPosition().z);
+		printf("%f % f %f\n",currentCamera->getCameraPosition().x, currentCamera->getCameraPosition().y, currentCamera->getCameraPosition().z);
 
 		glUseProgram(0);
 		//SwapBuffer
@@ -1599,6 +1675,8 @@ int main() {
 	}
 	// Terminate GLFW
 }
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 void inputKeyframes(bool* keys)
 {
