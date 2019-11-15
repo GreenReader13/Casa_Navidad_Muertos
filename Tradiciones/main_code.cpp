@@ -144,6 +144,8 @@ Model House_M;
 Model Puerta_M;
 Model Intrp_M;
 Model basket;
+Model toilet;
+Model sign;
 
 Model tree;
 Model santa;
@@ -442,42 +444,28 @@ void validate(void) {
 
 	float ds,dd;
 
-	if (mainWindow.getMouseLeftClick()) {
-		ds = distance(currentCamera->getCameraPosition(), switchPos00);
-		if(ds < MIN_DIS_SWITCH)
-			switchState00 = !switchState00;
-		else {
-			ds = distance(currentCamera->getCameraPosition(), switchPos01);
-			if (ds < MIN_DIS_SWITCH)
-				switchState01 = !switchState01;
-			else{
-				ds = distance(currentCamera->getCameraPosition(), switchPos02);
-				if (ds < MIN_DIS_SWITCH)
-					switchState02 = !switchState02;
-				else {
-					ds = distance(currentCamera->getCameraPosition(), switchPos03);
-					if (ds < MIN_DIS_SWITCH)
-						switchState03 = !switchState03;
-					else {
-						ds = distance(currentCamera->getCameraPosition(), switchPos04);
-						if (ds < MIN_DIS_SWITCH)
-							switchState04 = !switchState04;
-						else {
-							ds = distance(currentCamera->getCameraPosition(), switchPos05);
-							if (ds < MIN_DIS_SWITCH)
-								switchState05 = !switchState05;
-						}
-					}
-				}
+	ds = distance(currentCamera->getCameraPosition(), switchPos00);
+	(mainWindow.getMouseLeftClick() && ds < MIN_DIS_SWITCH) ? switchState00 = true : switchState00 = false;
 
-			}
-		}
+	ds = distance(currentCamera->getCameraPosition(), switchPos01);
+	(mainWindow.getMouseLeftClick() && ds < MIN_DIS_SWITCH) ? switchState01 = true : switchState01 = false;
 
-		ds = distance(currentCamera->getCameraPosition(), chupePos);
-		if (ds < MIN_DIS_SWITCH) {
-			chupeState = !chupeState;
-		}
-	}
+	ds = distance(currentCamera->getCameraPosition(), switchPos02);
+	(mainWindow.getMouseLeftClick() && ds < MIN_DIS_SWITCH) ? switchState02 = true : switchState02 = false;
+
+	ds = distance(currentCamera->getCameraPosition(), switchPos03);
+	(mainWindow.getMouseLeftClick() && ds < MIN_DIS_SWITCH) ? switchState03 = true : switchState03 = false;
+
+	ds = distance(currentCamera->getCameraPosition(), switchPos04);
+	(mainWindow.getMouseLeftClick() && ds < MIN_DIS_SWITCH) ? switchState04 = true : switchState04 = false;
+
+	ds = distance(currentCamera->getCameraPosition(), switchPos05);
+	(mainWindow.getMouseLeftClick() && ds < MIN_DIS_SWITCH) ? switchState05 = true : switchState05 = false;
+	
+			
+	ds = distance(currentCamera->getCameraPosition(), chupePos);
+	(mainWindow.getMouseLeftClick() && ds < MIN_DIS_SWITCH) ? chupeState = true : chupeState = false;
+
 
 	if (mainWindow.getMouseRightClick()) {
 		dd = distance(currentCamera->getCameraPosition(), doorPos00);
@@ -719,7 +707,9 @@ int main() {
 	pp5Texture.LoadTextureA();
 	pp6Texture = Texture("Textures/6.tga");
 	pp6Texture.LoadTextureA();
+
 	//------------------ Materiales ----------------------------
+
 	Material_metalico = Material(8.0f, 512);
 	Material_brillante = Material(4.0f, 256);
 	Material_opaco = Material(0.3f, 4);
@@ -734,6 +724,12 @@ int main() {
 	Intrp_M.LoadModel("Models/casa/int.obj");
 	basket = Model();
 	basket.LoadModel("Models/basket/basket.obj");
+	toilet = Model();
+	toilet.LoadModel("Models/hsdc00/hsdc00.obj");
+	toilet = Model();
+	toilet.LoadModel("Models/hsdc00/hsdc00.obj");
+	//sign = Model();
+	//sign.LoadModel("Models/objSign/objSign.obj"); // Su textura lanza excepción
 
 	tree = Model();
 	tree.LoadModel("Models/fir/fir.obj");
@@ -1114,6 +1110,14 @@ int main() {
 		//model = glm::rotate(model, glm::radians(switchRot03), glm::vec3(-1.0f, 0.0f, 0.0));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		basket.RenderModel();
+
+		// Excusado
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-12.457438f, 0.01f, -13.129789));
+		model = glm::scale(model, glm::vec3(1.0f) * 0.1f);
+		//model = glm::rotate(model, glm::radians(-90.0f), glm::vec3(0.0f, 1.0f, 0.0));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		toilet.RenderModel();
 
 // -------------------------------------------------------------- NAVIDAD --------------------------------------------------------
 
@@ -1667,7 +1671,7 @@ int main() {
 		validate();
 		animate();
 
-		printf("%f % f %f\n",currentCamera->getCameraPosition().x, currentCamera->getCameraPosition().y, currentCamera->getCameraPosition().z);
+		//printf("%f % f %f\n",currentCamera->getCameraPosition().x, currentCamera->getCameraPosition().y, currentCamera->getCameraPosition().z);
 
 		glUseProgram(0);
 		//SwapBuffer
@@ -1713,7 +1717,6 @@ void inputKeyframes(bool* keys)
 		if (guardoFrame < 1)
 		{
 			saveFrameO();
-			//printf("\nPresiona P para habilitar guardar otro frame'\n");
 			guardoFrame++;
 			reinicioFrame = 0;
 		}

@@ -80,6 +80,7 @@ int Window::Initialise()
 
 void Window::createCallbacks()
 {
+	glfwSetInputMode(mainWindow, GLFW_CURSOR, GLFW_TRUE);
 	glfwSetKeyCallback(mainWindow, ManejaTeclado);
 	glfwSetCursorPosCallback(mainWindow, ManejaMouse);
 	glfwSetMouseButtonCallback(mainWindow, mouseButtonCallback);
@@ -105,12 +106,6 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 	if (key == GLFW_KEY_ESCAPE && action == GLFW_PRESS)
 	{
 		glfwSetWindowShouldClose(window, GL_TRUE);
-	}
-
-	if (key == GLFW_KEY_D && action == GLFW_PRESS)
-	{
-		const char* key_name = glfwGetKeyName(GLFW_KEY_D, 0);
-		//printf("se presiono la tecla: %s\n",key_name);
 	}
 
 	if (key >= 0 && key < 1024)
@@ -149,18 +144,17 @@ void Window::ManejaMouse(GLFWwindow* window, double xPos, double yPos)
 void Window::mouseButtonCallback(GLFWwindow* window, int button, int action, int mods) 
 {
 	Window* theWindow = static_cast<Window*>(glfwGetWindowUserPointer(window));
-	if (button == GLFW_MOUSE_BUTTON_LEFT) {
-		if (action == GLFW_PRESS) 
-			theWindow->mouseLeftClick = true;
-		if (action == GLFW_RELEASE)
-			theWindow->mouseLeftClick = false;
-	}
-	if (button == GLFW_MOUSE_BUTTON_RIGHT) {
-		if (action == GLFW_PRESS)
-			theWindow->mouseRightClick = true;
-		if (action == GLFW_RELEASE)
-			theWindow->mouseRightClick = false;
-	}
+	int state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT);
+	if (state == GLFW_PRESS)
+		theWindow->mouseLeftClick = true;
+	else if (state == GLFW_RELEASE)
+		theWindow->mouseLeftClick = false;
+
+	state = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT);
+	if (state == GLFW_PRESS)
+		theWindow->mouseRightClick = true;
+	else if (state == GLFW_RELEASE)
+		theWindow->mouseRightClick = false;
 
 }
 
