@@ -7,6 +7,8 @@
 * Segundo cuarto con temética celebración de Navidad en México
 */
 
+#pragma comment(lib, "winmm.lib")
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 //										LIBRERIAS A UTILIZAR														///
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -17,6 +19,9 @@
 #include <vector>
 #include <fstream>
 #include <ctime>
+
+#include<Windows.h>
+#include<mmsystem.h>
 
 #include <GL/glew.h>	//Librería para resolver dependencias
 #include <GLFW/glfw3.h>	//Librería para creación de ventana y contexto openGL
@@ -98,13 +103,14 @@ Camera camera03;
 Camera camera04;
 
 //luz direccional
-DirectionalLight mainLight;
+DirectionalLight mainLight, mainLight0;
 //para declarar varias luces de tipo pointlight
-PointLight pointLights[MAX_POINT_LIGHTS];
+PointLight pointLights[MAX_POINT_LIGHTS], pointLights0[1];
 SpotLight spotLights[MAX_SPOT_LIGHTS];
 
 //Skybox
-Skybox skybox;
+Skybox* currentSkybox;
+Skybox skybox, skybox0;
 
 GLfloat deltaTime = 0.0f;
 GLfloat lastTime = 0.0f;
@@ -210,10 +216,12 @@ glm::vec3 spotPos05 = glm::vec3(10.367175f, 2.500000f, 3.211425f);
 const std::string delimiter = ",";
 std::string s = "";
 
-bool chupeState = false;
+bool dayState = true;
+bool playSound = true;
 bool playDoor00 = false, playDoor01 = false, playDoor02 = false, playDoor03 = false;
 bool switchState00 = false, switchState01 = false, switchState02 = false, switchState03 = false, switchState04 = false, switchState05 = false;
 bool doorState00 = false, doorState01 = false, doorState02 = false;
+bool chupeState = false;
 bool pinataState = false;
 
 float doorRot00 = 0.0f,
@@ -250,7 +258,6 @@ int FrameIndexO = 0;
 bool playO = false;
 int playIndexO = 0;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
-
 
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -464,7 +471,8 @@ void validate(void) {
 	
 			
 	ds = distance(currentCamera->getCameraPosition(), chupePos);
-	(mainWindow.getMouseLeftClick() && ds < MIN_DIS_SWITCH) ? chupeState = true : chupeState = false;
+	if (mainWindow.getMouseLeftClick() && ds < MIN_DIS_SWITCH) 
+		chupeState = !chupeState;
 
 
 	if (mainWindow.getMouseRightClick()) {
@@ -491,6 +499,11 @@ void validate(void) {
 			}
 		}
 	}
+	//if (playSound)
+	//	PlaySound("sound/Feliz\ Navidad.wav", NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
+	//else
+	//	PlaySound(NULL, 0, 0);
+
 
 }
 
@@ -657,6 +670,9 @@ void flame(void) {
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 int main() {
+
+	bool active = PlaySound("sound/Feliz\ Navidad.wav",NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
+
 	// Casteo de rand
 	srand(static_cast <unsigned> (time(0)));
 
@@ -794,11 +810,15 @@ int main() {
 
 	//------------------ Luces ----------------------------
 	unsigned int pointLightCount = 0;
+	unsigned int pointLightCount0 = 0;
 	unsigned int spotLightCount = 0;
 	//luz direccional, sólo 1 y siempre debe de existir
 	mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,
-		0.1f, 0.1f,
-		0.0f, 0.0f, -1.0f);
+		0.2f, 0.2f,
+		0.0f, 0.0f, 1.0f);
+	mainLight0 = DirectionalLight(1.0f, 1.0f, 1.0f,
+		0.0001f, 0.0001f,
+		0.0f, 0.0f, 1.0f);
 	//Luces puntuales
 	//Declaración de primer luz puntual
 	pointLights[0] = PointLight(1.0f, 1.0f, 1.0f,
@@ -882,6 +902,12 @@ int main() {
 		0.9f, 0.2f, 0.1f);
 	pointLightCount++;
 
+	pointLights0[1] = PointLight(1.0f, 1.0f, 0.0f,
+		0.01f, 0.01f,
+		12.0f, 9.5f, -50.0f,
+		0.9f, 0.2f, 0.1f);
+	pointLightCount0++;
+
 	// glm::vec3(12.0f, 0.05f, -12.0f)
 
 	//Luces tipo spotlight
@@ -943,15 +969,28 @@ int main() {
 	// Skybox
 	std::vector<std::string> skyboxFaces;
 	// Cargar texturas en orden
-	skyboxFaces.push_back("Textures/ely_hills/hills_rt.tga");
-	skyboxFaces.push_back("Textures/ely_hills/hills_lf.tga");
-	skyboxFaces.push_back("Textures/ely_hills/hills_dn.tga");
-	skyboxFaces.push_back("Textures/ely_hills/hills_up.tga");
-	skyboxFaces.push_back("Textures/ely_hills/hills_bk.tga");
-	skyboxFaces.push_back("Textures/ely_hills/hills_ft.tga");
+	skyboxFaces.push_back("Textures/ame_fade/fadeaway_rt.tga");
+	skyboxFaces.push_back("Textures/ame_fade/fadeaway_lf.tga");
+	skyboxFaces.push_back("Textures/ame_fade/fadeaway_dn.tga");
+	skyboxFaces.push_back("Textures/ame_fade/fadeaway_up.tga");
+	skyboxFaces.push_back("Textures/ame_fade/fadeaway_bk.tga");
+	skyboxFaces.push_back("Textures/ame_fade/fadeaway_ft.tga");
+
+	// Skybox
+	std::vector<std::string> skyboxFaces0;
+	// Cargar texturas en orden
+	skyboxFaces0.push_back("Textures/ame_flatrock/flatrock_rt.tga");
+	skyboxFaces0.push_back("Textures/ame_flatrock/flatrock_lf.tga");
+	skyboxFaces0.push_back("Textures/ame_flatrock/flatrock_dn.tga");
+	skyboxFaces0.push_back("Textures/ame_flatrock/flatrock_up.tga");
+	skyboxFaces0.push_back("Textures/ame_flatrock/flatrock_bk.tga");
+	skyboxFaces0.push_back("Textures/ame_flatrock/flatrock_ft.tga");
 
 	// Inicializar Skybox
 	skybox = Skybox(skyboxFaces);
+	skybox0 = Skybox(skyboxFaces0);
+
+	currentSkybox = &skybox;
 
 	// Uniforms
 	GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0, uniformEyePosition = 0, uniformSpecularIntensity = 0, uniformShininess = 0;
@@ -986,7 +1025,7 @@ int main() {
 		glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
 		//Habilitar deteccion de profundidad redibujado
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		skybox.DrawSkybox(currentCamera->calculateViewMatrix(), projection);
+		currentSkybox->DrawSkybox(currentCamera->calculateViewMatrix(), projection);
 
 		//Iniciar parámetros de Shader
 		shaderList[0].UseShader();
@@ -998,7 +1037,6 @@ int main() {
 		uniformShininess = shaderList[0].GetShininessLocation();
 
 		//Luces
-		//spotLights[0].SetFlash(lowerLight, camera.getCameraDirection());
 		spotLights[0].SetPos(spotPos00);
 		spotLights[1].SetPos(spotPos01);
 		spotLights[2].SetPos(spotPos02);
@@ -1008,8 +1046,16 @@ int main() {
 		spotLights[6].SetPos(spotPos05);
 
 		//Luces shader
-		//shaderList[0].SetDirectionalLight(&mainLight);
-		shaderList[0].SetPointLights(pointLights, pointLightCount);
+		if (dayState) {
+			shaderList[0].SetDirectionalLight(&mainLight);
+			shaderList[0].SetPointLights(pointLights0, pointLightCount0);
+		}
+		else {
+			shaderList[0].SetPointLights(pointLights, pointLightCount);
+			shaderList[0].SetDirectionalLight(&mainLight0);
+		
+		}
+
 		shaderList[0].SetSpotLights(spotLights, spotLightCount);
 
 		//Transformaciones
@@ -1310,7 +1356,7 @@ int main() {
 		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 0.0f, 1.0f));
 		model = glm::scale(model, glm::vec3(3.5f, 1.5f, 1.0f)*1.5f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		pp1Texture.UseTexture();
+		pp2Texture.UseTexture();
 		meshList[1]->RenderMesh();
 
 		model = glm::mat4(1.0);
@@ -1728,6 +1774,16 @@ void inputKeyframes(bool* keys)
 	if (keys[GLFW_KEY_0]) {
 		loadAnimationOvni();
 	}
+
+	if (keys[GLFW_KEY_1]) {
+		dayState = true;
+		currentSkybox = &skybox;
+	}
+	if (keys[GLFW_KEY_2]) {
+		dayState = false;
+		currentSkybox = &skybox0;
+	}
+
 
 	if (keys[GLFW_KEY_T])
 		ufoY = ufoY + 1;
