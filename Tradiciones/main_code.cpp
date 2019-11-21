@@ -193,7 +193,14 @@ Model vela_M;
 Model pin_M;
 Model nac_M;
 Model agua_M;
-Model piolin_M;
+
+//piolin
+Model cabeza_M;
+Model torso_M;
+Model brazoL_M;
+Model brazoR_M;
+Model piernaL_M;
+Model piernaR_M;
 
 // Variables de objetos
 int flama = 0;
@@ -696,7 +703,7 @@ void pant(void) {
 
 int main() {
 
-	bool active = PlaySound("sound/Feliz\ Navidad.wav",NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
+	//bool active = PlaySound("sound/Feliz\ Navidad.wav",NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
 
 	// Casteo de rand
 	srand(static_cast <unsigned> (time(0)));
@@ -846,8 +853,19 @@ int main() {
 	luz_arm = Model();
 	luz_arm.LoadModel("Models/luz_arm/luz_arm.obj");
 
-	piolin_M = Model();
-	piolin_M.LoadModel("Models/pio/pio.obj");
+	//piolin
+	cabeza_M = Model();
+	cabeza_M.LoadModel("Models/pio/cabeza.obj");
+	torso_M = Model();
+	torso_M.LoadModel("Models/pio/cuerpo.obj");
+	brazoL_M = Model();
+	brazoL_M.LoadModel("Models/pio/brazo.obj");
+	brazoR_M = Model();
+	brazoR_M.LoadModel("Models/pio/brazo_R.obj");
+	piernaL_M = Model();
+	piernaL_M.LoadModel("Models/pio/pierna.obj");
+	piernaR_M = Model();
+	piernaR_M.LoadModel("Models/pio/pierna_R.obj");
 
 	loadAnimationOvni();
 
@@ -1012,12 +1030,12 @@ int main() {
 	// Skybox
 	std::vector<std::string> skyboxFaces;
 	// Cargar texturas en orden
-	skyboxFaces.push_back("Textures/ame_fade/fadeaway_rt.tga");
-	skyboxFaces.push_back("Textures/ame_fade/fadeaway_lf.tga");
+	skyboxFaces.push_back("Textures/ame_fade/fadeaway_ft.tga");
+	skyboxFaces.push_back("Textures/ame_fade/fadeaway_bk.tga");
 	skyboxFaces.push_back("Textures/ame_fade/fadeaway_dn.tga");
 	skyboxFaces.push_back("Textures/ame_fade/fadeaway_up.tga");
-	skyboxFaces.push_back("Textures/ame_fade/fadeaway_bk.tga");
-	skyboxFaces.push_back("Textures/ame_fade/fadeaway_ft.tga");
+	skyboxFaces.push_back("Textures/ame_fade/fadeaway_rt.tga");
+	skyboxFaces.push_back("Textures/ame_fade/fadeaway_lf.tga");
 
 	// Skybox
 	std::vector<std::string> skyboxFaces0;
@@ -1829,12 +1847,55 @@ int main() {
 		pan_muerto_M.RenderModel();
 
 		// ---------------------------- Pollo ----------------------------
+		//Cabeza
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-10.0f, 0.01f, 10.0f));
+		mat00 = model = glm::translate(model, glm::vec3(-10.0f, 6.0f, 14.0f));
 		model = glm::scale(model, glm::vec3(1.0f) * 3.0f);
 		model = glm::rotate(model, 180.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		piolin_M.RenderModel();
+		cabeza_M.RenderModel();
+		//Torso
+		model = mat00;
+
+		model = glm::translate(model, glm::vec3(0.0f, -1.6f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 3.0f);
+		model = glm::rotate(model, 180.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		torso_M.RenderModel();
+
+		//Brazos
+		model = mat00;
+
+		model = glm::translate(model, glm::vec3(-1.2f, -1.05f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 3.0f);
+		model = glm::rotate(model, 180.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		brazoL_M.RenderModel();
+
+		model = mat00;
+
+		model = glm::translate(model, glm::vec3(1.2f, -1.05f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 3.0f);
+		model = glm::rotate(model, 180.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		brazoR_M.RenderModel();
+
+		//Piernas
+		model = mat00;
+
+		model = glm::translate(model, glm::vec3(-0.66f, -3.6f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 3.0f);
+		model = glm::rotate(model, 180.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		piernaL_M.RenderModel();
+
+		model = mat00;
+
+		model = glm::translate(model, glm::vec3(0.66f, -3.6f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 3.0f);
+		model = glm::rotate(model, 180.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		piernaR_M.RenderModel();
 
 
 		validate();
