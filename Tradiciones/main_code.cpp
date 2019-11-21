@@ -139,6 +139,9 @@ Texture pp3Texture;
 Texture pp4Texture;
 Texture pp5Texture;
 Texture pp6Texture;
+Texture rugrats;
+Texture f1;
+Texture f2;
 
 //Materiales
 Material Material_metalico;
@@ -153,6 +156,9 @@ Model basket;
 Model toilet;
 Model sign;
 
+Model TV_M;
+Model sofa;
+
 Model tree;
 Model santa;
 Model gift00;
@@ -160,6 +166,9 @@ Model gift01;
 Model gift02;
 Model star;
 Model ufo;
+Model noche_M;
+Model cor_M;
+
 Model christmas04;
 Model christmas05;
 Model christmas06;
@@ -184,10 +193,12 @@ Model vela_M;
 Model pin_M;
 Model nac_M;
 Model agua_M;
+Model piolin_M;
 
 // Variables de objetos
 int flama = 0;
 bool cambF = false;
+bool stc = true;
 float aIntensity = 0.2f, dIntensity = 0.5f;
 
 glm::vec3 tablePos = glm::vec3(-10.0f, 0.01f, -8.0f);
@@ -663,6 +674,20 @@ void flame(void) {
 	flama >= 5 ? flama = 0 : flama = flama;
 }
 
+void pant(void) {
+
+	if (stc) {
+		f1.UseTexture();
+		stc = false;
+	}
+	else
+	{
+		f2.UseTexture();
+		stc = true;
+	}
+	flama >= 5 ? flama = 0 : flama = flama;
+}
+
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -723,7 +748,12 @@ int main() {
 	pp5Texture.LoadTextureA();
 	pp6Texture = Texture("Textures/6.tga");
 	pp6Texture.LoadTextureA();
-
+	rugrats = Texture("Textures/Rugrats.png");
+	rugrats.LoadTextureA();
+	f1 = Texture("Textures/f1.tga");
+	f1.LoadTextureA();
+	f2 = Texture("Textures/f2.tga");
+	f2.LoadTextureA();
 	//------------------ Materiales ----------------------------
 
 	Material_metalico = Material(8.0f, 512);
@@ -744,6 +774,8 @@ int main() {
 	toilet.LoadModel("Models/hsdc00/hsdc00.obj");
 	toilet = Model();
 	toilet.LoadModel("Models/hsdc00/hsdc00.obj");
+	TV_M = Model();
+	TV_M.LoadModel("Models/tv/Zoll.obj");
 	//sign = Model();
 	//sign.LoadModel("Models/objSign/objSign.obj"); // Su textura lanza excepción
 
@@ -767,6 +799,14 @@ int main() {
 	nac_M.LoadModel("Models/nac/nac.obj");
 	agua_M = Model();
 	agua_M.LoadModel("Models/nac/water.obj");
+
+	sofa = Model();
+	sofa.LoadModel("Models/sofa/sofa.obj");
+
+	noche_M = Model();
+	noche_M.LoadModel("Models/nb/nb.obj");
+	cor_M = Model();
+	cor_M.LoadModel("Models/cor/cor.obj");
 	
 	mesa_M = Model();
 	mesa_M.LoadModel("Models/mesa/mesa.obj");
@@ -805,6 +845,9 @@ int main() {
 
 	luz_arm = Model();
 	luz_arm.LoadModel("Models/luz_arm/luz_arm.obj");
+
+	piolin_M = Model();
+	piolin_M.LoadModel("Models/pio/pio.obj");
 
 	loadAnimationOvni();
 
@@ -1306,7 +1349,7 @@ int main() {
 
 		// ---------------------------- PINATA ----------------------------
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(12.0f, 12.0f, 3.0f));
+		model = glm::translate(model, glm::vec3(12.0f, 12.0f, 6.0f));
 		model = glm::rotate(model, glm::radians(pinataRot),glm::vec3(12.0f, 10.0f, 1.0f));
 		model = glm::translate(model, glm::vec3(0.0f, -2.0f, 0.0f));
 		model = glm::scale(model, glm::vec3(1.0f) * 0.8f);
@@ -1316,21 +1359,21 @@ int main() {
 		// ---------------------------- NACIMIENTO ----------------------------
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(12.0f, 0.2f, 3.0f));
+		model = glm::translate(model, glm::vec3(12.0f, 0.2f, 6.0f));
 		model = glm::scale(model, glm::vec3(1.0f) * 0.3f);
 		model = glm::rotate(model, 180.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		nac_M.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(12.0f, 0.2f, 3.0f));
+		model = glm::translate(model, glm::vec3(12.0f, 0.2f, 6.0f));
 		model = glm::scale(model, glm::vec3(1.0f) * 0.3f);
 		model = glm::rotate(model, 180.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		agua_M.RenderModel();
 
 		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(12.0f, 3.2f, 3.0f));
+		model = glm::translate(model, glm::vec3(12.0f, 3.2f, 6.0f));
 		model = glm::rotate(model, glm::radians(90.0f), glm::vec3(0.0f, -1.0f, 0.0));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		luz_arm.RenderModel();
@@ -1343,6 +1386,77 @@ int main() {
 		model = glm::scale(model, glm::vec3(1.0f) * 0.01f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		ufo.RenderModel();
+
+
+		// ---------------------------- Pantalla ----------------------------
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-2.3f, 2.05f, -2.7));
+		model = glm::rotate(model, 90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 0.7f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		TV_M.RenderModel();
+
+		// ---------------------------- Fondo ----------------------------
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-2.295f, 4.1f, -2.7f));
+		model = glm::scale(model, glm::vec3(1.0f, 1.78f, 6.34f));
+		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		pant();
+		meshList[1]->RenderMesh();
+
+		// ---------------------------- Rugrats ----------------------------
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-2.29f, 4.1f, -2.7f));
+		model = glm::scale(model, glm::vec3(1.0f, 1.78f, 6.34f));
+		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		rugrats.UseTexture();
+		meshList[1]->RenderMesh();
+
+		// ---------------------------- NOCHE BUENA ----------------------------
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-2.0f, 0.01f, 2.5f));
+		model = glm::scale(model, glm::vec3(1.0f)*0.33f);
+		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		noche_M.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-2.0f, 0.01f, 10.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 0.33f);
+		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		noche_M.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-2.0f, 0.01f, -8.5f));
+		model = glm::scale(model, glm::vec3(1.0f) * 0.33f);
+		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		noche_M.RenderModel();
+
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(14.0f, 0.01f, 10.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 0.33f);
+		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		noche_M.RenderModel();
+
+		// ---------------------------- Corona ----------------------------
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-3.6f, 8.7f, -2.7f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		cor_M.RenderModel();
+
+		// ---------------------------- Sofa ----------------------------
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(14.0f, 0.01f, -2.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 0.5f);
+		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		sofa.RenderModel();
 
 // ----------------------------- MUERTOS COMO DAVID --------------------------------------
 
@@ -1713,6 +1827,15 @@ int main() {
 		mat00 = glm::scale(mat00, glm::vec3(1.0f) * 0.7f);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(mat00));
 		pan_muerto_M.RenderModel();
+
+		// ---------------------------- Pollo ----------------------------
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(-10.0f, 0.01f, 10.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 3.0f);
+		model = glm::rotate(model, 180.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		piolin_M.RenderModel();
+
 
 		validate();
 		animate();
