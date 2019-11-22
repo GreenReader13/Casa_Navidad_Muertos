@@ -16,6 +16,7 @@
 #define STB_IMAGE_IMPLEMENTATION
 
 #include <iostream>		//Entrada y salida de datos
+#include <sstream>
 #include <vector>
 #include <fstream>
 #include <ctime>
@@ -143,6 +144,8 @@ Texture rugrats;
 Texture f1;
 Texture f2;
 
+Texture TV_T[50];
+
 //Materiales
 Material Material_metalico;
 Material Material_brillante;
@@ -158,6 +161,7 @@ Model sign;
 
 Model TV_M;
 Model sofa;
+Model go_M;
 
 Model tree;
 Model santa;
@@ -275,6 +279,9 @@ U_FRAME UFOFrame[MAX_UFO_FRAMES];
 int FrameIndexO = 0;
 bool playO = false;
 int playIndexO = 0;
+
+int ima = 0;
+const int frames = 62;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -683,16 +690,23 @@ void flame(void) {
 
 void pant(void) {
 
-	if (stc) {
-		f1.UseTexture();
-		stc = false;
+	ima++;
+	if (ima >= (frames-5)) ima = 0;
+	TV_T[ima].UseTexture();
+	
+}
+
+void load_tv() {
+
+	std::string ruta;
+
+	for (int i = 0; i < frames; i++) {
+		
+		ruta = "Textures/v" + std::to_string(i+1)+".tga";
+		const char* r = ruta.c_str();
+		TV_T[i] = Texture(r);
+		TV_T[i].LoadTextureA();
 	}
-	else
-	{
-		f2.UseTexture();
-		stc = true;
-	}
-	flama >= 5 ? flama = 0 : flama = flama;
 }
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -719,7 +733,7 @@ int main() {
 	sp.load();
 
 	camera00 = Camera(glm::vec3(2.642012f, 8.250121f, 35.622520f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
-	camera01 = Camera(glm::vec3(7.339100f, 3.500000f, 5.515017f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
+	camera01 = Camera(glm::vec3(13.0f, 4.0f, -2.0f), glm::vec3(0.0f, 1.0f, 0.0f), 180.0f, 0.0f, 5.0f, 0.5f);
 	camera02 = Camera(glm::vec3(-2.124664f, 11.593169f, 8.981001f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
 	camera03 = Camera(glm::vec3(-13.385676f, 11.375727f, 13.942100f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
 	camera04 = Camera(glm::vec3(-9.740357f, 3.500000f, -0.022698f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
@@ -761,6 +775,8 @@ int main() {
 	f1.LoadTextureA();
 	f2 = Texture("Textures/f2.tga");
 	f2.LoadTextureA();
+
+	load_tv();
 	//------------------ Materiales ----------------------------
 
 	Material_metalico = Material(8.0f, 512);
@@ -853,6 +869,8 @@ int main() {
 	luz_arm = Model();
 	luz_arm.LoadModel("Models/luz_arm/luz_arm.obj");
 
+	go_M = Model();
+	go_M.LoadModel("Models/go/go.obj");
 	//piolin
 	cabeza_M = Model();
 	cabeza_M.LoadModel("Models/pio/cabeza.obj");
@@ -1423,14 +1441,6 @@ int main() {
 		pant();
 		meshList[1]->RenderMesh();
 
-		// ---------------------------- Rugrats ----------------------------
-		model = glm::mat4(1.0);
-		model = glm::translate(model, glm::vec3(-2.29f, 4.1f, -2.7f));
-		model = glm::scale(model, glm::vec3(1.0f, 1.78f, 6.34f));
-		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		rugrats.UseTexture();
-		meshList[1]->RenderMesh();
 
 		// ---------------------------- NOCHE BUENA ----------------------------
 
@@ -1475,6 +1485,13 @@ int main() {
 		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		sofa.RenderModel();
+
+		// ---------------------------- GO ----------------------------
+		model = glm::mat4(1.0);
+		model = glm::translate(model, glm::vec3(4.7f, 0.01f, 0.0f));
+		model = glm::scale(model, glm::vec3(1.0f) * 0.5f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		go_M.RenderModel();
 
 // ----------------------------- MUERTOS COMO DAVID --------------------------------------
 
