@@ -145,6 +145,7 @@
     <ClCompile Include="source\Window.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="CamaraControl.h" />
     <ClInclude Include="headers\Camera.h" />
     <ClInclude Include="headers\CommonValues.h" />
     <ClInclude Include="headers\DirectionalLight.h" />
@@ -160,6 +161,9 @@
     <ClInclude Include="headers\stb_image.h" />
     <ClInclude Include="headers\Texture.h" />
     <ClInclude Include="headers\Window.h" />
+    <ClInclude Include="LoadModels.h" />
+    <ClInclude Include="LoadTextures.h" />
+    <ClInclude Include="Luces.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\shader.frag" />

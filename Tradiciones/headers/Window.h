@@ -6,8 +6,8 @@
 */
 #pragma once
 #include<stdio.h>
-#include<glew.h>
-#include<glfw3.h>
+#include <glew.h>	//Librería para resolver dependencias
+#include <glfw3.h>	//Librería para creación de ventana y contexto openGL
 
 class Window
 {

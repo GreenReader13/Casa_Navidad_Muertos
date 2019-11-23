@@ -4,6 +4,7 @@ Window::Window()
 {
 	width = 800;
 	height = 600;
+	
 	for (size_t i = 0; i < 1024; i++)
 	{
 		keys[i] = 0;
@@ -56,7 +57,6 @@ int Window::Initialise()
 	//MANEJAR TECLADO y MOUSE
 	createCallbacks();
 
-
 	//permitir nuevas extensiones
 	glewExperimental = GL_TRUE;
 
@@ -71,7 +71,7 @@ int Window::Initialise()
 	glEnable(GL_DEPTH_TEST); //HABILITAR BUFFER DE PROFUNDIDAD
 							 // Asignar valores de la ventana y coordenadas
 							 
-							 //Asignar Viewport
+	//Asignar Viewport
 	glViewport(0, 0, bufferWidth, bufferHeight);
 	//Callback para detectar que se está usando la ventana
 	glfwSetWindowUserPointer(mainWindow, this);
@@ -80,11 +80,12 @@ int Window::Initialise()
 
 void Window::createCallbacks()
 {
-	glfwSetInputMode(mainWindow, GLFW_CURSOR, GLFW_TRUE);
+	glfwSetInputMode(mainWindow, GLFW_CURSOR, GLFW_CURSOR_DISABLED);
 	glfwSetKeyCallback(mainWindow, ManejaTeclado);
 	glfwSetCursorPosCallback(mainWindow, ManejaMouse);
 	glfwSetMouseButtonCallback(mainWindow, mouseButtonCallback);
 }
+
 GLfloat Window::getXChange()
 {
 	GLfloat theChange = xChange;
@@ -113,12 +114,10 @@ void Window::ManejaTeclado(GLFWwindow* window, int key, int code, int action, in
 		if (action == GLFW_PRESS)
 		{
 			theWindow->keys[key] = true;
-			//printf("se presiono la tecla %d'\n", key);
 		}
 		else if (action == GLFW_RELEASE)
 		{
 			theWindow->keys[key] = false;
-			//printf("se solto la tecla %d'\n", key);
 		}
 	}
 }

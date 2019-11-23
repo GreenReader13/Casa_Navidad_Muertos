@@ -24,31 +24,20 @@
 #include<Windows.h>
 #include<mmsystem.h>
 
-#include <GL/glew.h>	//Librería para resolver dependencias
-#include <GLFW/glfw3.h>	//Librería para creación de ventana y contexto openGL
 
 //operaciones con matrices
 #include <glm.hpp>
 #include <gtc/matrix_transform.hpp>
 #include <gtc/type_ptr.hpp>
 
-//Modelos
-#include "Mesh_texturizado.h"
-#include "Shader_light.h"
-#include "Material.h"
-#include "Model.h"
-#include "Texture.h"
-
-//para iluminación
-#include "CommonValues.h"
-#include "DirectionalLight.h"
-#include "PointLight.h"
-
 //Interaccion
 #include "Window.h"
-#include "Camera.h"
-#include "Skybox.h"
-#include "Sphere.h"
+
+//Encabezados adicionales
+#include "LoadTextures.h"
+#include "LoadModels.h"
+#include "CamaraControl.h"
+#include "Luces.h"
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -79,8 +68,8 @@ typedef struct ufo_frame {
 
 #define MAX_UFO_FRAMES 250
 #define DIS_UFO 1.0f
-#define MIN_DIS_SWITCH 2.0f
-#define MIN_DIS_DOOR 5.0f
+#define MIN_DIS_SWITCH 6.0f
+#define MIN_DIS_DOOR 6.0f
 #define MAX_DOOR_ROT 90.0f
 #define MAX_SWITCH_ROT 45.0f
 #define MAX_PINATA_ROT 45.0f
@@ -94,123 +83,22 @@ static const char* fShader = "shaders/shader_light.frag";
 
 //Crear objeto para contexto de la ventana
 Window mainWindow;
-
-//Cámaras
-Camera *currentCamera;
-Camera camera00;
-Camera camera01;
-Camera camera02;
-Camera camera03;
-Camera camera04;
-
-//luz direccional
-DirectionalLight mainLight, mainLight0;
-//para declarar varias luces de tipo pointlight
-PointLight pointLights[MAX_POINT_LIGHTS], pointLights0[1];
-SpotLight spotLights[MAX_SPOT_LIGHTS];
-
-//Skybox
-Skybox* currentSkybox;
-Skybox skybox, skybox0;
-
 GLfloat deltaTime = 0.0f;
 GLfloat lastTime = 0.0f;
 
-
-//Lista de modelos
-std::vector<Mesh*> meshList;
 //Lista de shaders
 std::vector<Shader> shaderList;
 
-// Objetos
-Sphere sp = Sphere(0.5, 20, 20);
-
-//Texturas a crear
-Texture pisoTexture;
-Texture yellowTexture;
-Texture pinkTexture;
-Texture blueTexture;
-Texture redTexture;
-Texture greenTexture;
-Texture flame1Texture;
-Texture flame2Texture;
-Texture pp1Texture;
-Texture pp2Texture;
-Texture pp3Texture;
-Texture pp4Texture;
-Texture pp5Texture;
-Texture pp6Texture;
-Texture rugrats;
-Texture f1;
-Texture f2;
-
-Texture TV_T[50];
 
 //Materiales
 Material Material_metalico;
 Material Material_brillante;
 Material Material_opaco;
 
-//Modelos
-Model House_M;
-Model Puerta_M;
-Model Intrp_M;
-Model basket;
-Model toilet;
-Model sign;
-
-Model TV_M;
-Model sofa;
-Model go_M;
-
-Model tree;
-Model santa;
-Model gift00;
-Model gift01;
-Model gift02;
-Model star;
-Model ufo;
-Model noche_M;
-Model cor_M;
-
-Model christmas04;
-Model christmas05;
-Model christmas06;
-
-Model luz_arm;
-Model mesa_M;
-Model album_M;
-Model cup;
-Model cup2;
-Model coca_M;
-Model cazuela_M;
-Model pizza_M;
-Model pan_M;
-Model pan_muerto_M;
-Model choc_M;
-Model cuernito_M;
-Model chupe_M;
-Model semp_M;
-Model sugar_sk_M;
-Model sugar_sk1_M;
-Model vela_M;
-Model pin_M;
-Model nac_M;
-Model agua_M;
-
-//piolin
-Model cabeza_M;
-Model torso_M;
-Model brazoL_M;
-Model brazoR_M;
-Model piernaL_M;
-Model piernaR_M;
-
 // Variables de objetos
 int flama = 0;
 bool cambF = false;
 bool stc = true;
-float aIntensity = 0.2f, dIntensity = 0.5f;
 
 glm::vec3 tablePos = glm::vec3(-10.0f, 0.01f, -8.0f);
 glm::vec3 basketPos = glm::vec3(0.0f, 0.0f, 0.0f);
@@ -280,8 +168,6 @@ int FrameIndexO = 0;
 bool playO = false;
 int playIndexO = 0;
 
-int ima = 0;
-const int frames = 62;
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
 
@@ -301,7 +187,6 @@ void animateO(void);
 void validate(void);
 void animate(void);
 void flame(void);
-void inputKeyframes(bool* keys);
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -316,7 +201,7 @@ void inputKeyframes(bool* keys);
 * @param b vector fin
 */
 float distance(glm::vec3 a, glm::vec3 b) {
-	return sqrtf(powf(b.x - a.x, 2) + powf(b.y - a.y, 2) + powf(b.z - a.z, 2));
+	return abs(b.x - a.x) + abs(b.y - a.y) + abs(b.z - a.z);
 }
 
 void createObjets(void) {
@@ -475,30 +360,30 @@ void animateO(void) {
 void validate(void) {
 
 	float ds,dd;
+	if (mainWindow.getMouseLeftClick()) {
 
-	ds = distance(currentCamera->getCameraPosition(), switchPos00);
-	(mainWindow.getMouseLeftClick() && ds < MIN_DIS_SWITCH) ? switchState00 = true : switchState00 = false;
+		ds = distance(currentCamera->getCameraPosition(), switchPos00);
+		if(ds < MIN_DIS_SWITCH) switchState00 =!switchState00;
 
-	ds = distance(currentCamera->getCameraPosition(), switchPos01);
-	(mainWindow.getMouseLeftClick() && ds < MIN_DIS_SWITCH) ? switchState01 = true : switchState01 = false;
+		ds = distance(currentCamera->getCameraPosition(), switchPos01);
+		if(ds < MIN_DIS_SWITCH) switchState01 = !switchState01;
 
-	ds = distance(currentCamera->getCameraPosition(), switchPos02);
-	(mainWindow.getMouseLeftClick() && ds < MIN_DIS_SWITCH) ? switchState02 = true : switchState02 = false;
+		ds = distance(currentCamera->getCameraPosition(), switchPos02);
+		if(ds < MIN_DIS_SWITCH) switchState02 = !switchState02;
 
-	ds = distance(currentCamera->getCameraPosition(), switchPos03);
-	(mainWindow.getMouseLeftClick() && ds < MIN_DIS_SWITCH) ? switchState03 = true : switchState03 = false;
+		ds = distance(currentCamera->getCameraPosition(), switchPos03);
+		if(ds < MIN_DIS_SWITCH) switchState03 = !switchState03;
 
-	ds = distance(currentCamera->getCameraPosition(), switchPos04);
-	(mainWindow.getMouseLeftClick() && ds < MIN_DIS_SWITCH) ? switchState04 = true : switchState04 = false;
+		ds = distance(currentCamera->getCameraPosition(), switchPos04);
+		if(ds < MIN_DIS_SWITCH) switchState04 = !switchState04;
 
-	ds = distance(currentCamera->getCameraPosition(), switchPos05);
-	(mainWindow.getMouseLeftClick() && ds < MIN_DIS_SWITCH) ? switchState05 = true : switchState05 = false;
-	
-			
-	ds = distance(currentCamera->getCameraPosition(), chupePos);
-	if (mainWindow.getMouseLeftClick() && ds < MIN_DIS_SWITCH) 
-		chupeState = !chupeState;
+		ds = distance(currentCamera->getCameraPosition(), switchPos05);
+		if(ds < MIN_DIS_SWITCH) switchState05 = !switchState05;
 
+		ds = distance(currentCamera->getCameraPosition(), chupePos);
+		if (ds < MIN_DIS_SWITCH)
+			chupeState = !chupeState;
+	}
 
 	if (mainWindow.getMouseRightClick()) {
 		dd = distance(currentCamera->getCameraPosition(), doorPos00);
@@ -506,30 +391,20 @@ void validate(void) {
 			doorState00 = !doorState00;
 			playDoor00 = true;
 		}
-		else
-		{
-			dd = distance(currentCamera->getCameraPosition(), doorPos01);
-			if (dd < MIN_DIS_DOOR) {
-				doorState01 = !doorState01;
-				playDoor01 = true;
-			}
-			else
-			{
-				dd = distance(currentCamera->getCameraPosition(), doorPos02);
-				if (dd < MIN_DIS_DOOR) {
-					doorState02 = !doorState02;
-					playDoor02 = true;
-				}
-
-			}
+		dd = distance(currentCamera->getCameraPosition(), doorPos01);
+		if (dd < MIN_DIS_DOOR) {
+			doorState01 = !doorState01;
+			playDoor01 = true;
 		}
+		dd = distance(currentCamera->getCameraPosition(), doorPos02);
+		if (dd < MIN_DIS_DOOR) {
+			doorState02 = !doorState02;
+			playDoor02 = true;
+		}
+
+			
+		
 	}
-	//if (playSound)
-	//	PlaySound("sound/Feliz\ Navidad.wav", NULL, SND_FILENAME | SND_LOOP | SND_ASYNC);
-	//else
-	//	PlaySound(NULL, 0, 0);
-
-
 }
 
 void animate(void) {
@@ -696,18 +571,9 @@ void pant(void) {
 	
 }
 
-void load_tv() {
 
-	std::string ruta;
 
-	for (int i = 0; i < frames; i++) {
-		
-		ruta = "Textures/v" + std::to_string(i+1)+".tga";
-		const char* r = ruta.c_str();
-		TV_T[i] = Texture(r);
-		TV_T[i].LoadTextureA();
-	}
-}
+
 
 ///////////////////////////////////////////////////////////////////////////////////////////////////////////////////////
 
@@ -725,351 +591,34 @@ int main() {
 	//Creación de contexto
 	mainWindow = Window();
 	mainWindow.Initialise();
+	//Llamada a la función que carga texturas
+	LoadTexture();
+	LoadSkybox();
+	//Llamada a la función que carga modelos
+	LoadModel();
+	//-------------- Materiales --------------
+	Material_metalico = Material(8.0f, 512);
+	Material_brillante = Material(4.0f, 256);
+	Material_opaco = Material(0.3f, 4);
+	//----------------------------------------
 
-	//Objetos
+	//--------------- Objetos ----------------
 	createObjets();
 	CreateShaders();
 	sp.init();
 	sp.load();
+	//----------------------------------------
 
-	camera00 = Camera(glm::vec3(2.642012f, 8.250121f, 35.622520f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
-	camera01 = Camera(glm::vec3(13.0f, 4.0f, -2.0f), glm::vec3(0.0f, 1.0f, 0.0f), 180.0f, 0.0f, 5.0f, 0.5f);
-	camera02 = Camera(glm::vec3(-2.124664f, 11.593169f, 8.981001f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
-	camera03 = Camera(glm::vec3(-13.385676f, 11.375727f, 13.942100f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
-	camera04 = Camera(glm::vec3(-9.740357f, 3.500000f, -0.022698f), glm::vec3(0.0f, 1.0f, 0.0f), -60.0f, 0.0f, 5.0f, 0.5f);
-
-	currentCamera = &camera00;
-
-	//Cargado de texturas
-	pisoTexture = Texture("Textures/piso.tga");
-	pisoTexture.LoadTextureA();
-	yellowTexture = Texture("Textures/yellow.tga");
-	yellowTexture.LoadTextureA();
-	pinkTexture = Texture("Textures/pink.tga");
-	pinkTexture.LoadTextureA();
-	blueTexture = Texture("Textures/blue.tga");
-	blueTexture.LoadTextureA();
-	redTexture = Texture("Textures/red.tga");
-	redTexture.LoadTextureA();
-	greenTexture = Texture("Textures/green.tga");
-	greenTexture.LoadTextureA();
-	flame1Texture = Texture("Textures/flama1.tga");
-	flame1Texture.LoadTextureA();
-	flame2Texture = Texture("Textures/flama2.tga");
-	flame2Texture.LoadTextureA();
-	pp1Texture = Texture("Textures/1.tga");
-	pp1Texture.LoadTextureA();
-	pp2Texture = Texture("Textures/2.tga");
-	pp2Texture.LoadTextureA();
-	pp3Texture = Texture("Textures/3.tga");
-	pp3Texture.LoadTextureA();
-	pp4Texture = Texture("Textures/4.tga");
-	pp4Texture.LoadTextureA();
-	pp5Texture = Texture("Textures/5.tga");
-	pp5Texture.LoadTextureA();
-	pp6Texture = Texture("Textures/6.tga");
-	pp6Texture.LoadTextureA();
-	rugrats = Texture("Textures/Rugrats.png");
-	rugrats.LoadTextureA();
-	f1 = Texture("Textures/f1.tga");
-	f1.LoadTextureA();
-	f2 = Texture("Textures/f2.tga");
-	f2.LoadTextureA();
-
-	load_tv();
-	//------------------ Materiales ----------------------------
-
-	Material_metalico = Material(8.0f, 512);
-	Material_brillante = Material(4.0f, 256);
-	Material_opaco = Material(0.3f, 4);
-
-	//------------------ Modelos ----------------------------
-
-	House_M = Model();
-	House_M.LoadModel("Models/casa/House.obj");
-	Puerta_M = Model();
-	Puerta_M.LoadModel("Models/casa/Puerta.obj");
-	Intrp_M = Model();
-	Intrp_M.LoadModel("Models/casa/int.obj");
-	basket = Model();
-	basket.LoadModel("Models/basket/basket.obj");
-	toilet = Model();
-	toilet.LoadModel("Models/hsdc00/hsdc00.obj");
-	toilet = Model();
-	toilet.LoadModel("Models/hsdc00/hsdc00.obj");
-	TV_M = Model();
-	TV_M.LoadModel("Models/tv/Zoll.obj");
-	//sign = Model();
-	//sign.LoadModel("Models/objSign/objSign.obj"); // Su textura lanza excepción
-
-	tree = Model();
-	tree.LoadModel("Models/fir/fir.obj");
-	santa = Model();
-	santa.LoadModel("Models/Santa/Santa.obj");
-	gift00 = Model();
-	gift00.LoadModel("Models/box/box.obj");
-	gift01 = Model();
-	gift01.LoadModel("Models/11563_gift_box_V3/11563_gift_box_V3.obj");
-	gift02 = Model();
-	gift02.LoadModel("Models/13495_Stack_of_Gifts_v2_L2/13495_Stack_of_Gifts_v2_L2.obj");
-	star = Model();
-	star.LoadModel("Models/Gold_Star/Gold_Star.obj");
-	ufo = Model();
-	ufo.LoadModel("Models/ovni/ovni-obj.obj");
-	pin_M = Model();
-	pin_M.LoadModel("Models/pin/pin.obj");
-	nac_M = Model();
-	nac_M.LoadModel("Models/nac/nac.obj");
-	agua_M = Model();
-	agua_M.LoadModel("Models/nac/water.obj");
-
-	sofa = Model();
-	sofa.LoadModel("Models/sofa/sofa.obj");
-
-	noche_M = Model();
-	noche_M.LoadModel("Models/nb/nb.obj");
-	cor_M = Model();
-	cor_M.LoadModel("Models/cor/cor.obj");
+	//Crear objetos cámara
+	createCams();
 	
-	mesa_M = Model();
-	mesa_M.LoadModel("Models/mesa/mesa.obj");
-	album_M = Model();
-	album_M.LoadModel("Models/album/album.obj");
-	vela_M = Model();
-	vela_M.LoadModel("Models/candleWhite_obj/candleWhite_obj.obj");
-	cup = Model();
-	cup.LoadModel("Models/12187_Cupcake_v1_L3/12187_Cupcake_v1_L3.obj");
-	cup2 = Model();
-	cup2.LoadModel("Models/12188_Cupcake_v1_L3/12188_Cupcake_v1_L3.obj");
-	coca_M = Model();
-	coca_M.LoadModel("Models/Cup/cupOBJ.obj");
-	cazuela_M = Model();
-	cazuela_M.LoadModel("Models/13561_Shrimp_Sausage_Jambalaya_v1_L1/13561_Shrimp_Sausage_Jambalaya_v1_L1.obj");
-	pizza_M = Model();
-	pizza_M.LoadModel("Models/13917_Pepperoni_v2_l2/13917_Pepperoni_v2_l2.obj");
-	pan_M = Model();
-	pan_M.LoadModel("Models/Bread/Bread.obj");
-	choc_M = Model();
-	choc_M.LoadModel("Models/chocolate/choco.obj");
-	cuernito_M = Model();
-	cuernito_M.LoadModel("Models/Croissant/Croissant.obj");
-
-	chupe_M = Model();
-	chupe_M.LoadModel("Models/BottleN210418/BottleN210418.obj");
-	semp_M = Model();
-	semp_M.LoadModel("Models/semp/semp.obj");
-	pan_muerto_M = Model();
-	pan_muerto_M.LoadModel("Models/pan/pan_muerto.obj");
-
-	sugar_sk_M = Model();
-	sugar_sk_M.LoadModel("Models/skull/sugar_skulls_v1.obj");
-	sugar_sk1_M = Model();
-	sugar_sk1_M.LoadModel("Models/skull/sugar_skulls_v2.obj");
-
-	luz_arm = Model();
-	luz_arm.LoadModel("Models/luz_arm/luz_arm.obj");
-
-	go_M = Model();
-	go_M.LoadModel("Models/go/go.obj");
-	//piolin
-	cabeza_M = Model();
-	cabeza_M.LoadModel("Models/pio/cabeza.obj");
-	torso_M = Model();
-	torso_M.LoadModel("Models/pio/cuerpo.obj");
-	brazoL_M = Model();
-	brazoL_M.LoadModel("Models/pio/brazo.obj");
-	brazoR_M = Model();
-	brazoR_M.LoadModel("Models/pio/brazo_R.obj");
-	piernaL_M = Model();
-	piernaL_M.LoadModel("Models/pio/pierna.obj");
-	piernaR_M = Model();
-	piernaR_M.LoadModel("Models/pio/pierna_R.obj");
-
 	loadAnimationOvni();
 
 	//------------------ Luces ----------------------------
 	unsigned int pointLightCount = 0;
 	unsigned int pointLightCount0 = 0;
 	unsigned int spotLightCount = 0;
-	//luz direccional, sólo 1 y siempre debe de existir
-	mainLight = DirectionalLight(1.0f, 1.0f, 1.0f,
-		0.2f, 0.2f,
-		0.0f, 0.0f, 1.0f);
-	mainLight0 = DirectionalLight(1.0f, 1.0f, 1.0f,
-		0.0001f, 0.0001f,
-		0.0f, 0.0f, 1.0f);
-	//Luces puntuales
-	//Declaración de primer luz puntual
-	pointLights[0] = PointLight(1.0f, 1.0f, 1.0f,
-		4.0f, 4.0f,
-		15.0f, 3.53f, 24.0f,
-		0.9f, 0.2f, 0.1f);
-	pointLightCount++;
-	pointLights[1] = PointLight(1.0f, 1.0f, 1.0f,
-		4.0f, 4.0f,
-		-15.0f, 3.53f, 24.0f,
-		0.9f, 0.2f, 0.1f);
-	pointLightCount++;
-	pointLights[2] = PointLight(0.8984f, 0.6875f, 0.4023f,
-		aIntensity,dIntensity,
-		-13.0f, 3.75f, -8.7242f,
-		0.5f, 0.8f, 0.1f);
-	pointLightCount++;
-	pointLights[3] = PointLight(0.8984f, 0.6875f, 0.4023f,
-		aIntensity,dIntensity,
-		-13.0f, 3.75f, -7.0242f,
-		0.5f, 0.8f, 0.1f);
-	pointLightCount++;
-	pointLights[4] = PointLight(0.8984f, 0.6875f, 0.4023f,
-		aIntensity,dIntensity,
-		-13.0f, 3.05f, -6.6242f,
-		0.5f, 0.8f, 0.1f);
-	pointLightCount++;
-	pointLights[5] = PointLight(0.8984f, 0.6875f, 0.4023f,
-		aIntensity,dIntensity,
-		-13.0f, 3.05f, -4.9242f,
-		0.5f, 0.8f, 0.1f);
-	pointLightCount++;
-	pointLights[6] = PointLight(0.8984f, 0.6875f, 0.4023f,
-		aIntensity,dIntensity,
-		-13.0f, 2.35f, -4.5242f,
-		0.5f, 0.8f, 0.1f);
-	pointLightCount++;
-	pointLights[7] = PointLight(0.8984f, 0.6875f, 0.4023f,
-		aIntensity,dIntensity,
-		-13.0f, 2.35f, -2.8242f,
-		0.5f, 0.8f, 0.1f);
-	pointLightCount++;
-	pointLights[8] = PointLight(0.8984f, 0.6875f, 0.4023f,
-		aIntensity,dIntensity,
-		-7.0f, 3.75f, -8.7242f,
-		0.5f, 0.8f, 0.1f);
-	pointLightCount++;
-	pointLights[9] = PointLight(0.8984f, 0.6875f, 0.4023f,
-		aIntensity,dIntensity,
-		-7.0f, 3.75f, -7.0242f,
-		0.5f, 0.8f, 0.1f);
-	pointLightCount++;
-	pointLights[10] = PointLight(0.8984f, 0.6875f, 0.4023f,
-		aIntensity,dIntensity,
-		-7.0f, 3.05f, -6.6242f,
-		0.5f, 0.8f, 0.1f);
-	pointLightCount++;
-	pointLights[11] = PointLight(0.8984f, 0.6875f, 0.4023f,
-		aIntensity,dIntensity,
-		-7.0f, 3.05f, -4.9242f,
-		0.5f, 0.8f, 0.1f);
-	pointLightCount++;
-	pointLights[12] = PointLight(0.8984f, 0.6875f, 0.4023f,
-		aIntensity,dIntensity,
-		-7.0f, 2.35f, -4.5242f,
-		0.5f, 0.8f, 0.1f);
-	pointLightCount++;
-	pointLights[13] = PointLight(0.8984f, 0.6875f, 0.4023f,
-		aIntensity,dIntensity,
-		-7.0f, 2.35f, -2.8242f,
-		0.5f, 0.8f, 0.1f);
-	pointLightCount++;
-	pointLights[14] = PointLight(1.0f, 1.0f, 1.0f,
-		4.0f, 4.0f,
-		2.0f, 6.0f, -35.0f,
-		0.9f, 0.2f, 0.1f);
-	pointLightCount++;
-	pointLights[15] = PointLight(1.0f, 1.0f, 0.0f,
-		0.6f, 0.6f,
-		12.0f, 9.5f, -12.0f,
-		0.9f, 0.2f, 0.1f);
-	pointLightCount++;
-
-	pointLights0[1] = PointLight(1.0f, 1.0f, 0.0f,
-		0.01f, 0.01f,
-		12.0f, 9.5f, -50.0f,
-		0.9f, 0.2f, 0.1f);
-	pointLightCount0++;
-
-	// glm::vec3(12.0f, 0.05f, -12.0f)
-
-	//Luces tipo spotlight
-	//Luz interior 1
-	spotLights[0] = SpotLight(1.0f, 1.0f, 1.0f,
-		1.5f, 5.0f,
-		6.0f, -50.0f, -1.75f, // Pos
-		0.0f, -1.0f, 0.0f,
-		0.9f, 0.2f, 0.1f,
-		200.0f);
-	spotLightCount++;
-	//Luz interior 2
-	spotLights[1] = SpotLight(1.0f, 1.0f, 1.0f,
-		1.5f, 5.0f,
-		-10.0f, -50.0f, 8.5f, // Pos
-		0.0f, -1.0f, 0.0f,
-		0.9f, 0.2f, 0.1f,
-		200.0f);
-	spotLightCount++;
-	//Luz interior 3
-	spotLights[2] = SpotLight(1.0f, 1.0f, 1.0f,
-		1.5f, 5.0f,
-		-10.0f, -50.0f, -5.0f, // Pos
-		0.0f, -1.0f, 0.0f,
-		0.9f, 0.2f, 0.1f,
-		200.0f);
-	spotLightCount++;
-	//Luz interior 4
-	spotLights[3] = SpotLight(1.0f, 1.0f, 1.0f,
-		1.5f, 5.0f,
-		-10.0f, -50.0f, -13.0f, // Pos
-		0.0f, -1.0f, 0.0f,
-		0.9f, 0.2f, 0.1f,
-		200.0f);
-	spotLightCount++;
-	//Luz OVNI
-	spotLights[4] = SpotLight(0.0f, 1.0f, 0.0f,
-		1.0f, 1.0f,
-		-10.0f, -50.0f, -13.0f, // Pos
-		0.0f, -1.0f, 0.0f,
-		0.9f, 0.2f, 0.1f,
-		200.0f);
-	spotLightCount++;
-	spotLights[5] = SpotLight(1.0f, 0.0f, 1.0f,
-		4.0f, 4.0f,
-		-10.0f, 4.375f, -6.0f, // Pos
-		0.0f, -1.0f, -1.0f,
-		1.0f, 0.7f, 0.3f,
-		200.0f);
-	spotLightCount++;
-	spotLights[6] = SpotLight(1.0f, 1.0f, 1.0f,
-		4.0f, 4.0f,
-		10.367175f, 2.500000f, 3.011425f, // Pos
-		0.0f, -1.0f, -1.0f,
-		1.0f, 0.7f, 0.3f,
-		200.0f);
-	spotLightCount++;
-
-	// Skybox
-	std::vector<std::string> skyboxFaces;
-	// Cargar texturas en orden
-	skyboxFaces.push_back("Textures/ame_fade/fadeaway_ft.tga");
-	skyboxFaces.push_back("Textures/ame_fade/fadeaway_bk.tga");
-	skyboxFaces.push_back("Textures/ame_fade/fadeaway_dn.tga");
-	skyboxFaces.push_back("Textures/ame_fade/fadeaway_up.tga");
-	skyboxFaces.push_back("Textures/ame_fade/fadeaway_rt.tga");
-	skyboxFaces.push_back("Textures/ame_fade/fadeaway_lf.tga");
-
-	// Skybox
-	std::vector<std::string> skyboxFaces0;
-	// Cargar texturas en orden
-	skyboxFaces0.push_back("Textures/ame_flatrock/flatrock_rt.tga");
-	skyboxFaces0.push_back("Textures/ame_flatrock/flatrock_lf.tga");
-	skyboxFaces0.push_back("Textures/ame_flatrock/flatrock_dn.tga");
-	skyboxFaces0.push_back("Textures/ame_flatrock/flatrock_up.tga");
-	skyboxFaces0.push_back("Textures/ame_flatrock/flatrock_bk.tga");
-	skyboxFaces0.push_back("Textures/ame_flatrock/flatrock_ft.tga");
-
-	// Inicializar Skybox
-	skybox = Skybox(skyboxFaces);
-	skybox0 = Skybox(skyboxFaces0);
-
-	currentSkybox = &skybox;
+	LoadLight(pointLightCount, pointLightCount0, spotLightCount);
 
 	// Uniforms
 	GLuint uniformProjection = 0, uniformModel = 0, uniformView = 0, uniformEyePosition = 0, uniformSpecularIntensity = 0, uniformShininess = 0;
@@ -1358,20 +907,14 @@ int main() {
 		greenTexture.UseTexture();
 		sp.render();
 		// Esferas
-		modelTemp = model;
+		mat01 = modelTemp = model;
 		modelTemp = glm::translate(modelTemp, glm::vec3(-1.5f, 3.0f, -1.5f));
 		modelTemp = glm::scale(modelTemp, glm::vec3(0.2f, 0.2f, 0.2f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(modelTemp));
 		Material_metalico.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		blueTexture.UseTexture();
 		sp.render();
-		// Enable blending
-		glDisable(GL_CULL_FACE);
-		glEnable(GL_BLEND);
-		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
-		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
-		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
-		tree.RenderModel();
+		
 
 
 		// ---------------------------- SANTA ----------------------------
@@ -1438,6 +981,7 @@ int main() {
 		model = glm::scale(model, glm::vec3(1.0f, 1.78f, 6.34f));
 		model = glm::rotate(model, -90.0f * toRadians, glm::vec3(1.0f, 0.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		Material_brillante.UseMaterial(uniformSpecularIntensity, uniformShininess);
 		pant();
 		meshList[1]->RenderMesh();
 
@@ -1521,7 +1065,7 @@ int main() {
 
 		// ---------------------------- MESA ARRIBA ----------------------------
 		model = glm::mat4(1.0);
-		mat01 = mat00 = model = glm::translate(model, tablePos);
+		mat00 = model = glm::translate(model, tablePos);
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		mesa_M.RenderModel();
 
@@ -1913,8 +1457,15 @@ int main() {
 		model = glm::rotate(model, 180.0f * toRadians, glm::vec3(0.0f, 1.0f, 0.0f));
 		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
 		piernaR_M.RenderModel();
-
-
+//------------------NAVIDAD TRANSPARENCIAS----------------------------//
+		// Enable blending
+		model = mat01;
+		glDisable(GL_CULL_FACE);
+		glEnable(GL_BLEND);
+		glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+		model = glm::scale(model, glm::vec3(1.0f) * 2.0f);
+		glUniformMatrix4fv(uniformModel, 1, GL_FALSE, glm::value_ptr(model));
+		tree.RenderModel();
 		validate();
 		animate();
 
